@@ -1,0 +1,13 @@
+# Dossier de l'environnement virtuel
+venv/
+
+# Données locales (à éviter de versionner sauf si nécessaire)
+data/
+
+# Fichiers Python compilés
+__pycache__/
+*.pyc
+
+# Fichiers système (optionnels mais recommandés)
+.DS_Store
+Thumbs.db
