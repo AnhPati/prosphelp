@@ -6,7 +6,7 @@ from pathlib import Path
 
 # Répertoire contenant les données
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-DATA_DIR.mkdir(parents=True, exist_ok=True)  # Crée le dossier s'il n'existe pas
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 OFFERS_FILE = DATA_DIR / "offers.csv"
 MARKETS_FILE = DATA_DIR / "market_analysis.csv"
@@ -76,6 +76,12 @@ def show_offer_dissection():
     st.subheader("📄 Offres enregistrées")
     if OFFERS_FILE.exists():
         offers_df = pd.read_csv(OFFERS_FILE)
+
+        selected_market = st.selectbox("🔍 Filtrer les offres par marché", ["Tous"] + markets)
+
+        if selected_market != "Tous":
+            offers_df = offers_df[offers_df["Marché"] == selected_market]
+
         st.dataframe(offers_df)
     else:
         st.info("Aucune offre enregistrée pour le moment.")
