@@ -1,5 +1,5 @@
 from pathlib import Path
 
-# Chemin vers le fichier CSV
+# Chemin vers le dossier "data" et le fichier unique pour les marchés et les offres
 DATA_DIR = Path(__file__).parent.parent / "data"
-MARKET_DATA_FILE = DATA_DIR / "market_analysis.csv"
+MARKET_OFFERS_FILE = DATA_DIR / "markets.csv"
