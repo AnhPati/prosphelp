@@ -1,36 +1,30 @@
-# pages/offer_dissection.py
-
 import streamlit as st
 import pandas as pd
 from pathlib import Path
+from services.offer_service import load_offers, save_offer_data, get_existing_markets_from_offers
 
 # Répertoire contenant les données
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 OFFERS_FILE = DATA_DIR / "offers.csv"
-MARKETS_FILE = DATA_DIR / "market_analysis.csv"
 
 def get_existing_markets():
-    if MARKETS_FILE.exists():
-        df = pd.read_csv(MARKETS_FILE)
-        if "Marché" in df.columns:
-            return sorted(df["Marché"].dropna().unique())
+    df = load_offers()
+    if "Marché" in df.columns:
+        return sorted(df["Marché"].dropna().unique())
     return []
 
 def save_offer(offer_data):
     df = pd.DataFrame([offer_data])
-    if OFFERS_FILE.exists():
-        df.to_csv(OFFERS_FILE, mode='a', header=False, index=False)
-    else:
-        df.to_csv(OFFERS_FILE, index=False)
+    save_offer_data(df)
 
 def show_offer_dissection():
     st.header("Dissection des offres")
 
     markets = get_existing_markets()
     if not markets:
-        st.warning("⚠️ Aucun marché détecté dans le fichier `market_analysis.csv`. Veuillez d'abord en créer via l'onglet Analyse des marchés.")
+        st.warning("⚠️ Aucun marché détecté dans le fichier `offers.csv`. Veuillez d'abord en créer via l'onglet Analyse des marchés.")
         return
 
     with st.form("offer_dissection_form"):
@@ -53,29 +47,38 @@ def show_offer_dissection():
         submitted = st.form_submit_button("Enregistrer l'offre")
 
         if submitted:
-            offer_data = {
-                "Titre": title,
-                "Intitulé": job_title,
-                "TJM": tjm,
-                "Séniorité": seniority,
-                "Technos principales": main_techs,
-                "Technos secondaires": secondary_techs,
-                "Compétences principales": main_skills,
-                "Compétences secondaires": secondary_skills,
-                "Secteur": sector,
-                "Localisation": location,
-                "Rythme": work_mode,
-                "Entreprise": company,
-                "Contact": contact_name,
-                "Lien": offer_link,
-                "Marché": market
-            }
-            save_offer(offer_data)
-            st.success("✅ Offre enregistrée avec succès !")
+            if not title or not offer_link:
+                st.error("Le titre et le lien de l'offre sont obligatoires.")
+            else:
+                offer_data = {
+                    "Date": pd.to_datetime("today").strftime('%Y-%m-%d'),
+                    "Type": "Offre",
+                    "Marché": market,
+                    "Titre": title,
+                    "Intitulé": job_title,
+                    "TJM": tjm,
+                    "Séniorité": seniority,
+                    "Technos principales": main_techs,
+                    "Technos secondaires": secondary_techs,
+                    "Compétences principales": main_skills,
+                    "Compétences secondaires": secondary_skills,
+                    "Secteur": sector,
+                    "Localisation": location,
+                    "Rythme": work_mode,
+                    "Entreprise": company,
+                    "Contact": contact_name,
+                    "Lien": offer_link
+                }
+                save_offer(offer_data)
+                st.success("✅ Offre enregistrée avec succès !")
 
     st.subheader("📄 Offres enregistrées")
     if OFFERS_FILE.exists():
         offers_df = pd.read_csv(OFFERS_FILE)
+
+        # On filtre les lignes de type "Offre"
+        if "Type" in offers_df.columns:
+            offers_df = offers_df[offers_df["Type"] == "Offre"]
 
         selected_market = st.selectbox("🔍 Filtrer les offres par marché", ["Tous"] + markets)
 
