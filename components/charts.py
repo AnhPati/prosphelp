@@ -1,44 +1,61 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from collections import Counter
+import plotly.express as px
 
-def show_market_trend_chart(df):
+def show_market_trend_chart(df, highlight_market=None):
     if df.empty:
         st.info("Aucune donnée à afficher.")
         return
 
-    # S'assurer que la colonne Date est bien en datetime
     df["Date"] = pd.to_datetime(df["Date"])
-
-    # Filtrer les données de type "Marché"
     df_market = df[df["Type"] == "Marché"]
 
     if df_market.empty:
         st.warning("Aucune donnée de type 'Marché' à afficher.")
         return
 
-    # Pivot et affichage
     pivot = df_market.pivot(index="Date", columns="Marché", values="Nombre d'annonces").fillna(0)
-    st.line_chart(pivot)
+
+    fig = go.Figure()
+
+    for market in pivot.columns:
+        is_highlighted = (market == highlight_market)
+        fig.add_trace(go.Scatter(
+            x=pivot.index,
+            y=pivot[market],
+            mode='lines',
+            name=market,
+            line=dict(
+                width=4 if is_highlighted else 1,
+                color='crimson' if is_highlighted else None,
+                dash='solid' if is_highlighted else 'dot'
+            ),
+            opacity=1.0 if is_highlighted else 0.5
+        ))
+
+    fig.update_layout(
+        title="Évolution des annonces par marché dans le temps",
+        xaxis_title="Date",
+        yaxis_title="Nombre d'annonces",
+        legend_title="Marché",
+        template="plotly_white",
+        hovermode="x unified"
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
 
 def plot_skills_tech_chart(data, title=""):
-    # Compter les occurrences des éléments
     counter = Counter(data)
-    
-    # Trier par fréquence
     sorted_items = sorted(counter.items(), key=lambda x: x[1], reverse=True)
     skills, counts = zip(*sorted_items)
 
-    # Créer un graphique en bâtons
-    plt.figure(figsize=(10, 6))
-    plt.bar(skills, counts, color="skyblue")
-    plt.xticks(rotation=45, ha='right')
-    plt.title(title)
-    plt.xlabel("Compétences / Technologies")
-    plt.ylabel("Fréquence")
-    plt.tight_layout()
-
-    # Afficher le graphique
-    st.pyplot(plt)
-
+    fig = px.bar(
+        x=skills,
+        y=counts,
+        labels={'x': 'Compétences / Technologies', 'y': 'Fréquence'},
+        title=title
+    )
+    fig.update_layout(xaxis_tickangle=-45)
+    st.plotly_chart(fig, use_container_width=True)

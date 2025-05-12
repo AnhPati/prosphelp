@@ -23,29 +23,26 @@ def show_compass():
         st.warning("⚠️ Aucune analyse de marché n'est disponible.")
         return
 
-    # Filtrer les marchés existants dans le fichier d'analyse de marché
+    # Filtrer les marchés existants
     markets = sorted(df_market_analysis["Marché"].dropna().unique())
 
-    # Sélection du marché (le premier marché est sélectionné par défaut)
+    # Sélection du marché
     selected_market = st.selectbox("Sélectionner un marché", markets, index=0)
 
-    # Tendance des marchés (Graphique)
+    # Tendance des marchés (graphique global avec un marché mis en avant)
     st.subheader("📈 Tendance des Marchés")
-    market_data_for_trend = df_market_analysis[df_market_analysis["Marché"] == selected_market]
-    if not market_data_for_trend.empty:
-        show_market_trend_chart(market_data_for_trend)
+    if not df_market_analysis.empty:
+        show_market_trend_chart(df_market_analysis, highlight_market=selected_market)
     else:
-        st.warning("⚠️ Aucune donnée de tendance disponible pour ce marché.")
+        st.warning("⚠️ Aucune donnée de tendance disponible.")
 
-    # Compétences principales et secondaires (Diagramme en bâton)
+    # Compétences principales et secondaires
     st.subheader("💼 Compétences principales et secondaires")
     skills_df = df_offers[df_offers["Marché"] == selected_market]
-    
-    # Traitement des compétences principales et secondaires
+
     main_skills = skills_df["Compétences principales"].dropna().str.split(",").explode().str.strip()
     secondary_skills = skills_df["Compétences secondaires"].dropna().str.split(",").explode().str.strip()
 
-    # Vérification si les listes de compétences principales et secondaires sont vides
     if not main_skills.empty:
         st.subheader("Compétences principales")
         plot_skills_tech_chart(main_skills, title="Compétences principales")
@@ -58,12 +55,11 @@ def show_compass():
     else:
         st.warning("⚠️ Aucune compétence secondaire disponible pour ce marché.")
 
-    # Technologies principales et secondaires (Diagramme en bâton)
+    # Technologies principales et secondaires
     st.subheader("💻 Technologies principales et secondaires")
     main_techs = skills_df["Technos principales"].dropna().str.split(",").explode().str.strip()
     secondary_techs = skills_df["Technos secondaires"].dropna().str.split(",").explode().str.strip()
 
-    # Vérification si les listes de technologies principales et secondaires sont vides
     if not main_techs.empty:
         st.subheader("Technologies principales")
         plot_skills_tech_chart(main_techs, title="Technologies principales")
