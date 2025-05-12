@@ -7,7 +7,7 @@ from services.offer_service import load_offers, save_offer_data, get_existing_ma
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-OFFERS_FILE = DATA_DIR / "offers.csv"
+OFFERS_FILE = DATA_DIR / "markets.csv"
 
 def get_existing_markets():
     df = load_offers()
