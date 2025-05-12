@@ -23,18 +23,20 @@ def show_compass():
         st.warning("⚠️ Aucune analyse de marché n'est disponible.")
         return
 
-    # Filtrer les marchés existants
-    markets = sorted(df_market_analysis["Marché"].dropna().unique())
+    # Fusionner tous les marchés présents dans les offres et les tendances
+    markets_offers = df_offers["Marché"].dropna().unique()
+    markets_trends = df_market_analysis["Marché"].dropna().unique()
+    markets = sorted(set(markets_offers) | set(markets_trends))  # union des deux ensembles
 
     # Sélection du marché
     selected_market = st.selectbox("Sélectionner un marché", markets, index=0)
 
     # Tendance des marchés (graphique global avec un marché mis en avant)
     st.subheader("📈 Tendance des Marchés")
-    if not df_market_analysis.empty:
+    if selected_market in df_market_analysis["Marché"].values:
         show_market_trend_chart(df_market_analysis, highlight_market=selected_market)
     else:
-        st.warning("⚠️ Aucune donnée de tendance disponible.")
+        st.info("ℹ️ Aucune donnée de tendance disponible pour ce marché.")
 
     # Compétences principales et secondaires
     st.subheader("💼 Compétences principales et secondaires")
