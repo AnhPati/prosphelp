@@ -9,12 +9,6 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 OFFERS_FILE = DATA_DIR / "markets.csv"
 
-def get_existing_markets():
-    df = load_offers()
-    if "Marché" in df.columns:
-        return sorted(df["Marché"].dropna().unique())
-    return []
-
 def save_offer(offer_data):
     df = pd.DataFrame([offer_data])
     save_offer_data(df)
@@ -22,7 +16,7 @@ def save_offer(offer_data):
 def show_offer_dissection():
     st.header("Dissection des offres")
 
-    markets = get_existing_markets()
+    markets = get_existing_markets_from_offers()
     if not markets:
         st.warning("⚠️ Aucun marché détecté dans le fichier `offers.csv`. Veuillez d'abord en créer via l'onglet Analyse des marchés.")
         return
