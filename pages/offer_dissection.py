@@ -1,21 +1,12 @@
 import streamlit as st
 import pandas as pd
-from pathlib import Path
+from config.settings import MARKET_OFFERS_FILE
 from services.offer_service import load_offers, save_offer_data, get_existing_markets_from_offers
-
-# Répertoire contenant les données
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-DATA_DIR.mkdir(parents=True, exist_ok=True)
-
-OFFERS_FILE = DATA_DIR / "markets.csv"
-
-def save_offer(offer_data):
-    df = pd.DataFrame([offer_data])
-    save_offer_data(df)
 
 def show_offer_dissection():
     st.header("Dissection des offres")
 
+    # Formulaire pour saisir les données de l'offre
     markets = get_existing_markets_from_offers()
     if not markets:
         st.warning("⚠️ Aucun marché détecté dans le fichier `offers.csv`. Veuillez d'abord en créer via l'onglet Analyse des marchés.")
@@ -63,12 +54,12 @@ def show_offer_dissection():
                     "Contact": contact_name,
                     "Lien": offer_link
                 }
-                save_offer(offer_data)
+                save_offer_data(offer_data)
                 st.success("✅ Offre enregistrée avec succès !")
 
     st.subheader("📄 Offres enregistrées")
-    if OFFERS_FILE.exists():
-        offers_df = pd.read_csv(OFFERS_FILE)
+    if MARKET_OFFERS_FILE.exists():
+        offers_df = pd.read_csv(MARKET_OFFERS_FILE)
 
         # On filtre les lignes de type "Offre"
         if "Type" in offers_df.columns:

@@ -42,8 +42,8 @@ def show_compass():
     st.subheader("💼 Compétences principales et secondaires")
     skills_df = df_offers[df_offers["Marché"] == selected_market]
 
-    main_skills = skills_df["Compétences principales"].dropna().str.split(",").explode().str.strip()
-    secondary_skills = skills_df["Compétences secondaires"].dropna().str.split(",").explode().str.strip()
+    main_skills = skills_df["Compétences principales"].dropna().str.split(";").explode().str.strip()
+    secondary_skills = skills_df["Compétences secondaires"].dropna().str.split(";").explode().str.strip()
 
     if not main_skills.empty:
         st.subheader("Compétences principales")
@@ -59,8 +59,8 @@ def show_compass():
 
     # Technologies principales et secondaires
     st.subheader("💻 Technologies principales et secondaires")
-    main_techs = skills_df["Technos principales"].dropna().str.split(",").explode().str.strip()
-    secondary_techs = skills_df["Technos secondaires"].dropna().str.split(",").explode().str.strip()
+    main_techs = skills_df["Technos principales"].dropna().str.split(";").explode().str.strip()
+    secondary_techs = skills_df["Technos secondaires"].dropna().str.split(";").explode().str.strip()
 
     if not main_techs.empty:
         st.subheader("Technologies principales")

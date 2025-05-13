@@ -9,9 +9,6 @@ def show_market_analysis():
     # Charger toutes les données
     df = load_market_analysis()
 
-    # Filtrer uniquement les données de type "Marché"
-    df_market = df[df["Type"] == "Marché"].copy()
-
     # Formulaire pour ajouter une nouvelle analyse de marché
     with st.form("market_form"):
         market = st.text_input("Marché (ex: Développeur React)")
@@ -33,12 +30,12 @@ def show_market_analysis():
 
     # Affichage du tableau : ne conserver que les colonnes utiles
     st.subheader("📊 Historique des marchés")
-    if not df_market.empty:
+    if not df.empty:
         display_columns = ["Date", "Marché", "Nombre d'annonces", "Tendance"]
-        st.dataframe(df_market[display_columns])
+        st.dataframe(df[display_columns])
     else:
         st.info("Aucune donnée d'analyse de marché disponible.")
 
     # Affichage du graphique uniquement pour les données de type "Marché"
     st.subheader("📈 Tendances des marchés")
-    show_market_trend_chart(df_market)
+    show_market_trend_chart(df)
