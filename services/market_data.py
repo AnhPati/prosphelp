@@ -8,7 +8,7 @@ def load_market_analysis():
         "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
         "Rythme", "Entreprise", "Contact", "Lien"
     ]
-    columns_sep = "\|"
+    columns_sep = r'\|'
     
     if not MARKET_OFFERS_FILE.exists():
         return pd.DataFrame(columns=expected_columns)
@@ -19,7 +19,8 @@ def load_market_analysis():
             sep=columns_sep,
             quotechar=None,
             encoding='utf-8',
-            header=0
+            header=0,
+            engine='python'
         )
 
         df = df.where(pd.notnull(df), None)

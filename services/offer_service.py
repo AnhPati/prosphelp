@@ -8,7 +8,7 @@ def load_offers():
         "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
         "Rythme", "Entreprise", "Contact", "Lien"
     ]
-    columns_sep = "\|"
+    columns_sep = r'\|'
     
     if not MARKET_OFFERS_FILE.exists():
         return pd.DataFrame(columns=expected_columns)
@@ -19,7 +19,8 @@ def load_offers():
                 MARKET_OFFERS_FILE,
                 sep=columns_sep,
                 quotechar=None,
-                encoding='utf-8'
+                encoding='utf-8',
+                engine='python'
             )
         except pd.errors.ParserError:
             with open(MARKET_OFFERS_FILE, 'r', encoding='utf-8') as f:
