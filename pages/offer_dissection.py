@@ -59,7 +59,7 @@ def show_offer_dissection():
 
     st.subheader("📄 Offres enregistrées")
     if MARKET_OFFERS_FILE.exists():
-        offers_df = pd.read_csv(MARKET_OFFERS_FILE)
+        offers_df = load_offers()
 
         # On filtre les lignes de type "Offre"
         if "Type" in offers_df.columns:
