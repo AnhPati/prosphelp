@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 from services.offer_service import load_offers
 from services.market_data import load_market_analysis
 from components.charts import show_market_trend_chart, plot_skills_tech_chart
