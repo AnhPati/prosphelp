@@ -2,7 +2,8 @@
 venv/
 
 # Données locales (à éviter de versionner sauf si nécessaire)
-data/
+data/*
+!data/markets.csv
 
 # Fichiers Python compilés
 __pycache__/
