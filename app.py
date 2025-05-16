@@ -1,8 +1,8 @@
 import streamlit as st
-from pages.home import show_home
-from pages.market_analysis import show_market_analysis
-from pages.offer_dissection import show_offer_dissection
-from pages.compass import show_compass
+from tabs.home import show_home
+from tabs.market_analysis import show_market_analysis
+from tabs.offer_dissection import show_offer_dissection
+from tabs.compass import show_compass
 from components.file_controls import files_controls
 from config.settings import MARKET_OFFERS_FILE
 
