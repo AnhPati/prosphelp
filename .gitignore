@@ -12,3 +12,6 @@ __pycache__/
 # Fichiers système (optionnels mais recommandés)
 .DS_Store
 Thumbs.db
+
+# Clef Firebase
+firebase-key.json
