@@ -60,6 +60,7 @@ def show_offer_dissection():
     st.subheader("📄 Offres enregistrées")
     if MARKET_OFFERS_FILE.exists():
         offers_df = load_offers()
+        display_columns = ["Date", "Marché", "Intitulé", "TJM", "Séniorité", "Technos principales", "Technos secondaires", "Compétences principales", "Compétences secondaires", "Secteur", "Localisation", "Rythme", "Entreprise", "Contact", "Lien"]
 
         # On filtre les lignes de type "Offre"
         if "Type" in offers_df.columns:
@@ -70,6 +71,6 @@ def show_offer_dissection():
         if selected_market != "Tous":
             offers_df = offers_df[offers_df["Marché"] == selected_market]
 
-        st.dataframe(offers_df)
+        st.dataframe(offers_df[display_columns])
     else:
         st.info("Aucune offre enregistrée pour le moment.")
