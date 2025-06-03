@@ -12,7 +12,7 @@ def show_home():
 
     Grâce à lui, vous pouvez :
 
-    - Analyser les **tendances du marché** (volume d’annonces par jour),
+    - Analyser les **Notess du marché** (volume d’annonces par jour),
     - Extraire les **technologies et compétences les plus demandées**,
     - Étudier en détail chaque offre pour adapter votre profil et vos relances.
 
@@ -30,7 +30,7 @@ def show_home():
 
     ### 2. 📈 Onglet *Analyse des Marchés*
     - Visualisez la **courbe d’évolution** du nombre d’annonces par marché.
-    - Repérez les tendances pour adapter vos priorités de prospection.
+    - Repérez les Notess pour adapter vos priorités de prospection.
 
     ---
 

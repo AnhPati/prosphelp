@@ -3,7 +3,7 @@ from config.settings import MARKET_OFFERS_FILE
 from utils.helpers import fallback_read_csv
 
 EXPECTED_COLUMNS = [
-    "Date", "Type", "Marché", "Nombre d'annonces", "Tendance", "Titre",
+    "Date", "Type", "Marché", "Nombre d'annonces", "Notes", "Titre",
     "Intitulé", "TJM", "Séniorité", "Technos principales", "Technos secondaires",
     "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
     "Rythme", "Entreprise", "Contact", "Lien", "Sophistication du marché", "Capitalisation de l'apprentissage", "Fiabilité"

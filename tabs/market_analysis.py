@@ -23,7 +23,7 @@ def show_market_analysis():
 
         date = st.date_input("Date")
         number = st.number_input("Nombre d'annonces", min_value=0, step=1)
-        trend = st.text_input("Tendance (ex: en hausse, stable, en baisse)")
+        notes = st.text_input("Notes")
 
         submitted = st.form_submit_button("Ajouter")
 
@@ -36,17 +36,17 @@ def show_market_analysis():
                     "Type": "Marché",
                     "Marché": final_market,
                     "Nombre d'annonces": number,
-                    "Tendance": trend
+                    "Notes": notes
                 }
                 save_market_analysis(market_data)
                 st.success("✅ Donnée ajoutée avec succès.")
 
     st.subheader("📊 Historique des marchés")
     if not df.empty:
-        display_columns = ["Date", "Marché", "Nombre d'annonces", "Tendance"]
+        display_columns = ["Date", "Marché", "Nombre d'annonces", "Notes"]
         st.dataframe(df[display_columns])
     else:
         st.info("Aucune donnée d'analyse de marché disponible.")
 
-    st.subheader("📈 Tendances des marchés")
+    st.subheader("📈 Tendance des marchés")
     show_market_trend_chart(df)

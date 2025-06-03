@@ -16,7 +16,7 @@ def migrate():
                 "Date": row["Date"],
                 "Marché": row["Marché"],
                 "Nombre d'annonces": row["Nombre d'annonces"],
-                "Tendance": row.get("Tendance", ""),
+                "Notes": row.get("Notes", ""),
                 # Offres
                 "Titre": "",
                 "Intitulé": "",
@@ -42,7 +42,7 @@ def migrate():
                 "Date": "",  # Inconnu pour une offre
                 "Marché": row["Marché"],
                 "Nombre d'annonces": "",
-                "Tendance": "",
+                "Notes": "",
                 "Titre": row.get("Titre", ""),
                 "Intitulé": row.get("Intitulé", ""),
                 "TJM": row.get("TJM", ""),
