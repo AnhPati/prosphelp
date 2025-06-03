@@ -1,12 +1,13 @@
 import streamlit as st
 from services.market_data import load_market_analysis, save_market_analysis
 from components.charts import show_market_trend_chart
+from utils.filters import filter_dataframe_by_market
 
 def show_market_analysis():
     st.header("Analyse des marchés")
 
-    df = load_market_analysis()
-    existing_markets = sorted(df["Marché"].dropna().unique()) if not df.empty else []
+    df_market_analysis = load_market_analysis()
+    existing_markets = sorted(df_market_analysis["Marché"].dropna().unique()) if not df_market_analysis.empty else []
 
     # Checkbox, sa valeur est automatiquement stockée dans st.session_state
     use_existing = st.checkbox("Choisir un marché existant", value=True)
@@ -41,12 +42,15 @@ def show_market_analysis():
                 save_market_analysis(market_data)
                 st.success("✅ Donnée ajoutée avec succès.")
 
+    markets_trends = df_market_analysis["Marché"].dropna().unique()
+    selected_market = filter_dataframe_by_market(df_market_analysis, markets_trends, label="🎯 Sélectionner un marché")
+    
+    st.subheader("📈 Tendance des marchés")
+    show_market_trend_chart(df_market_analysis, highlight_market=selected_market, context_id="market_analysis")
+    
     st.subheader("📊 Historique des marchés")
-    if not df.empty:
+    if not df_market_analysis.empty:
         display_columns = ["Date", "Marché", "Nombre d'annonces", "Notes"]
-        st.dataframe(df[display_columns])
+        st.dataframe(df_market_analysis[display_columns])
     else:
         st.info("Aucune donnée d'analyse de marché disponible.")
-
-    st.subheader("📈 Tendance des marchés")
-    show_market_trend_chart(df)
