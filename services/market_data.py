@@ -1,74 +1,62 @@
 import pandas as pd
 from config.settings import MARKET_OFFERS_FILE
+from utils.helpers import fallback_read_csv
+
+EXPECTED_COLUMNS = [
+    "Date", "Type", "Marché", "Nombre d'annonces", "Tendance", "Titre",
+    "Intitulé", "TJM", "Séniorité", "Technos principales", "Technos secondaires",
+    "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
+    "Rythme", "Entreprise", "Contact", "Lien", "Sophistication du marché", "Capitalisation de l'apprentissage", "Fiabilité"
+]
+COLUMNS_SEP = r'\|'
+
 
 def load_market_analysis():
-    expected_columns = [
-        "Date", "Type", "Marché", "Nombre d'annonces", "Tendance", "Titre",
-        "Intitulé", "TJM", "Séniorité", "Technos principales", "Technos secondaires",
-        "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
-        "Rythme", "Entreprise", "Contact", "Lien", "Sophistication du marché", "Capitalisation de l'apprentissage", "Fiabilité"
-    ]
-    columns_sep = r'\|'
-    
     if not MARKET_OFFERS_FILE.exists():
-        return pd.DataFrame(columns=expected_columns)
-    
+        return pd.DataFrame(columns=EXPECTED_COLUMNS)
+
     try:
         df = pd.read_csv(
             MARKET_OFFERS_FILE,
-            sep=columns_sep,
+            sep=COLUMNS_SEP,
             quotechar=None,
             encoding='utf-8',
             header=0,
             engine='python'
         )
+    except pd.errors.ParserError:
+        df = fallback_read_csv(MARKET_OFFERS_FILE, EXPECTED_COLUMNS)
 
-        df = df.where(pd.notnull(df), None)
-        market_data = df[df["Type"] == "Marché"].copy()
-
-        return market_data
-        
-    except pd.errors.ParserError as e:
-        print(f"Erreur de parsing détectée : {str(e)}")
-        print("Veuillez vérifier le format du fichier CSV.")
-
-        return pd.DataFrame(columns=expected_columns)
-    
     except Exception as e:
-        print(f"Erreur inattendue : {str(e)}")
+        print(f"Erreur inattendue lors du chargement des données de marché : {str(e)}")
+        return pd.DataFrame(columns=EXPECTED_COLUMNS)
 
-        return pd.DataFrame(columns=expected_columns)
-
-def save_market_analysis(market_data):
-    expected_columns = [
-        "Date", "Type", "Marché", "Nombre d'annonces", "Tendance", "Titre",
-        "Intitulé", "TJM", "Séniorité", "Technos principales", "Technos secondaires",
-        "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
-        "Rythme", "Entreprise", "Contact", "Lien", "Sophistication du marché", "Capitalisation de l'apprentissage", "Fiabilité"
-    ]
-    columns_sep = "|"
-    
-    df = pd.DataFrame([market_data])
-    
-    for col in expected_columns:
+    for col in EXPECTED_COLUMNS:
         if col not in df.columns:
             df[col] = None
-    
-    df = df[expected_columns]
-    
+
+    return df[df["Type"] == "Marché"].copy()
+
+
+def save_market_analysis(market_data):
+    df = pd.DataFrame([market_data])
+    for col in EXPECTED_COLUMNS:
+        if col not in df.columns:
+            df[col] = None
+
+    df = df[EXPECTED_COLUMNS]
+
     try:
         df.to_csv(
             MARKET_OFFERS_FILE,
-            sep=columns_sep,
-            mode="a" if MARKET_OFFERS_FILE.exists() else "w",
+            sep="|",
+            mode='a' if MARKET_OFFERS_FILE.exists() else 'w',
             header=not MARKET_OFFERS_FILE.exists(),
             index=False,
             encoding='utf-8',
             quoting=0
         )
-
         return True
     except Exception as e:
-        print(f"Erreur lors de la sauvegarde : {str(e)}")
-
+        print(f"Erreur lors de la sauvegarde des données de marché : {str(e)}")
         return False
