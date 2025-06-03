@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 from collections import Counter
 import plotly.express as px
 
-def show_market_trend_chart(df, highlight_market=None):
+def show_market_trend_chart(df, highlight_market=None, context_id="default"):
     if df.empty:
         st.info("Aucune donnée à afficher.")
         return
@@ -44,9 +44,9 @@ def show_market_trend_chart(df, highlight_market=None):
         hovermode="x unified"
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key=f"trend_chart_{context_id}_{highlight_market or 'default'}")
 
-def plot_skills_tech_chart(data, title=""):
+def plot_skills_tech_chart(data, title="", context_id="default"):
     counter = Counter(data)
     sorted_items = sorted(counter.items(), key=lambda x: x[1], reverse=True)
     skills, counts = zip(*sorted_items)
@@ -58,4 +58,5 @@ def plot_skills_tech_chart(data, title=""):
         title=title
     )
     fig.update_layout(xaxis_tickangle=-45)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key=f"skills_chart_{context_id}_{title or 'no_title'}")
+

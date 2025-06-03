@@ -37,7 +37,7 @@ def show_compass():
     # Affichage de la tendance des marchés
     st.subheader("📈 Tendance des Marchés")
     if selected_market in df_market_analysis["Marché"].values:
-        show_market_trend_chart(df_market_analysis, highlight_market=selected_market)
+        show_market_trend_chart(df_market_analysis, highlight_market=selected_market, context_id="compass")
     else:
         st.info("ℹ️ Aucune donnée de tendance disponible pour ce marché.")
 
@@ -50,7 +50,7 @@ def show_compass():
     main_skills = skills_df["Compétences principales"].dropna().str.split(",").explode().str.strip()
     if not main_skills.empty:
         st.markdown("**Compétences principales**")
-        plot_skills_tech_chart(main_skills, title="Compétences principales")
+        plot_skills_tech_chart(main_skills, title="Compétences principales", context_id="compass")
     else:
         st.warning("⚠️ Aucune compétence principale disponible pour ce marché.")
 
@@ -58,7 +58,7 @@ def show_compass():
     secondary_skills = skills_df["Compétences secondaires"].dropna().str.split(",").explode().str.strip()
     if not secondary_skills.empty:
         st.markdown("**Compétences secondaires**")
-        plot_skills_tech_chart(secondary_skills, title="Compétences secondaires")
+        plot_skills_tech_chart(secondary_skills, title="Compétences secondaires", context_id="compass")
     else:
         st.warning("⚠️ Aucune compétence secondaire disponible pour ce marché.")
 
@@ -68,7 +68,7 @@ def show_compass():
     main_techs = skills_df["Technos principales"].dropna().str.split(",").explode().str.strip()
     if not main_techs.empty:
         st.markdown("**Technologies principales**")
-        plot_skills_tech_chart(main_techs, title="Technologies principales")
+        plot_skills_tech_chart(main_techs, title="Technologies principales", context_id="compass")
     else:
         st.warning("⚠️ Aucune technologie principale disponible pour ce marché.")
 
@@ -76,6 +76,6 @@ def show_compass():
     secondary_techs = skills_df["Technos secondaires"].dropna().str.split(",").explode().str.strip()
     if not secondary_techs.empty:
         st.markdown("**Technologies secondaires**")
-        plot_skills_tech_chart(secondary_techs, title="Technologies secondaires")
+        plot_skills_tech_chart(secondary_techs, title="Technologies secondaires", context_id="compass")
     else:
         st.warning("⚠️ Aucune technologie secondaire disponible pour ce marché.")
