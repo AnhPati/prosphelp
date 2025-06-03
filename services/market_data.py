@@ -6,7 +6,7 @@ def load_market_analysis():
         "Date", "Type", "Marché", "Nombre d'annonces", "Tendance", "Titre",
         "Intitulé", "TJM", "Séniorité", "Technos principales", "Technos secondaires",
         "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
-        "Rythme", "Entreprise", "Contact", "Lien"
+        "Rythme", "Entreprise", "Contact", "Lien", "Sophistication du marché", "Capitalisation de l'apprentissage", "Fiabilité"
     ]
     columns_sep = r'\|'
     
@@ -44,7 +44,7 @@ def save_market_analysis(market_data):
         "Date", "Type", "Marché", "Nombre d'annonces", "Tendance", "Titre",
         "Intitulé", "TJM", "Séniorité", "Technos principales", "Technos secondaires",
         "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
-        "Rythme", "Entreprise", "Contact", "Lien"
+        "Rythme", "Entreprise", "Contact", "Lien", "Sophistication du marché", "Capitalisation de l'apprentissage", "Fiabilité"
     ]
     columns_sep = "|"
     

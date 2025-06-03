@@ -6,7 +6,7 @@ def load_offers():
         "Date", "Type", "Marché", "Nombre d'annonces", "Tendance", "Titre",
         "Intitulé", "TJM", "Séniorité", "Technos principales", "Technos secondaires",
         "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
-        "Rythme", "Entreprise", "Contact", "Lien"
+        "Rythme", "Entreprise", "Contact", "Lien", "Sophistication du marché", "Capitalisation de l'apprentissage", "Fiabilité"
     ]
     columns_sep = r'\|'
     
@@ -58,7 +58,7 @@ def save_offer_data(offer_data):
         "Date", "Type", "Marché", "Nombre d'annonces", "Tendance", "Titre",
         "Intitulé", "TJM", "Séniorité", "Technos principales", "Technos secondaires",
         "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
-        "Rythme", "Entreprise", "Contact", "Lien"
+        "Rythme", "Entreprise", "Contact", "Lien", "Sophistication du marché", "Capitalisation de l'apprentissage", "Fiabilité"
     ]
     
     if isinstance(offer_data, dict):
