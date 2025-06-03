@@ -6,6 +6,6 @@ def filter_dataframe_by_market(df: pd.DataFrame, markets: list[str], label: str 
         st.warning("⚠️ Aucun marché disponible pour le filtrage.")
         return df
 
-    selected_market = st.selectbox(f"🔍 {label}", markets, index=0)
+    selected_market = st.selectbox(f"{label}", markets, index=0)
 
     return selected_market
