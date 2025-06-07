@@ -42,4 +42,16 @@ Date|Type|Marché|Nombre d'annonces|Notes|Titre|Intitulé|TJM|Séniorité|Techno
 2025-04-28|Offre|Data Analyst||||Data Analyst|430.0|3 ans|SQL|Power BI,Excel|Dashboards,Requêtes SQL|Nettoyage,Data wrangling|Assurance|Nantes|Distanciel|AssurData|Pierre Robert|https://exemple.com/offre14|||
 2025-04-28|Offre|Développeur React||||Développeur React|520.0|3 ans|React|Storybook,GraphQL|Design system,Query language|CI/CD,Tests fonctionnels|Tech|Paris|Hybride|WebLab|Emma Morel|https://exemple.com/offre15|||
 2025-05-13|Offre|Développeur React|||Développeur React Senior|Développeur React Senior|600.0|3|Typescript, NodeJS|NodeJS|||||Présentiel|||https://exemple.com/offre2|||
-2025-04-20|Contact|||||Développeur React|500.0|3 ans|React,Node.js,TypeScript|Développement web,Frontend|Design system,Query language|Tests fonctionnels|BTP|Madrid|Distanciel||Julie Durand|https://exemple.com/contact1|3|TypeScript - 5|4
+2025-04-20|Contact|||||Développeur React|500.0|3 ans|React,Node.js,TypeScript|Développement web,Frontend|Design system,Query language|Tests fonctionnels|BTP|Madrid|Distanciel||Julie Durand|https://exemple.com/contact1|3|TypeScript - 5|42025-06-05|Marché|Développeur React|40||||||||||||||||||
+2025-06-05|Marché|Dev test|77||||||||||||||||||
+2025-06-06|Marché|Dev test|3||||||||||||||||||
+2025-06-06|Marché|Dev Pentest|7||||||||||||||||||
+2025-06-05|Marché|TEST|1||||||||||||||||||
+2025-06-05|Marché|COrrecteur|3||||||||||||||||||
+2025-06-14|Marché|Dev Pentest|5||||||||||||||||||
+2025-06-14|Marché|TEST|1||||||||||||||||||
+2025-06-23|Marché|TEST|11||||||||||||||||||
+2025-06-19|Marché|Dev test|6||||||||||||||||||
+2025-06-14|Marché|Expert|4||||||||||||||||||
+2025-06-05|Marché|Chef de projet IT|2||||||||||||||||||
+2025-06-05|Offre|Développeur React|||Dev react|Expert|500|4|||||||Distanciel|||example.com|||
