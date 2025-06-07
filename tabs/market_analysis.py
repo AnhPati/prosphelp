@@ -36,10 +36,14 @@ def show_market_analysis():
             new_market = st.text_input("Nouveau marché", key="new_market")
 
         final_market = new_market.strip() if new_market else (market if market else "")
+        first_col, second_col, third_col = st.columns(3)
 
-        date = st.date_input("Date", key="selected_date", format="DD/MM/YYYY")
-        number = st.number_input("Nombre d'annonces", min_value=0, step=1, key="selected_number")
-        notes = st.text_input("Notes", key="notes")
+        with first_col:
+            date = st.date_input("Date", key="selected_date", format="DD/MM/YYYY")
+        with second_col:
+            number = st.number_input("Nombre d'annonces", min_value=0, step=1, key="selected_number")
+        with third_col:
+            notes = st.text_input("Notes", key="notes")
 
         submitted = st.form_submit_button("Ajouter")
 
