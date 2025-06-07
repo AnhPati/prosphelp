@@ -7,68 +7,77 @@ def show_offer_form(markets: list[str], source: str = "offre"):
     st.subheader("📝 Ajouter une nouvelle entrée")
 
     with st.form("data_entry_form"):
-        market = st.selectbox("Marché concerné", markets)
-
-        # Initialisation par défaut
         title = job_title = offer_link = ""
         tjm = seniority = main_techs = secondary_techs = main_skills = secondary_skills = ""
         sector = location = work_mode = company = contact_name = ""
         sophistication = reliability = None
 
-        # Ordre imposé des champs
-
-        # 1. Titre (offre uniquement)
         if source == "offre":
-            title = st.text_input("Titre de l'offre")
+            first_col, second_col = st.columns(2)
+            with first_col:
+                market = st.selectbox("Marché concerné", markets)
+            with second_col: 
+                title = st.text_input("Titre de l'offre")
+        else:    
+            market = st.selectbox("Marché concerné", markets)
 
-        # 2. Intitulé (offre uniquement)
         if source == "offre":
-            job_title = st.text_input("Intitulé du poste")
+            first_col, second_col, third_col = st.columns([3, 1, 1])
+            with first_col:
+                job_title = st.text_input("Intitulé du poste")
+            with second_col:
+                tjm = st.text_input("TJM (Tarif Journalier Moyen)")
+            with third_col:
+                seniority = st.text_input("Séniorité (années d'expérience)")
+        else:
+            first_col, second_col = st.columns(2)
+            with first_col:
+                tjm = st.text_input("TJM (Tarif Journalier Moyen)")
+            with second_col:
+                seniority = st.text_input("Séniorité (années d'expérience)")
 
-        # 3. TJM
-        tjm = st.text_input("TJM (Tarif Journalier Moyen)")
+        first_col, second_col = st.columns(2)
+        with first_col:
+            main_techs = st.text_input("Technologies principales (séparées par des virgules)")
+        with second_col:
+            secondary_techs = st.text_input("Technologies secondaires (séparées par des virgules)")
 
-        # 4. Séniorité
-        seniority = st.text_input("Séniorité (années d'expérience)")
+        first_col, second_col = st.columns(2)
+        with first_col:
+            main_skills = st.text_input("Compétences principales (séparées par des virgules)")
+        with second_col:
+            secondary_skills = st.text_input("Compétences secondaires (séparées par des virgules)")
 
-        # 5. Technos principales
-        main_techs = st.text_input("Technologies principales (séparées par des virgules)")
+        first_col, second_col, third_col = st.columns(3)
+        with first_col:
+            sector = st.text_input("Secteur d'activité")
+        with second_col:
+            location = st.text_input("Localisation")
+        with third_col:
+            work_mode = st.selectbox("Rythme", ["Présentiel", "Distanciel", "Hybride"])
 
-        # 6. Technos secondaires
-        secondary_techs = st.text_input("Technologies secondaires (séparées par des virgules)")
-
-        # 7. Compétences principales
-        main_skills = st.text_input("Compétences principales (séparées par des virgules)")
-
-        # 8. Compétences secondaires
-        secondary_skills = st.text_input("Compétences secondaires (séparées par des virgules)")
-
-        # 9. Secteur
-        sector = st.text_input("Secteur d'activité")
-
-        # 10. Localisation
-        location = st.text_input("Localisation")
-
-        # 11. Rythme
-        work_mode = st.selectbox("Rythme", ["Présentiel", "Distanciel", "Hybride"])
-
-        # 12. Entreprise
-        company = st.text_input("Nom de l'ESN")
-
-        # 13. Contact
-        contact_name = st.text_input("Nom du contact")
-
-        # 14. Lien (offre uniquement)
         if source == "offre":
-            offer_link = st.text_input("Lien vers l'offre")
+            first_col, second_col, third_col = st.columns(3)
+            with first_col:
+                company = st.text_input("Nom de l'ESN")
+            with second_col:
+                contact_name = st.text_input("Nom du contact")
+            with third_col:
+                offer_link = st.text_input("Lien vers l'offre")
+        else:    
+            first_col, second_col = st.columns(2)
+            with first_col:
+                company = st.text_input("Nom de l'ESN")
+            with second_col:
+                contact_name = st.text_input("Nom du contact")
 
         # 15. Sophistication (contact uniquement)
         if source == "contact":
-            sophistication = st.slider("Sophistication du marché", 1, 5, 3)
-
-        # 16. Fiabilité (contact uniquement)
-        if source == "contact":
-            reliability = st.slider("Fiabilité du contact", 1, 5, 3)
+            first_col, second_col = st.columns(2)
+            with first_col:
+                sophistication = st.slider("Sophistication du marché", 1, 5, 3)
+            with second_col:
+                reliability = st.slider("Fiabilité du contact", 1, 5, 3)
 
         # Validation
         submitted = st.form_submit_button("Enregistrer")
