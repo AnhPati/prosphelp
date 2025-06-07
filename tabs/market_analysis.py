@@ -3,6 +3,7 @@ import pandas as pd
 from services.market_data import load_market_analysis, save_market_analysis
 from components.charts import show_market_trend_chart
 from utils.filters import filter_dataframe_by_market
+from components.forms import show_market_form
 
 def is_new_entry_unique(df, market, date):
     existing = df[(df["Marché"] == market) & (df["Date"] == str(date))]
@@ -24,46 +25,25 @@ def show_market_analysis():
         st.session_state.clear_form_market = False
         st.rerun()
 
-    # Checkbox pour choisir un marché existant ou en saisir un nouveau
-    use_existing = st.checkbox("Choisir un marché existant", value=True)
-
-    with st.form("market_form"):
-        if use_existing:
-            market = st.selectbox("Marché existant", options=[""] + existing_markets, key="selected_market")
-            new_market = None
+    submitted, final_market, date, number, notes = show_market_form(existing_markets)
+    
+    if submitted:
+        if not final_market:
+            st.warning("⚠️ Merci de spécifier un marché.")
+        elif not is_new_entry_unique(df_market_analysis, final_market, date):
+            st.warning("⚠️ Une entrée pour ce marché à cette date existe déjà.")
         else:
-            market = None
-            new_market = st.text_input("Nouveau marché", key="new_market")
-
-        final_market = new_market.strip() if new_market else (market if market else "")
-        first_col, second_col, third_col = st.columns(3)
-
-        with first_col:
-            date = st.date_input("Date", key="selected_date", format="DD/MM/YYYY")
-        with second_col:
-            number = st.number_input("Nombre d'annonces", min_value=0, step=1, key="selected_number")
-        with third_col:
-            notes = st.text_input("Notes", key="notes")
-
-        submitted = st.form_submit_button("Ajouter")
-
-        if submitted:
-            if not final_market:
-                st.warning("⚠️ Merci de spécifier un marché.")
-            elif not is_new_entry_unique(df_market_analysis, final_market, date):
-                st.warning("⚠️ Une entrée pour ce marché à cette date existe déjà.")
-            else:
-                market_data = {
-                    "Date": str(date),
-                    "Type": "Marché",
-                    "Marché": final_market,
-                    "Nombre d'annonces": number,
-                    "Notes": notes
-                }
-                save_market_analysis(market_data)
-                st.success("✅ Donnée ajoutée avec succès.")
-                st.session_state.clear_form_market = True
-                st.rerun()
+            market_data = {
+                "Date": str(date),
+                "Type": "Marché",
+                "Marché": final_market,
+                "Nombre d'annonces": number,
+                "Notes": notes
+            }
+            save_market_analysis(market_data)
+            st.success("✅ Donnée ajoutée avec succès.")
+            st.session_state.clear_form_market = True
+            st.rerun()
 
     st.subheader("📈 Tendance des marchés")
     markets_trends = ["Tous"] + sorted(df_market_analysis["Marché"].dropna().unique())
