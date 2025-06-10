@@ -11,7 +11,7 @@ def show_compass():
     if 'geocoded_locations_cache' not in st.session_state:
         st.session_state.geocoded_locations_cache = {}
         st.session_state.geocoded_locations_cache = {} # Cette ligne est redondante si la précédente a déjà été exécutée, mais l'erreur était spécifique à l'absence de l'attribut.
-        
+
     st.header("🧭 Boussole de l'Analyse du Marché")
 
     # Chargement des données
@@ -56,25 +56,25 @@ def show_compass():
     with first_col:
         display_numeric_range_selector(skills_df, "TJM", "💰 TJM (Taux Journalier Moyen)", unit="€")
     with second_col:
-        display_numeric_range_selector(skills_df, "Séniorité", "🎯 Séniorité", unit="ans")
+        display_numeric_range_selector(skills_df, "Séniorité", "📚 Séniorité", unit="ans")
     with third_col:
-        st.subheader("🏠 Rythme de travail")
+        st.subheader("⏳ Rythme de travail")
 
         if "Rythme" in skills_df.columns:
             sectors = skills_df["Rythme"].dropna().str.strip()
             if not sectors.empty:
-                pie_rythms_chart(sectors, title="Répartition des rythmes de travail", context_id="compass")
+                pie_rythms_chart(sectors, title="⏳ Répartition des rythmes de travail", context_id="compass")
             else:
                 st.info("ℹ️ Aucune donnée sur le rythme de travail pour ce marché.")
         else:
             st.warning("⚠️ La colonne 'Rythme' est absente des données.")
     with fourth_col:
-        st.subheader("🏠 Secteurs")
+        st.subheader("💼 Secteurs")
 
         if "Secteur" in skills_df.columns:
             sectors = skills_df["Secteur"].dropna().str.strip()
             if not sectors.empty:
-                pie_rythms_chart(sectors, title="Secteurs du marché", context_id="compass")
+                pie_rythms_chart(sectors, title="💼 Secteurs du marché", context_id="compass")
             else:
                 st.info("ℹ️ Aucune donnée sur le secteur de travail pour ce marché.")
         else:
@@ -82,7 +82,7 @@ def show_compass():
 
     display_offers_map(skills_df, selected_market)
 
-    st.subheader("💼 Compétences")
+    st.subheader("🛠️ Compétences")
 
     # Compétences principales
     main_skills = skills_df["Compétences principales"].dropna().str.split(",").explode().str.strip()
