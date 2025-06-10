@@ -44,32 +44,34 @@ def show_compass():
 
     # Filtrer les offres selon le marché sélectionné
     skills_df = df_offers[df_offers["Marché"] == selected_market]
+    first_col, second_col, third_col, fourth_col = st.columns(4)
 
-    display_numeric_range_selector(skills_df, "TJM", "💰 TJM (Taux Journalier Moyen)", unit="€")
+    with first_col:
+        display_numeric_range_selector(skills_df, "TJM", "💰 TJM (Taux Journalier Moyen)", unit="€")
+    with second_col:
+        display_numeric_range_selector(skills_df, "Séniorité", "🎯 Séniorité", unit="ans")
+    with third_col:
+        st.subheader("🏠 Rythme de travail")
 
-    display_numeric_range_selector(skills_df, "Séniorité", "🎯 Séniorité", unit="ans")
-
-    st.subheader("🏠 Rythme de travail")
-
-    if "Rythme" in skills_df.columns:
-        sectors = skills_df["Rythme"].dropna().str.strip()
-        if not sectors.empty:
-            pie_rythms_chart(sectors, title="Répartition des rythmes de travail", context_id="compass")
+        if "Rythme" in skills_df.columns:
+            sectors = skills_df["Rythme"].dropna().str.strip()
+            if not sectors.empty:
+                pie_rythms_chart(sectors, title="Répartition des rythmes de travail", context_id="compass")
+            else:
+                st.info("ℹ️ Aucune donnée sur le rythme de travail pour ce marché.")
         else:
-            st.info("ℹ️ Aucune donnée sur le rythme de travail pour ce marché.")
-    else:
-        st.warning("⚠️ La colonne 'Rythme' est absente des données.")
+            st.warning("⚠️ La colonne 'Rythme' est absente des données.")
+    with fourth_col:
+        st.subheader("🏠 Secteurs")
 
-    st.subheader("🏠 Secteurs")
-
-    if "Secteur" in skills_df.columns:
-        sectors = skills_df["Secteur"].dropna().str.strip()
-        if not sectors.empty:
-            pie_rythms_chart(sectors, title="Secteurs du marché", context_id="compass")
+        if "Secteur" in skills_df.columns:
+            sectors = skills_df["Secteur"].dropna().str.strip()
+            if not sectors.empty:
+                pie_rythms_chart(sectors, title="Secteurs du marché", context_id="compass")
+            else:
+                st.info("ℹ️ Aucune donnée sur le secteur de travail pour ce marché.")
         else:
-            st.info("ℹ️ Aucune donnée sur le secteur de travail pour ce marché.")
-    else:
-        st.warning("⚠️ La colonne 'Rythme' est absente des données.")
+            st.warning("⚠️ La colonne 'Secteur' est absente des données.")
 
     st.subheader("💼 Compétences")
 
