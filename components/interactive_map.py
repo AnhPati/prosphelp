@@ -30,10 +30,12 @@ def display_offers_map(df_with_coords: pd.DataFrame, market_name: str):
         fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
         st.plotly_chart(fig, use_container_width=True)
 
-        st.info(f"Affichage de {len(map_data_aggregated)} localisations uniques sur la carte pour le marché '{market_name}'. La couleur et la taille des points indiquent le nombre d'offres.")
+        st.info(f"Affichage de {len(map_data_aggregated)} localisation{"s" if len(map_data_aggregated) > 1 else ""} unique{"s" if len(map_data_aggregated) > 1 else ""} sur la carte pour le marché '{market_name}'. La couleur et la taille des points indiquent le nombre d'offres.")
 
         st.markdown("**Détail par localisation :**")
-        st.dataframe(map_data_aggregated.sort_values(by="Nombre_Offres", ascending=False).reset_index(drop=True))
+        columns_to_exclude = ['latitude', 'longitude']
+        df_locations = map_data_aggregated.drop(columns=columns_to_exclude)
+        st.dataframe(df_locations.sort_values(by="Nombre_Offres", ascending=False).reset_index(drop=True))
 
     else:
         st.info("ℹ️ Aucune donnée de localisation valide avec des coordonnées géographiques disponible pour ce marché sélectionné.")
