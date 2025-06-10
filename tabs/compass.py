@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 from services.offer_service import load_offers
 from services.market_data import load_market_analysis
-from components.charts import show_market_trend_chart, plot_skills_tech_chart
+from components.charts import show_market_trend_chart, plot_skills_tech_chart, pie_rythms_chart
+from components.interactive_numeric_display import display_numeric_range_selector
 from utils.filters import filter_dataframe_by_market
 
 def show_compass():
@@ -43,6 +44,32 @@ def show_compass():
 
     # Filtrer les offres selon le marché sélectionné
     skills_df = df_offers[df_offers["Marché"] == selected_market]
+
+    display_numeric_range_selector(skills_df, "TJM", "💰 TJM (Taux Journalier Moyen)", unit="€")
+
+    display_numeric_range_selector(skills_df, "Séniorité", "🎯 Séniorité", unit="ans")
+
+    st.subheader("🏠 Rythme de travail")
+
+    if "Rythme" in skills_df.columns:
+        sectors = skills_df["Rythme"].dropna().str.strip()
+        if not sectors.empty:
+            pie_rythms_chart(sectors, title="Répartition des rythmes de travail", context_id="compass")
+        else:
+            st.info("ℹ️ Aucune donnée sur le rythme de travail pour ce marché.")
+    else:
+        st.warning("⚠️ La colonne 'Rythme' est absente des données.")
+
+    st.subheader("🏠 Secteurs")
+
+    if "Secteur" in skills_df.columns:
+        sectors = skills_df["Secteur"].dropna().str.strip()
+        if not sectors.empty:
+            pie_rythms_chart(sectors, title="Secteurs du marché", context_id="compass")
+        else:
+            st.info("ℹ️ Aucune donnée sur le secteur de travail pour ce marché.")
+    else:
+        st.warning("⚠️ La colonne 'Rythme' est absente des données.")
 
     st.subheader("💼 Compétences")
 

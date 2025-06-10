@@ -60,3 +60,14 @@ def plot_skills_tech_chart(data, title="", context_id="default"):
     fig.update_layout(xaxis_tickangle=-45)
     st.plotly_chart(fig, use_container_width=True, key=f"skills_chart_{context_id}_{title or 'no_title'}")
 
+def pie_rythms_chart(data, title="", context_id="default"):
+    counter = Counter(data)
+    sorted_items = sorted(counter.items(), key=lambda x: x[1], reverse=True)
+    rythms, counts = zip(*sorted_items)
+
+    fig = px.pie(
+        values=counts,
+        names=rythms,
+        title=title
+    )
+    st.plotly_chart(fig, use_container_width=True, key=f"pie_chart_{context_id}_{title or 'no_title'}")
