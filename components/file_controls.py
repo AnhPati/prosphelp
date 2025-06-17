@@ -1,42 +1,38 @@
 import streamlit as st
 import pandas as pd
+from constants.alerts import ERROR_MISSING_TYPE_COLUMN, SUCCESS_FILE_IMPORTED, ERROR_FILE_PROCESSING
+from constants.labels import LABEL_UPLOAD_SECTION, LABEL_UPLOAD_BUTTON, LABEL_DOWNLOAD_BUTTON
 
 def files_controls(filepath, label, uploader_key):
-    st.sidebar.markdown(f"### 📁 {label}")
+    st.sidebar.markdown(f"### {LABEL_UPLOAD_SECTION.format(label=label)}")
 
     columns_sep = r'\|'
 
     # Bouton d'upload
     uploaded_file = st.sidebar.file_uploader(
-        "🔼 Charger un CSV",
+        LABEL_UPLOAD_BUTTON,
         type="csv",
         key=f"{uploader_key}_upload"
     )
 
     if uploaded_file is not None:
         try:
-            # Lecture du CSV avec séparateur pipe, moteur Python
             df = pd.read_csv(uploaded_file, sep=columns_sep, engine="python")
-
-            # Nettoyage des noms de colonnes
             df.columns = df.columns.str.strip()
 
-            # Vérification qu'une colonne clé existe (ex. "Type")
             if "Type" not in df.columns:
-                st.sidebar.error("❌ Colonne 'Type' introuvable. Le fichier a-t-il bien le bon séparateur ?")
+                st.sidebar.error(ERROR_MISSING_TYPE_COLUMN)
                 return
 
-            # Écriture du fichier sur disque
             df.to_csv(filepath, sep="|", index=False)
-            st.sidebar.success("✅ Fichier importé avec succès.")
+            st.sidebar.success(SUCCESS_FILE_IMPORTED)
         except Exception as e:
-            st.sidebar.error(f"❌ Erreur lors du traitement du fichier : {e}")
+            st.sidebar.error(ERROR_FILE_PROCESSING.format(error=e))
 
-    # Bouton de téléchargement
     if filepath.exists():
         with open(filepath, "rb") as f:
             st.sidebar.download_button(
-                label="💾 Télécharger le CSV",
+                label=LABEL_DOWNLOAD_BUTTON,
                 data=f,
                 file_name=filepath.name,
                 mime="text/csv",

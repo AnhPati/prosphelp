@@ -4,16 +4,19 @@ import plotly.graph_objects as go
 from collections import Counter
 import plotly.express as px
 
+from constants.alerts import NO_DATA_AVAILABLE, NO_MARKET_DATA_AVAILABLE
+from constants.labels import TITLE_MARKET_TREND, X_AXIS_DATE, Y_AXIS_ADS, LEGEND_MARKET, X_AXIS_SKILLS_TECH, Y_AXIS_FREQUENCY
+
 def show_market_trend_chart(df, highlight_market=None, context_id="default"):
     if df.empty:
-        st.info("Aucune donnée à afficher.")
+        st.info(NO_DATA_AVAILABLE)
         return
 
     df["Date"] = pd.to_datetime(df["Date"])
     df_market = df[df["Type"] == "Marché"]
 
     if df_market.empty:
-        st.warning("Aucune donnée de type 'Marché' à afficher.")
+        st.warning(NO_MARKET_DATA_AVAILABLE)
         return
 
     pivot = df_market.pivot(index="Date", columns="Marché", values="Nombre d'annonces").fillna(0)
@@ -36,15 +39,16 @@ def show_market_trend_chart(df, highlight_market=None, context_id="default"):
         ))
 
     fig.update_layout(
-        title="Évolution des annonces par marché dans le temps",
-        xaxis_title="Date",
-        yaxis_title="Nombre d'annonces",
-        legend_title="Marché",
+        title=TITLE_MARKET_TREND,
+        xaxis_title=X_AXIS_DATE,
+        yaxis_title=Y_AXIS_ADS,
+        legend_title=LEGEND_MARKET,
         template="plotly_white",
         hovermode="x unified"
     )
 
     st.plotly_chart(fig, use_container_width=True, key=f"trend_chart_{context_id}_{highlight_market or 'default'}")
+
 
 def plot_skills_tech_chart(data, title="", context_id="default"):
     counter = Counter(data)
@@ -54,11 +58,12 @@ def plot_skills_tech_chart(data, title="", context_id="default"):
     fig = px.bar(
         x=skills,
         y=counts,
-        labels={'x': 'Compétences / Technologies', 'y': 'Fréquence'},
+        labels={'x': X_AXIS_SKILLS_TECH, 'y': Y_AXIS_FREQUENCY},
         title=title
     )
     fig.update_layout(xaxis_tickangle=-45)
     st.plotly_chart(fig, use_container_width=True, key=f"skills_chart_{context_id}_{title or 'no_title'}")
+
 
 def pie_rythms_chart(data, title="", context_id="default"):
     counter = Counter(data)
