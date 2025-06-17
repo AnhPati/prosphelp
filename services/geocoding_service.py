@@ -2,7 +2,7 @@ import requests
 import time
 import pandas as pd
 import streamlit as st
-from constants.alerts import ERROR_MISSING_LOCATION_COLUMN, INFO_GEOCODING_IN_PROGRESS, INFO_ALL_LOCATIONS_CACHED, SUCCESS_GEOCODING_DONE, PROGRESS_GEOCODING_TEXT
+from constants.alerts import ERROR_MISSING_LOCATION_COLUMN, INFO_GEOCODING_IN_PROGRESS, INFO_ALL_LOCATIONS_CACHED, SUCCESS_GEOCODING_DONE, INFO_GEOCODING_PROGRESS
 
 def _geocode_single_location(location_name: str) -> tuple[float | None, float | None]:
     if not isinstance(location_name, str) or not location_name.strip():
@@ -78,13 +78,13 @@ def geocode_dataframe_locations_in_memory(df: pd.DataFrame, location_col: str) -
             )
         )
 
-        geocode_bar = progress_container.progress(0, text=PROGRESS_GEOCODING_TEXT)
+        geocode_bar = progress_container.progress(0, text=INFO_GEOCODING_PROGRESS)
 
         for i, loc in enumerate(locations_needing_geocoding):
             lat, lon = _geocode_single_location(str(loc))
             df_with_coords.loc[df_with_coords[location_col] == loc, 'latitude'] = lat
             df_with_coords.loc[df_with_coords[location_col] == loc, 'longitude'] = lon
-            geocode_bar.progress((i + 1) / len(locations_needing_geocoding), text=PROGRESS_GEOCODING_TEXT)
+            geocode_bar.progress((i + 1) / len(locations_needing_geocoding), text=INFO_GEOCODING_PROGRESS)
 
         progress_container.empty()
         message_container.success(SUCCESS_GEOCODING_DONE)

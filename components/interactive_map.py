@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from constants.alerts import NO_COORDINATES_DATA, MAP_SUMMARY
+from constants.alerts import INFO_NO_COORDINATES_DATA, INFO_MAP_SUMMARY
 from constants.labels import SECTION_MAP_OFFERS, LABEL_MAP_DETAIL
 
 def display_offers_map(df_with_coords: pd.DataFrame, market_name: str):
@@ -31,7 +31,7 @@ def display_offers_map(df_with_coords: pd.DataFrame, market_name: str):
         fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
         st.plotly_chart(fig, use_container_width=True)
 
-        st.info(MAP_SUMMARY.format(
+        st.info(INFO_MAP_SUMMARY.format(
             n=len(map_data_aggregated),
             s="s" if len(map_data_aggregated) > 1 else "",
             market_name=market_name
@@ -43,4 +43,4 @@ def display_offers_map(df_with_coords: pd.DataFrame, market_name: str):
         st.dataframe(df_locations.sort_values(by="Nombre_Offres", ascending=False).reset_index(drop=True))
 
     else:
-        st.info(NO_COORDINATES_DATA)
+        st.info(INFO_NO_COORDINATES_DATA)

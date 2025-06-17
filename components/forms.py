@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from constants.alerts import TITLE_LINK_REQUIRED, CONTACT_NAME_REQUIRED
+from constants.alerts import WARNING_TITLE_LINK_REQUIRED, WARNING_CONTACT_NAME_REQUIRED
 from constants.labels import SUBHEADER_NEW_ENTRY, FIELD_MARKET, FIELD_TITLE, FIELD_JOB_TITLE, FIELD_TJM, FIELD_SENIORITY, FIELD_TECH_MAIN, FIELD_TECH_SECONDARY, FIELD_SKILLS_MAIN, FIELD_SKILLS_SECONDARY, FIELD_SECTOR, FIELD_LOCATION, FIELD_RHYTHM, FIELD_COMPANY, FIELD_CONTACT, FIELD_LINK, FIELD_SOPHISTICATION, FIELD_RELIABILITY, BTN_SAVE_OFFER, FIELD_MARKET_EXISTING, FIELD_MARKET_NEW, FIELD_DATE, FIELD_NUMBER_OF_OFFERS, FIELD_NOTES, BTN_SAVE_MARKET, CHECKBOX_USE_EXISTING_MARKET, RHYTHM_OPTIONS
 
 def show_offer_form(markets: list[str], source: str = "offre"):
@@ -82,10 +82,10 @@ def show_offer_form(markets: list[str], source: str = "offre"):
 
         if submitted:
             if source == "offre" and not (title and offer_link):
-                st.error(TITLE_LINK_REQUIRED)
+                st.error(WARNING_TITLE_LINK_REQUIRED)
                 return None
             if source == "contact" and not contact_name:
-                st.error(CONTACT_NAME_REQUIRED)
+                st.error(WARNING_CONTACT_NAME_REQUIRED)
                 return None
 
             return {

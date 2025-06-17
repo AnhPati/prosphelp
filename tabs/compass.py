@@ -6,7 +6,7 @@ from components.charts import show_market_trend_chart, plot_skills_tech_chart, p
 from components.interactive_numeric_display import display_numeric_range_selector
 from components.interactive_map import display_offers_map
 from utils.filters import filter_dataframe_by_market
-from constants.alerts import MISSING_COLUMN, NO_MARKET_ANALYSIS, NO_TREND_DATA, NO_RYTHM_DATA, NO_SECTOR_DATA, NO_MAIN_SKILLS, NO_SECONDARY_SKILLS, NO_MAIN_TECH, NO_SECONDARY_TECH
+from constants.alerts import WARNING_MISSING_COLUMN, WARNING_NO_MARKET_ANALYSIS, INFO_NO_TREND_DATA, INFO_NO_RYTHM_DATA, INFO_NO_SECTOR_DATA, WARNING_NO_MAIN_SKILLS, WARNING_NO_SECONDARY_SKILLS, WARNING_NO_MAIN_TECH, WARNING_NO_SECONDARY_TECH
 from constants.labels import HEADER_COMPASS, SECTION_MARKET_TRENDS, LABEL_TJM, LABEL_SENIORITY, LABEL_RHYTHM, LABEL_SECTOR, SECTION_SKILLS, SECTION_TECHS, LABEL_MAIN_SKILLS, LABEL_SECONDARY_SKILLS, LABEL_MAIN_TECHS, LABEL_SECONDARY_TECHS, LABEL_SELECT_MARKET
 def show_compass():
     CONTEXT_ID = "compass"
@@ -30,11 +30,11 @@ def show_compass():
     ]
     for col in required_columns:
         if col not in df_offers.columns:
-            st.warning(MISSING_COLUMN.format(col=col))
+            st.warning(WARNING_MISSING_COLUMN.format(col=col))
             return
 
     if "Marché" not in df_market_analysis.columns:
-        st.warning(NO_MARKET_ANALYSIS)
+        st.warning(WARNING_NO_MARKET_ANALYSIS)
         return
 
     # Fusionner les marchés disponibles dans les offres et dans les tendances
@@ -50,7 +50,7 @@ def show_compass():
     if selected_market in df_market_analysis["Marché"].values:
         show_market_trend_chart(df_market_analysis, highlight_market=selected_market, context_id=CONTEXT_ID)
     else:
-        st.info(NO_TREND_DATA)
+        st.info(INFO_NO_TREND_DATA)
 
     # Filtrer les offres selon le marché sélectionné
     skills_df = df_offers[df_offers["Marché"] == selected_market]
@@ -68,9 +68,9 @@ def show_compass():
             if not sectors.empty:
                 pie_rythms_chart(sectors, title="⏳ Répartition des rythmes de travail", context_id=CONTEXT_ID)
             else:
-                st.info(NO_RYTHM_DATA)
+                st.info(INFO_NO_RYTHM_DATA)
         else:
-            st.warning(MISSING_COLUMN.format(col="Rythme"))
+            st.warning(WARNING_MISSING_COLUMN.format(col="Rythme"))
     with fourth_col:
         st.subheader(LABEL_SECTOR)
 
@@ -79,9 +79,9 @@ def show_compass():
             if not sectors.empty:
                 pie_rythms_chart(sectors, title="💼 Secteurs du marché", context_id=CONTEXT_ID)
             else:
-                st.info(NO_SECTOR_DATA)
+                st.info(INFO_NO_SECTOR_DATA)
         else:
-            st.warning(MISSING_COLUMN.format(col="Secteur"))
+            st.warning(WARNING_MISSING_COLUMN.format(col="Secteur"))
 
     display_offers_map(skills_df, selected_market)
 
@@ -93,7 +93,7 @@ def show_compass():
         st.markdown(LABEL_MAIN_SKILLS)
         plot_skills_tech_chart(main_skills, title=LABEL_MAIN_SKILLS, context_id=CONTEXT_ID)
     else:
-        st.warning(NO_MAIN_SKILLS)
+        st.warning(WARNING_NO_MAIN_SKILLS)
 
     # Compétences secondaires
     secondary_skills = skills_df["Compétences secondaires"].dropna().str.split(",").explode().str.strip()
@@ -101,7 +101,7 @@ def show_compass():
         st.markdown(LABEL_SECONDARY_SKILLS)
         plot_skills_tech_chart(secondary_skills, title=LABEL_SECONDARY_SKILLS, context_id=CONTEXT_ID)
     else:
-        st.warning(NO_SECONDARY_SKILLS)
+        st.warning(WARNING_NO_SECONDARY_SKILLS)
 
     st.subheader(SECTION_TECHS)
 
@@ -111,7 +111,7 @@ def show_compass():
         st.markdown(LABEL_MAIN_TECHS)
         plot_skills_tech_chart(main_techs, title=LABEL_MAIN_TECHS, context_id=CONTEXT_ID)
     else:
-        st.warning(NO_MAIN_TECH)
+        st.warning(WARNING_NO_MAIN_TECH)
 
     # Technologies secondaires
     secondary_techs = skills_df["Technos secondaires"].dropna().str.split(",").explode().str.strip()
@@ -119,4 +119,4 @@ def show_compass():
         st.markdown(LABEL_SECONDARY_TECHS)
         plot_skills_tech_chart(secondary_techs, title=LABEL_SECONDARY_TECHS, context_id=CONTEXT_ID)
     else:
-        st.warning(NO_SECONDARY_TECH)
+        st.warning(WARNING_NO_SECONDARY_TECH)

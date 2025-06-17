@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from constants.alerts import NO_NUMERIC_DATA, NO_UNIQUE_VALUES
+from constants.alerts import INFO_NO_NUMERIC_DATA, INFO_NO_UNIQUE_VALUES
 from constants.labels import SLIDER_EXPLORE_LABEL, LABEL_AVERAGE, LABEL_RANGE, LABEL_COUNT_FOR_SELECTED
 
 def display_numeric_range_selector(df: pd.DataFrame, column_name: str, title: str, unit: str = ""):
@@ -10,7 +10,7 @@ def display_numeric_range_selector(df: pd.DataFrame, column_name: str, title: st
     numeric_values = pd.to_numeric(df[column_name], errors='coerce').dropna()
 
     if numeric_values.empty:
-        st.info(NO_NUMERIC_DATA.format(column_name=column_name))
+        st.info(INFO_NO_NUMERIC_DATA.format(column_name=column_name))
         return
 
     min_val = int(numeric_values.min())
@@ -40,4 +40,4 @@ def display_numeric_range_selector(df: pd.DataFrame, column_name: str, title: st
             count=count_for_selected_val
         ))
     else:
-        st.info(NO_UNIQUE_VALUES.format(column_name=column_name))
+        st.info(INFO_NO_UNIQUE_VALUES.format(column_name=column_name))

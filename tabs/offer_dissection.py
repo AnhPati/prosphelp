@@ -4,7 +4,7 @@ import streamlit as st
 from config.settings import MARKET_OFFERS_FILE
 from services.offer_service import load_offers, save_offer_data, get_existing_markets_from_offers
 from components.forms import show_offer_form
-from constants.alerts import OFFER_SAVED_SUCCESS, NO_OFFERS_DATA
+from constants.alerts import SUCCESS_OFFER_SAVED, INFO_NO_OFFERS_DATA
 from constants.labels import HEADER_OFFER_DISSECTION, LABEL_DATA_SOURCE, SECTION_OFFERS, LABEL_MARKET_FILTER, ALL_MARKETS_OPTION, DATA_SOURCE_OPTIONS
 
 def show_offer_dissection():
@@ -16,7 +16,7 @@ def show_offer_dissection():
     offer_data = show_offer_form(markets, source=source)
     if offer_data:
         save_offer_data(offer_data)
-        st.success(OFFER_SAVED_SUCCESS)
+        st.success(SUCCESS_OFFER_SAVED)
 
     st.subheader(SECTION_OFFERS)
     if MARKET_OFFERS_FILE.exists():
@@ -38,4 +38,4 @@ def show_offer_dissection():
 
         st.dataframe(offers_df[display_columns])
     else:
-        st.info(NO_OFFERS_DATA)
+        st.info(INFO_NO_OFFERS_DATA)

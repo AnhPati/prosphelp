@@ -4,7 +4,7 @@ from services.market_data import load_market_analysis, save_market_analysis
 from components.charts import show_market_trend_chart
 from utils.filters import filter_dataframe_by_market
 from components.forms import show_market_form
-from constants.alerts import MISSING_MARKET, MARKET_ALREADY_EXISTS, DATAS_SAVED_SUCCESS, NO_ANALYSIS_DATA
+from constants.alerts import WARNING_MISSING_MARKET, WARNING_MARKET_ALREADY_EXISTS, SUCCESS_DATA_SAVED, INFO_NO_MARKET_ANALYSIS_DATA
 from constants.labels import HEADER_MARKET_ANALYSIS, SECTION_MARKET_TRENDS, SECTION_MARKET_HISTORY, LABEL_SELECT_MARKET, ALL_MARKETS_OPTION
 
 def is_new_entry_unique(df, market, date):
@@ -33,9 +33,9 @@ def show_market_analysis():
     
     if submitted:
         if not final_market:
-            st.warning(MISSING_MARKET)
+            st.warning(WARNING_MISSING_MARKET)
         elif not is_new_entry_unique(df_market_analysis, final_market, date):
-            st.warning(MARKET_ALREADY_EXISTS)
+            st.warning(WARNING_MARKET_ALREADY_EXISTS)
         else:
             market_data = {
                 "Date": str(date),
@@ -45,7 +45,7 @@ def show_market_analysis():
                 "Notes": notes
             }
             save_market_analysis(market_data)
-            st.success(DATAS_SAVED_SUCCESS)
+            st.success(SUCCESS_DATA_SAVED)
             st.session_state.clear_form_market = True
             st.rerun()
 
@@ -64,4 +64,4 @@ def show_market_analysis():
         df_market_analysis["Date"] = pd.to_datetime(df_market_analysis["Date"]).dt.strftime("%d/%m/%Y")
         st.dataframe(df_market_analysis[display_columns])
     else:
-        st.info(NO_ANALYSIS_DATA)
+        st.info(INFO_NO_MARKET_ANALYSIS_DATA)
