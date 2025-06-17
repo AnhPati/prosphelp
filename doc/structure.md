@@ -6,6 +6,11 @@
 ├── config/
 │   └── settings.py             # Configs globales (chemins, constantes, etc.)
 │
+├── constants/
+│   ├── alerts.py
+│   ├── texts.py
+│   └── labels.py
+|
 ├── data/
 │   └── markets.csv             # Données de l'utilisateur
 │
