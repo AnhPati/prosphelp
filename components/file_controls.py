@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from constants.alerts import ERROR_MISSING_TYPE_COLUMN, SUCCESS_FILE_IMPORTED, ERROR_FILE_PROCESSING
-from constants.labels import LABEL_UPLOAD_SECTION, LABEL_UPLOAD_BUTTON, LABEL_DOWNLOAD_BUTTON
+from constants.labels import LABEL_UPLOAD_SECTION, BTN_UPLOAD_CSV, BTN_DOWNLOAD_CSV
 
 def files_controls(filepath, label, uploader_key):
     st.sidebar.markdown(f"### {LABEL_UPLOAD_SECTION.format(label=label)}")
@@ -10,7 +10,7 @@ def files_controls(filepath, label, uploader_key):
 
     # Bouton d'upload
     uploaded_file = st.sidebar.file_uploader(
-        LABEL_UPLOAD_BUTTON,
+        BTN_UPLOAD_CSV,
         type="csv",
         key=f"{uploader_key}_upload"
     )
@@ -32,7 +32,7 @@ def files_controls(filepath, label, uploader_key):
     if filepath.exists():
         with open(filepath, "rb") as f:
             st.sidebar.download_button(
-                label=LABEL_DOWNLOAD_BUTTON,
+                label=BTN_DOWNLOAD_CSV,
                 data=f,
                 file_name=filepath.name,
                 mime="text/csv",

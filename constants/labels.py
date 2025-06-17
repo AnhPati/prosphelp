@@ -1,7 +1,9 @@
+# ─── 🧾 En-têtes de page ────────────────────────────────────────────────
 HEADER_COMPASS = "🧭 Boussole de l'Analyse du Marché"
 HEADER_MARKET_ANALYSIS = "🔎 Analyse des marchés"
 HEADER_OFFER_DISSECTION = "🔬 Dissection des offres"
 
+# ─── 📂 Titres de section ───────────────────────────────────────────────
 SECTION_MARKET_TRENDS = "📈 Tendance des Marchés"
 SECTION_MARKET_HISTORY = "📊 Historique des marchés"
 SECTION_OFFERS = "📄 Offres enregistrées"
@@ -9,41 +11,26 @@ SECTION_TECHS = "💻 Technologies"
 SECTION_SKILLS = "🛠️ Compétences"
 SECTION_MAP_OFFERS = "📍 Localisation des Offres"
 
+# ─── 🏷️ Labels UI généraux ──────────────────────────────────────────────
 LABEL_SELECT_MARKET = "🎯 Sélectionner un marché"
-LABEL_TJM = "💰 TJM (Taux Journalier Moyen)"
-LABEL_SENIORITY = "📚 Séniorité"
-LABEL_RHYTHM = "⏳ Rythme de travail"
-LABEL_SECTOR = "💼 Secteurs"
-LABEL_MAIN_SKILLS = "Compétences principales"
-LABEL_SECONDARY_SKILLS = "Compétences secondaires"
-LABEL_MAIN_TECHS = "Technologies principales"
-LABEL_SECONDARY_TECHS = "Technologies secondaires"
-LABEL_DATA_SOURCE = "Source de données :"
 LABEL_MARKET_FILTER = "🔍 Filtrer les offres par marché"
 LABEL_UPLOAD_SECTION = "📁 {label}"
-LABEL_UPLOAD_BUTTON = "🔼 Charger un CSV"
-LABEL_DOWNLOAD_BUTTON = "💾 Télécharger le CSV"
-BTN_SAVE_OFFER = "Enregistrer"
-BTN_SAVE_MARKET = "Ajouter"
+LABEL_DATA_SOURCE = "Source de données :"
 LABEL_MAP_DETAIL = "**Détail par localisation :**"
-SLIDER_EXPLORE_LABEL = "Explorez les données par valeur :"
 LABEL_AVERAGE = "**Moyenne :** {avg}{unit}"
 LABEL_RANGE = "**Fourchette :** {min}{unit} - {max}{unit}"
 LABEL_COUNT_FOR_SELECTED = "**Nombre d'entrées à {value}{unit} :** {count}"
 
-DATA_SOURCE_OPTIONS = ["Offre", "Contact"]
-ALL_MARKETS_OPTION = "Tous"
-RHYTHM_OPTIONS = ["Présentiel", "Distanciel", "Hybride"]
+# ─── 🎚️ Sliders et exploration ──────────────────────────────────────────
+SLIDER_EXPLORE_LABEL = "Explorez les données par valeur :"
 
-TITLE_MARKET_TREND = "Évolution des annonces par marché dans le temps"
-X_AXIS_DATE = "Date"
-Y_AXIS_ADS = "Nombre d'annonces"
-LEGEND_MARKET = "Marché"
+# ─── 🕹️ Boutons ────────────────────────────────────────────────────────
+BTN_UPLOAD_CSV = "🔼 Charger un CSV"
+BTN_DOWNLOAD_CSV = "💾 Télécharger le CSV"
+BTN_SAVE_OFFER = "Enregistrer"
+BTN_SAVE_MARKET = "Ajouter"
 
-X_AXIS_SKILLS_TECH = "Compétences / Technologies"
-Y_AXIS_FREQUENCY = "Fréquence"
-
-SUBHEADER_NEW_ENTRY = "📝 Ajouter une nouvelle entrée"
+# ─── 📝 Formulaire : champs ─────────────────────────────────────────────
 FIELD_MARKET = "Marché concerné"
 FIELD_TITLE = "Titre de l'offre"
 FIELD_JOB_TITLE = "Intitulé du poste"
@@ -66,4 +53,32 @@ FIELD_MARKET_NEW = "Nouveau marché"
 FIELD_DATE = "Date"
 FIELD_NUMBER_OF_OFFERS = "Nombre d'annonces"
 FIELD_NOTES = "Notes"
+
+# ─── ☑️ Formulaire : cases à cocher ─────────────────────────────────────
 CHECKBOX_USE_EXISTING_MARKET = "Choisir un marché existant"
+
+# ─── 🏷️ Labels associés aux champs ───────────────────────────────────────
+LABEL_TJM = "💰 TJM (Taux Journalier Moyen)"
+LABEL_SENIORITY = "📚 Séniorité"
+LABEL_RHYTHM = "⏳ Rythme de travail"
+LABEL_SECTOR = "💼 Secteurs"
+LABEL_MAIN_SKILLS = "Compétences principales"
+LABEL_SECONDARY_SKILLS = "Compétences secondaires"
+LABEL_MAIN_TECHS = "Technologies principales"
+LABEL_SECONDARY_TECHS = "Technologies secondaires"
+
+# ─── 📊 Graphiques ──────────────────────────────────────────────────────
+TITLE_MARKET_TREND = "Évolution des annonces par marché dans le temps"
+X_AXIS_DATE = "Date"
+Y_AXIS_ADS = "Nombre d'annonces"
+LEGEND_MARKET = "Marché"
+X_AXIS_SKILLS_TECH = "Compétences / Technologies"
+Y_AXIS_FREQUENCY = "Fréquence"
+
+# ─── 📌 Options prédéfinies ──────────────────────────────────────────────
+DATA_SOURCE_OPTIONS = ["Offre", "Contact"]
+ALL_MARKETS_OPTION = "Tous"
+RHYTHM_OPTIONS = ["Présentiel", "Distanciel", "Hybride"]
+
+# ─── ➕ Autres titres ────────────────────────────────────────────────────
+SUBHEADER_NEW_ENTRY = "📝 Ajouter une nouvelle entrée"
