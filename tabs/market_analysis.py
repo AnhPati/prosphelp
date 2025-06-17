@@ -4,13 +4,17 @@ from services.market_data import load_market_analysis, save_market_analysis
 from components.charts import show_market_trend_chart
 from utils.filters import filter_dataframe_by_market
 from components.forms import show_market_form
+from constants.alerts import MISSING_MARKET, MARKET_ALREADY_EXISTS, DATAS_SAVED_SUCCESS, NO_ANALYSIS_DATA
+from constants.labels import HEADER_MARKET_ANALYSIS, SECTION_MARKET_TRENDS, SECTION_MARKET_HISTORY, LABEL_SELECT_MARKET, ALL_MARKETS_OPTION
 
 def is_new_entry_unique(df, market, date):
     existing = df[(df["Marché"] == market) & (df["Date"] == str(date))]
     return existing.empty
 
 def show_market_analysis():
-    st.header("Analyse des marchés")
+    CONTEXT_ID = "market_analysis"
+
+    st.header(HEADER_MARKET_ANALYSIS)
 
     df_market_analysis = load_market_analysis()
     existing_markets = sorted(df_market_analysis["Marché"].dropna().unique()) if not df_market_analysis.empty else []
@@ -29,9 +33,9 @@ def show_market_analysis():
     
     if submitted:
         if not final_market:
-            st.warning("⚠️ Merci de spécifier un marché.")
+            st.warning(MISSING_MARKET)
         elif not is_new_entry_unique(df_market_analysis, final_market, date):
-            st.warning("⚠️ Une entrée pour ce marché à cette date existe déjà.")
+            st.warning(MARKET_ALREADY_EXISTS)
         else:
             market_data = {
                 "Date": str(date),
@@ -41,23 +45,23 @@ def show_market_analysis():
                 "Notes": notes
             }
             save_market_analysis(market_data)
-            st.success("✅ Donnée ajoutée avec succès.")
+            st.success(DATAS_SAVED_SUCCESS)
             st.session_state.clear_form_market = True
             st.rerun()
 
-    st.subheader("📈 Tendance des marchés")
-    markets_trends = ["Tous"] + sorted(df_market_analysis["Marché"].dropna().unique())
-    selected_market = filter_dataframe_by_market(df_market_analysis, markets_trends, label="🎯 Sélectionner un marché")
-    show_market_trend_chart(df_market_analysis, highlight_market=selected_market, context_id="market_analysis")
+    st.subheader(SECTION_MARKET_TRENDS)
+    markets_trends = [ALL_MARKETS_OPTION] + sorted(df_market_analysis["Marché"].dropna().unique())
+    selected_market = filter_dataframe_by_market(df_market_analysis, markets_trends, label=LABEL_SELECT_MARKET)
+    show_market_trend_chart(df_market_analysis, highlight_market=selected_market, context_id=CONTEXT_ID)
 
-    st.subheader("📊 Historique des marchés")
+    st.subheader(SECTION_MARKET_HISTORY)
 
     if not df_market_analysis.empty:
-        if selected_market and selected_market != "Tous":
+        if selected_market and selected_market != ALL_MARKETS_OPTION:
             df_market_analysis = df_market_analysis[df_market_analysis["Marché"] == selected_market]
         
         display_columns = ["Date", "Marché", "Nombre d'annonces", "Notes"]
         df_market_analysis["Date"] = pd.to_datetime(df_market_analysis["Date"]).dt.strftime("%d/%m/%Y")
         st.dataframe(df_market_analysis[display_columns])
     else:
-        st.info("Aucune donnée d'analyse de marché disponible.")
+        st.info(NO_ANALYSIS_DATA)
