@@ -1,15 +1,8 @@
 import pandas as pd
 from config.settings import MARKET_OFFERS_FILE
 from utils.helpers import fallback_read_csv
-
-EXPECTED_COLUMNS = [
-    "Date", "Type", "Marché", "Nombre d'annonces", "Notes", "Titre",
-    "Intitulé", "TJM", "Séniorité", "Technos principales", "Technos secondaires",
-    "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
-    "Rythme", "Entreprise", "Contact", "Lien", "Sophistication du marché", "Capitalisation de l'apprentissage", "Fiabilité"
-]
-COLUMNS_SEP = r'\|'
-
+from constants.alerts import ERROR_LOADING_OFFERS, ERROR_SAVING_OFFERS, ERROR_LOADING_MARKETS_FROM_OFFERS
+from constants.schema import EXPECTED_COLUMNS, COLUMNS_SEP
 
 def load_offers():
     if not MARKET_OFFERS_FILE.exists():
@@ -28,7 +21,7 @@ def load_offers():
         df = fallback_read_csv(MARKET_OFFERS_FILE, EXPECTED_COLUMNS)
 
     except Exception as e:
-        print(f"Erreur inattendue lors du chargement des offres : {str(e)}")
+        print(ERROR_LOADING_OFFERS.format(error=str(e)))
         return pd.DataFrame(columns=EXPECTED_COLUMNS)
 
     for col in EXPECTED_COLUMNS:
@@ -59,7 +52,7 @@ def save_offer_data(offer_data):
         )
         return True
     except Exception as e:
-        print(f"Erreur lors de la sauvegarde des offres : {str(e)}")
+        print(ERROR_SAVING_OFFERS.format(error=str(e)))
         return False
 
 
@@ -68,5 +61,5 @@ def get_existing_markets_from_offers():
         df = load_offers()
         return sorted(df["Marché"].dropna().astype(str).unique()) if not df.empty else []
     except Exception as e:
-        print(f"Erreur lors de la récupération des marchés : {str(e)}")
+        print(ERROR_LOADING_MARKETS_FROM_OFFERS.format(error=str(e)))
         return []

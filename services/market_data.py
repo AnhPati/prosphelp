@@ -1,15 +1,8 @@
 import pandas as pd
 from config.settings import MARKET_OFFERS_FILE
 from utils.helpers import fallback_read_csv
-
-EXPECTED_COLUMNS = [
-    "Date", "Type", "Marché", "Nombre d'annonces", "Notes", "Titre",
-    "Intitulé", "TJM", "Séniorité", "Technos principales", "Technos secondaires",
-    "Compétences principales", "Compétences secondaires", "Secteur", "Localisation",
-    "Rythme", "Entreprise", "Contact", "Lien", "Sophistication du marché", "Capitalisation de l'apprentissage", "Fiabilité"
-]
-COLUMNS_SEP = r'\|'
-
+from constants.alerts import ERROR_LOADING_MARKET_DATA,ERROR_SAVING_MARKET_DATA
+from constants.schema import EXPECTED_COLUMNS, COLUMNS_SEP
 
 def load_market_analysis():
     if not MARKET_OFFERS_FILE.exists():
@@ -28,7 +21,7 @@ def load_market_analysis():
         df = fallback_read_csv(MARKET_OFFERS_FILE, EXPECTED_COLUMNS)
 
     except Exception as e:
-        print(f"Erreur inattendue lors du chargement des données de marché : {str(e)}")
+        print(ERROR_LOADING_MARKET_DATA.format(error=str(e)))
         return pd.DataFrame(columns=EXPECTED_COLUMNS)
 
     for col in EXPECTED_COLUMNS:
@@ -58,5 +51,5 @@ def save_market_analysis(market_data):
         )
         return True
     except Exception as e:
-        print(f"Erreur lors de la sauvegarde des données de marché : {str(e)}")
+        print(ERROR_SAVING_MARKET_DATA.format(error=str(e)))
         return False

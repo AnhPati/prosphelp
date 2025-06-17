@@ -1,12 +1,9 @@
-# services/geocoding_service.py
-
 import requests
 import time
 import pandas as pd
 import streamlit as st
+from constants.alerts import ERROR_MISSING_LOCATION_COLUMN, INFO_GEOCODING_IN_PROGRESS, INFO_ALL_LOCATIONS_CACHED, SUCCESS_GEOCODING_DONE, PROGRESS_GEOCODING_TEXT
 
-
-# La fonction _geocode_single_location reste inchangée
 def _geocode_single_location(location_name: str) -> tuple[float | None, float | None]:
     if not isinstance(location_name, str) or not location_name.strip():
         return None, None
@@ -22,8 +19,9 @@ def _geocode_single_location(location_name: str) -> tuple[float | None, float | 
         "addressdetails": 0
     }
     headers = {
-        "User-Agent": "YourStreamlitApp/1.0 (anhpati@gmail.com)" # REMPLACEZ PAR VOTRE EMAIL/NOM D'APP
+        "User-Agent": "YourStreamlitApp/1.0 (anhpati@gmail.com)"
     }
+
     try:
         response = requests.get(base_url, params=params, headers=headers)
         response.raise_for_status()
@@ -46,7 +44,7 @@ def _geocode_single_location(location_name: str) -> tuple[float | None, float | 
 
 def geocode_dataframe_locations_in_memory(df: pd.DataFrame, location_col: str) -> pd.DataFrame:
     if location_col not in df.columns:
-        st.error(f"La colonne '{location_col}' est manquante dans le DataFrame. Impossible de géocoder.")
+        st.error(ERROR_MISSING_LOCATION_COLUMN.format(column=location_col))
         return df.copy()
 
     df_with_coords = df.copy()
@@ -73,25 +71,27 @@ def geocode_dataframe_locations_in_memory(df: pd.DataFrame, location_col: str) -
     progress_container = st.empty()
 
     if locations_needing_geocoding:
-        message_container.info(f"Géocodage de {len(locations_needing_geocoding)} localisation{'s' if len(locations_needing_geocoding) > 1 else ''} non encore mises en cache ou manquantes. Cela peut prendre un certain temps...")
-        progress_text = "Opération de géocodification en cours. Veuillez patienter..."
-        geocode_bar = progress_container.progress(0, text=progress_text)
+        message_container.info(
+            INFO_GEOCODING_IN_PROGRESS.format(
+                count=len(locations_needing_geocoding),
+                s="s" if len(locations_needing_geocoding) > 1 else ""
+            )
+        )
+
+        geocode_bar = progress_container.progress(0, text=PROGRESS_GEOCODING_TEXT)
 
         for i, loc in enumerate(locations_needing_geocoding):
             lat, lon = _geocode_single_location(str(loc))
             df_with_coords.loc[df_with_coords[location_col] == loc, 'latitude'] = lat
             df_with_coords.loc[df_with_coords[location_col] == loc, 'longitude'] = lon
-            geocode_bar.progress((i + 1) / len(locations_needing_geocoding), text=progress_text)
+            geocode_bar.progress((i + 1) / len(locations_needing_geocoding), text=PROGRESS_GEOCODING_TEXT)
 
         progress_container.empty()
-        message_container.success("Géocodage terminé avec succès !")
-
+        message_container.success(SUCCESS_GEOCODING_DONE)
         time.sleep(2)
         message_container.empty()
-
     else:
-        message_container.info("Toutes les localisations sont déjà géocodées ou mises en cache.")
+        message_container.info(INFO_ALL_LOCATIONS_CACHED)
         progress_container.empty()
-
 
     return df_with_coords
