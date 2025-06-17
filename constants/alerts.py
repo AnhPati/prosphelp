@@ -25,12 +25,22 @@ NO_COORDINATES_DATA = "ℹ️ Aucune donnée de localisation valide avec des coo
 MAP_SUMMARY = "ℹ️ Affichage de {n} localisation{s} unique{s} sur la carte pour le marché '{market_name}'. La couleur et la taille des points indiquent le nombre d'offres."
 NO_NUMERIC_DATA = "ℹ️ Aucune donnée numérique valide disponible pour '{column_name}'."
 NO_UNIQUE_VALUES = "ℹ️ Aucune valeur unique disponible pour l'exploration de '{column_name}'."
+INFO_GEOCODING_IN_PROGRESS = "ℹ️ Géocodage de {count} localisation{s} non encore mises en cache ou manquantes. Cela peut prendre un certain temps..."
+INFO_ALL_LOCATIONS_CACHED = "ℹ️ Toutes les localisations sont déjà géocodées ou mises en cache."
+PROGRESS_GEOCODING_TEXT = "ℹ️ Opération de géocodification en cours. Veuillez patienter..."
 
 # Success
 DATAS_SAVED_SUCCESS = "✅ Données ajoutée avec succès."
 OFFER_SAVED_SUCCESS = "✅ Offre enregistrée avec succès !"
 SUCCESS_FILE_IMPORTED = "✅ Fichier importé avec succès."
+SUCCESS_GEOCODING_DONE = "✅ Géocodage terminé avec succès !"
 
 # Errors
 ERROR_MISSING_TYPE_COLUMN = "❌ Colonne 'Type' introuvable. Le fichier a-t-il bien le bon séparateur ?"
 ERROR_FILE_PROCESSING = "❌ Erreur lors du traitement du fichier : {error}"
+ERROR_MISSING_LOCATION_COLUMN = "❌ La colonne '{column}' est manquante dans le DataFrame. Impossible de géocoder."
+ERROR_LOADING_MARKET_DATA = "❌ Erreur inattendue lors du chargement des données de marché : {error}"
+ERROR_SAVING_MARKET_DATA = "❌ Erreur lors de la sauvegarde des données de marché : {error}"
+ERROR_LOADING_OFFERS = "❌ Erreur inattendue lors du chargement des offres : {error}"
+ERROR_SAVING_OFFERS = "❌ Erreur lors de la sauvegarde des offres : {error}"
+ERROR_LOADING_MARKETS_FROM_OFFERS = "❌ Erreur lors de la récupération des marchés : {error}"
