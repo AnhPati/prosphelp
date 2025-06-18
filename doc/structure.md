@@ -9,7 +9,8 @@
 ├── constants/
 │   ├── alerts.py
 │   ├── texts.py
-│   └── labels.py
+│   ├── labels.py
+│   └── schema.py
 |
 ├── data/
 │   └── markets.csv             # Données de l'utilisateur
