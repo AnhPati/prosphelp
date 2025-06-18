@@ -1,113 +1,52 @@
 import streamlit as st
 import pandas as pd
 from constants.alerts import WARNING_TITLE_LINK_REQUIRED, WARNING_CONTACT_NAME_REQUIRED
-from constants.labels import SUBHEADER_NEW_ENTRY, FIELD_MARKET, FIELD_TITLE, FIELD_JOB_TITLE, FIELD_TJM, FIELD_SENIORITY, FIELD_TECH_MAIN, FIELD_TECH_SECONDARY, FIELD_SKILLS_MAIN, FIELD_SKILLS_SECONDARY, FIELD_SECTOR, FIELD_LOCATION, FIELD_RHYTHM, FIELD_COMPANY, FIELD_CONTACT, FIELD_LINK, FIELD_SOPHISTICATION, FIELD_RELIABILITY, BTN_SAVE_OFFER, RHYTHM_OPTIONS
-from constants.schema.schema import COL_TYPE, COL_TITLE, COL_JOB_TITLE, COL_TJM, COL_SENIORITY, COL_MARKET, COL_DATE, COL_TECHS_MAIN, COL_TECHS_SECONDARY, COL_SKILLS_MAIN, COL_SKILLS_SECONDARY, COL_SECTOR, COL_LOCATION, COL_RHYTHM, COL_COMPANY, COL_CONTACT, COL_LINK, COL_SOPHISTICATION, COL_RELIABILITY
-def show_offer_form(markets: list[str], source: str = "offre"):
+from constants.labels import SUBHEADER_NEW_ENTRY, BTN_SAVE_OFFER
+from constants.schema.columns import COL_TYPE, COL_TITLE, COL_LINK, COL_CONTACT, COL_DATE, COL_MARKET
+from components.forms.config.offer_inputs import BASE_FORM_INPUTS, OFFER_EXTRA_INPUTS, CONTACT_EXTRA_INPUTS
+
+def offer_form(markets: list[str], source: str = "Offre"):
     st.subheader(SUBHEADER_NEW_ENTRY)
 
-    with st.form("data_entry_form"):
-        title = job_title = offer_link = ""
-        tjm = seniority = main_techs = secondary_techs = main_skills = secondary_skills = ""
-        sector = location = work_mode = company = contact_name = ""
-        sophistication = reliability = None
+    if source.lower() == "offre":
+        inputs = OFFER_EXTRA_INPUTS + BASE_FORM_INPUTS
+    else:
+        inputs = BASE_FORM_INPUTS + CONTACT_EXTRA_INPUTS
 
-        if source == "offre":
-            first_col, second_col = st.columns(2)
-            with first_col:
-                market = st.selectbox(FIELD_MARKET, markets)
-            with second_col:
-                title = st.text_input(FIELD_TITLE)
-        else:
-            market = st.selectbox(FIELD_MARKET, markets)
+    form_data = {}
+    with st.form("offer_form"):
+        market_field = next(field for field in BASE_FORM_INPUTS if field["key"] == COL_MARKET)
+        form_data[COL_MARKET] = st.selectbox(market_field["label"], markets)
+        
+        for input in inputs:
+            key = input["key"]
+            if key == COL_MARKET:
+                continue
 
-        if source == "offre":
-            first_col, second_col, third_col = st.columns([3, 1, 1])
-            with first_col:
-                job_title = st.text_input(FIELD_JOB_TITLE)
-            with second_col:
-                tjm = st.text_input(FIELD_TJM)
-            with third_col:
-                seniority = st.text_input(FIELD_SENIORITY)
-        else:
-            first_col, second_col = st.columns(2)
-            with first_col:
-                tjm = st.text_input(FIELD_TJM)
-            with second_col:
-                seniority = st.text_input(FIELD_SENIORITY)
+            label = input["label"]
+            ftype = input.get("type", "text")
 
-        first_col, second_col = st.columns(2)
-        with first_col:
-            main_techs = st.text_input(FIELD_TECH_MAIN)
-        with second_col:
-            secondary_techs = st.text_input(FIELD_TECH_SECONDARY)
-
-        first_col, second_col = st.columns(2)
-        with first_col:
-            main_skills = st.text_input(FIELD_SKILLS_MAIN)
-        with second_col:
-            secondary_skills = st.text_input(FIELD_SKILLS_SECONDARY)
-
-        first_col, second_col, third_col = st.columns(3)
-        with first_col:
-            sector = st.text_input(FIELD_SECTOR)
-        with second_col:
-            location = st.text_input(FIELD_LOCATION)
-        with third_col:
-            work_mode = st.selectbox(FIELD_RHYTHM, RHYTHM_OPTIONS)
-
-        if source == "offre":
-            first_col, second_col, third_col = st.columns(3)
-            with first_col:
-                company = st.text_input(FIELD_COMPANY)
-            with second_col:
-                contact_name = st.text_input(FIELD_CONTACT)
-            with third_col:
-                offer_link = st.text_input(FIELD_LINK)
-        else:
-            first_col, second_col = st.columns(2)
-            with first_col:
-                company = st.text_input(FIELD_COMPANY)
-            with second_col:
-                contact_name = st.text_input(FIELD_CONTACT)
-
-        if source == "contact":
-            first_col, second_col = st.columns(2)
-            with first_col:
-                sophistication = st.slider(FIELD_SOPHISTICATION, 1, 5, 3)
-            with second_col:
-                reliability = st.slider(FIELD_RELIABILITY, 1, 5, 3)
+            if ftype == "text":
+                form_data[key] = st.text_input(label)
+            elif ftype == "select":
+                form_data[key] = st.selectbox(label, input.get("options", []))
+            elif ftype == "slider":
+                form_data[key] = st.slider(label, input.get("min", 1), input.get("max", 5), input.get("default", 3))
 
         submitted = st.form_submit_button(BTN_SAVE_OFFER)
 
-        if submitted:
-            if source == "offre" and not (title and offer_link):
-                st.error(WARNING_TITLE_LINK_REQUIRED)
-                return None
-            if source == "contact" and not contact_name:
-                st.error(WARNING_CONTACT_NAME_REQUIRED)
-                return None
+    if submitted:
+        if source == "offre" and (not form_data.get(COL_TITLE) or not form_data.get(COL_LINK)):
+            st.error(WARNING_TITLE_LINK_REQUIRED)
+            return None
+        if source == "contact" and not form_data.get(COL_CONTACT):
+            st.error(WARNING_CONTACT_NAME_REQUIRED)
+            return None
 
-            return {
-                COL_DATE: pd.to_datetime("today").strftime('%Y-%m-%d'),
-                COL_TYPE: "Contact" if source == "contact" else "Offre",
-                COL_MARKET: market,
-                COL_TITLE: title,
-                COL_JOB_TITLE: job_title,
-                COL_TJM: tjm,
-                COL_SENIORITY: seniority,
-                COL_TECHS_MAIN: main_techs,
-                COL_TECHS_SECONDARY: secondary_techs,
-                COL_SKILLS_MAIN: main_skills,
-                COL_SKILLS_SECONDARY: secondary_skills,
-                COL_SECTOR: sector,
-                COL_LOCATION: location,
-                COL_RHYTHM: work_mode,
-                COL_COMPANY: company,
-                COL_CONTACT: contact_name,
-                COL_LINK: offer_link,
-                COL_SOPHISTICATION: sophistication,
-                COL_RELIABILITY: reliability
-            }
+        return {
+            **form_data,
+            COL_DATE: pd.to_datetime("today").strftime('%Y-%m-%d'),
+            COL_TYPE: "Contact" if source == "contact" else "Offre",
+        }
 
     return None

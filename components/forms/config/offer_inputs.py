@@ -2,7 +2,7 @@ from constants.labels import *
 from constants.schema.columns import *
 from constants.labels import RHYTHM_OPTIONS
 
-BASE_FORM_FIELDS = [
+BASE_FORM_INPUTS = [
     {"key": COL_MARKET, "label": FIELD_MARKET, "type": "select", "required": True},
     {"key": COL_TJM, "label": FIELD_TJM, "type": "text"},
     {"key": COL_SENIORITY, "label": FIELD_SENIORITY, "type": "text"},
@@ -17,13 +17,13 @@ BASE_FORM_FIELDS = [
     {"key": COL_CONTACT, "label": FIELD_CONTACT, "type": "text"},
 ]
 
-OFFER_EXTRA_FIELDS = [
+OFFER_EXTRA_INPUTS = [
     {"key": COL_TITLE, "label": FIELD_TITLE, "type": "text", "required": True},
     {"key": COL_JOB_TITLE, "label": FIELD_JOB_TITLE, "type": "text"},
     {"key": COL_LINK, "label": FIELD_LINK, "type": "text", "required": True},
 ]
 
-CONTACT_EXTRA_FIELDS = [
+CONTACT_EXTRA_INPUTS = [
     {"key": COL_SOPHISTICATION, "label": FIELD_SOPHISTICATION, "type": "slider", "min": 1, "max": 5, "default": 3},
     {"key": COL_RELIABILITY, "label": FIELD_RELIABILITY, "type": "slider", "min": 1, "max": 5, "default": 3},
 ]
