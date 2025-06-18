@@ -30,8 +30,8 @@
 ├── components/
 │   ├── charts/
 │   |   ├── pie_chart.py
-│   |   ├── market_trend_chart.py                   # @TODO : Rendre le composant complètement réutilisable.
-│   |   └── plot_skills_tech_chart.py               # @TODO : Rendre le composant complètement réutilisable.
+│   |   ├── trend_chart.py
+│   |   └── bar_chart.py
 |   ├── forms/
 │   |   ├── offer_form.py              # @TODO : Rendre le composant complètement réutilisable.
 │   |   └── market_form.py             # @TODO : Rendre le composant complètement réutilisable.
