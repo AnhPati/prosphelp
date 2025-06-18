@@ -4,7 +4,7 @@ from services.offer_service import load_offers
 from services.market_data import load_market_analysis
 from services.geocoding_service import geocode_dataframe_locations_in_memory
 from components.charts.trend_chart import trend_chart
-from components.charts.plot_skills_tech_chart import plot_skills_tech_chart
+from components.charts.bar_chart import bar_chart
 from components.charts.pie_chart import pie_chart
 from components.interactive_numeric_display import display_numeric_range_selector
 from components.interactive_map import display_offers_map
@@ -81,36 +81,20 @@ def show_compass():
 
     st.subheader(SECTION_SKILLS)
 
-    # Compétences principales
+    st.markdown(LABEL_MAIN_SKILLS)
     main_skills = skills_df[COL_SKILLS_MAIN].dropna().str.split(",").explode().str.strip()
-    if not main_skills.empty:
-        st.markdown(LABEL_MAIN_SKILLS)
-        plot_skills_tech_chart(main_skills, title=LABEL_MAIN_SKILLS, context_id=CONTEXT_ID)
-    else:
-        st.warning(WARNING_NO_MAIN_SKILLS)
-
-    # Compétences secondaires
+    bar_chart(main_skills, title=LABEL_MAIN_SKILLS, context_id=CONTEXT_ID)
+    
+    st.markdown(LABEL_SECONDARY_SKILLS)
     secondary_skills = skills_df[COL_SKILLS_SECONDARY].dropna().str.split(",").explode().str.strip()
-    if not secondary_skills.empty:
-        st.markdown(LABEL_SECONDARY_SKILLS)
-        plot_skills_tech_chart(secondary_skills, title=LABEL_SECONDARY_SKILLS, context_id=CONTEXT_ID)
-    else:
-        st.warning(WARNING_NO_SECONDARY_SKILLS)
-
+    bar_chart(secondary_skills, title=LABEL_SECONDARY_SKILLS, context_id=CONTEXT_ID)
+    
     st.subheader(SECTION_TECHS)
 
-    # Technologies principales
+    st.markdown(LABEL_MAIN_TECHS)
     main_techs = skills_df[COL_TECHS_MAIN].dropna().str.split(",").explode().str.strip()
-    if not main_techs.empty:
-        st.markdown(LABEL_MAIN_TECHS)
-        plot_skills_tech_chart(main_techs, title=LABEL_MAIN_TECHS, context_id=CONTEXT_ID)
-    else:
-        st.warning(WARNING_NO_MAIN_TECH)
+    bar_chart(main_techs, title=LABEL_MAIN_TECHS, context_id=CONTEXT_ID)
 
-    # Technologies secondaires
+    st.markdown(LABEL_SECONDARY_TECHS)
     secondary_techs = skills_df[COL_TECHS_SECONDARY].dropna().str.split(",").explode().str.strip()
-    if not secondary_techs.empty:
-        st.markdown(LABEL_SECONDARY_TECHS)
-        plot_skills_tech_chart(secondary_techs, title=LABEL_SECONDARY_TECHS, context_id=CONTEXT_ID)
-    else:
-        st.warning(WARNING_NO_SECONDARY_TECH)
+    bar_chart(secondary_techs, title=LABEL_SECONDARY_TECHS, context_id=CONTEXT_ID)
