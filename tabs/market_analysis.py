@@ -3,7 +3,7 @@ import pandas as pd
 from services.market_data import load_market_analysis, save_market_analysis
 from components.charts.trend_chart import trend_chart
 from utils.filters import filter_dataframe_by_market
-from components.forms.forms import show_market_form
+from components.forms.market_form import market_form
 from constants.alerts import WARNING_MISSING_MARKET, WARNING_MARKET_ALREADY_EXISTS, SUCCESS_DATA_SAVED, INFO_NO_MARKET_ANALYSIS_DATA
 from constants.labels import HEADER_MARKET_ANALYSIS, SECTION_MARKET_TRENDS, SECTION_MARKET_HISTORY, LABEL_SELECT_MARKET, ALL_MARKETS_OPTION, TITLE_MARKET_TREND, X_AXIS_DATE, Y_AXIS_ADS, LEGEND_MARKET
 from constants.schema.views import MARKET_DISPLAY_COLUMNS
@@ -29,7 +29,7 @@ def show_market_analysis():
         st.session_state.clear_form_market = False
         st.rerun()
 
-    submitted, final_market, date, number, notes = show_market_form(existing_markets)
+    submitted, final_market, date, number, notes = market_form(existing_markets)
     
     if submitted:
         if not final_market:

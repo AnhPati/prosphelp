@@ -1,6 +1,9 @@
 import streamlit as st
-from constants.labels import  FIELD_MARKET_EXISTING, FIELD_MARKET_NEW, FIELD_DATE, FIELD_NUMBER_OF_OFFERS, FIELD_NOTES, BTN_SAVE_MARKET, CHECKBOX_USE_EXISTING_MARKET
-def show_market_form(existing_markets: list[str]):
+from constants.labels import FIELD_MARKET_EXISTING, FIELD_MARKET_NEW, BTN_SAVE_MARKET, CHECKBOX_USE_EXISTING_MARKET
+from components.forms.config.market_inputs import MARKET_FORM_INPUTS
+from constants.schema.columns import COL_DATE, COL_NUMBER_OF_OFFERS, COL_NOTES
+
+def market_form(existing_markets: list[str]):
     use_existing = st.checkbox(CHECKBOX_USE_EXISTING_MARKET, value=True)
 
     with st.form("market_form"):
@@ -12,15 +15,21 @@ def show_market_form(existing_markets: list[str]):
             new_market = st.text_input(FIELD_MARKET_NEW, key="new_market")
 
         final_market = new_market.strip() if new_market else (market if market else "")
-        first_col, second_col, third_col = st.columns(3)
 
-        with first_col:
-            date = st.date_input(FIELD_DATE, key="selected_date", format="DD/MM/YYYY")
-        with second_col:
-            number = st.number_input(FIELD_NUMBER_OF_OFFERS, min_value=0, step=1, key="selected_number")
-        with third_col:
-            notes = st.text_input(FIELD_NOTES, key="notes")
+        cols = st.columns(3)
+        form_values = {}
+        for input in MARKET_FORM_INPUTS:
+            key = input["key"]
+            label = input["label"]
+            col_index = input.get("col", 1) - 1
+            with cols[col_index]:
+                if input["type"] == "text":
+                    form_values[key] = st.text_input(label, key=key)
+                elif input["type"] == "number":
+                    form_values[key] = st.number_input(label, min_value=0, step=1, key=key)
+                elif input["type"] == "date":
+                    form_values[key] = st.date_input(label, key=key, format="DD/MM/YYYY")
 
         submitted = st.form_submit_button(BTN_SAVE_MARKET)
 
-        return submitted, final_market, date, number, notes
+        return submitted, final_market, form_values.get(COL_DATE), form_values.get(COL_NUMBER_OF_OFFERS), form_values.get(COL_NOTES)
