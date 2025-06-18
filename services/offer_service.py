@@ -2,7 +2,7 @@ import pandas as pd
 from config.settings import MARKET_OFFERS_FILE
 from utils.helpers import fallback_read_csv
 from constants.alerts import ERROR_LOADING_OFFERS, ERROR_SAVING_OFFERS, ERROR_LOADING_MARKETS_FROM_OFFERS
-from constants.schema import EXPECTED_COLUMNS, COLUMNS_SEP
+from constants.schema import EXPECTED_COLUMNS, COLUMNS_SEP, COL_TYPE, COL_MARKET
 
 def load_offers():
     if not MARKET_OFFERS_FILE.exists():
@@ -28,7 +28,7 @@ def load_offers():
         if col not in df.columns:
             df[col] = None
 
-    return df[df["Type"] == "Offre"].copy()
+    return df[df[COL_TYPE] == "Offre"].copy()
 
 
 def save_offer_data(offer_data):
@@ -59,7 +59,7 @@ def save_offer_data(offer_data):
 def get_existing_markets_from_offers():
     try:
         df = load_offers()
-        return sorted(df["Marché"].dropna().astype(str).unique()) if not df.empty else []
+        return sorted(df[COL_MARKET].dropna().astype(str).unique()) if not df.empty else []
     except Exception as e:
         print(ERROR_LOADING_MARKETS_FROM_OFFERS.format(error=str(e)))
         return []

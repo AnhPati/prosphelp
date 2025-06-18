@@ -3,6 +3,7 @@ from config.settings import MARKET_OFFERS_FILE
 from utils.helpers import fallback_read_csv
 from constants.alerts import ERROR_LOADING_MARKET_DATA,ERROR_SAVING_MARKET_DATA
 from constants.schema import EXPECTED_COLUMNS, COLUMNS_SEP
+from constants.schema import COL_MARKET, COL_TYPE
 
 def load_market_analysis():
     if not MARKET_OFFERS_FILE.exists():
@@ -28,7 +29,7 @@ def load_market_analysis():
         if col not in df.columns:
             df[col] = None
 
-    return df[df["Type"] == "Marché"].copy()
+    return df[df[COL_TYPE] == COL_MARKET].copy()
 
 
 def save_market_analysis(market_data):
