@@ -10,7 +10,7 @@ from components.interactive_map import display_offers_map
 from utils.filters import filter_dataframe_by_market
 from constants.alerts import WARNING_MISSING_COLUMN, WARNING_NO_MARKET_ANALYSIS, INFO_NO_RYTHM_DATA, INFO_NO_SECTOR_DATA, WARNING_NO_MAIN_SKILLS, WARNING_NO_SECONDARY_SKILLS, WARNING_NO_MAIN_TECH, WARNING_NO_SECONDARY_TECH
 from constants.labels import HEADER_COMPASS, SECTION_MARKET_TRENDS, LABEL_TJM, LABEL_SENIORITY, LABEL_RHYTHM, LABEL_SECTOR, SECTION_SKILLS, SECTION_TECHS, LABEL_MAIN_SKILLS, LABEL_SECONDARY_SKILLS, LABEL_MAIN_TECHS, LABEL_SECONDARY_TECHS, LABEL_SELECT_MARKET, TITLE_MARKET_TREND, X_AXIS_DATE, Y_AXIS_ADS, LEGEND_MARKET
-from constants.schema import COL_DATE,COL_MARKET, COMPASS_DISPLAY_COLUMNS, COL_SKILLS_MAIN, COL_SKILLS_SECONDARY, COL_TECHS_MAIN, COL_TECHS_SECONDARY, COL_TJM, COL_SENIORITY, COL_RHYTHM, COL_SECTOR
+from constants.schema import COL_DATE,COL_MARKET, COMPASS_DISPLAY_COLUMNS, COL_SKILLS_MAIN, COL_SKILLS_SECONDARY, COL_TECHS_MAIN, COL_TECHS_SECONDARY, COL_TJM, COL_SENIORITY, COL_RHYTHM, COL_SECTOR, COL_NUMBER_OF_OFFERS, COL_LOCATION
 
 def show_compass():
     CONTEXT_ID = "compass"
@@ -24,7 +24,7 @@ def show_compass():
     # Chargement des données
     df_market_analysis = load_market_analysis()
     df_offers_original = load_offers()
-    df_offers = geocode_dataframe_locations_in_memory(df_offers_original, "Localisation")
+    df_offers = geocode_dataframe_locations_in_memory(df_offers_original, COL_LOCATION)
 
     # Vérification des colonnes nécessaires
     for col in COMPASS_DISPLAY_COLUMNS:
@@ -50,7 +50,7 @@ def show_compass():
         df=df_market_analysis,
         index_col=COL_DATE,
         category_col=COL_MARKET,
-        value_col="Nombre d'annonces",
+        value_col=COL_NUMBER_OF_OFFERS,
         highlight=selected_market,
         title=TITLE_MARKET_TREND,
         x_axis_label=X_AXIS_DATE,
