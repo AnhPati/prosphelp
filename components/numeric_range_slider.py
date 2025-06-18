@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from constants.alerts import INFO_NO_NUMERIC_DATA, INFO_NO_UNIQUE_VALUES
+from constants.alerts import INFO_NO_NUMERIC_DATA, INFO_NO_UNIQUE_VALUES, INFO_ONLY_ONE_NUMERIC_VALUE
 from constants.labels import SLIDER_EXPLORE_LABEL, LABEL_AVERAGE, LABEL_RANGE, LABEL_COUNT_FOR_SELECTED
 
 def numeric_range_slider(df: pd.DataFrame, column_name: str, title: str, unit: str = "") -> None:
@@ -21,21 +21,30 @@ def numeric_range_slider(df: pd.DataFrame, column_name: str, title: str, unit: s
 
     unique_vals = sorted(numeric_values.unique())
 
-    if unique_vals:
+    if len(unique_vals) > 1:
         default_val = min(unique_vals, key=lambda x: abs(x - avg_val))
-
         selected_val = st.select_slider(
             SLIDER_EXPLORE_LABEL,
             options=unique_vals,
             value=default_val,
             format_func=lambda x: f"{x:,.0f}{unit}"
         )
-
         count = (numeric_values == selected_val).sum()
         st.markdown(LABEL_COUNT_FOR_SELECTED.format(
             value=f"{selected_val:,.0f}",
             unit=unit,
             count=count
         ))
+
+    elif len(unique_vals) == 1:
+        val = unique_vals[0]
+        st.info(INFO_ONLY_ONE_NUMERIC_VALUE.format(value=f"{val:,.0f}", unit=unit))
+        count = numeric_values.count()
+        st.markdown(LABEL_COUNT_FOR_SELECTED.format(
+            value=f"{val:,.0f}",
+            unit=unit,
+            count=count
+        ))
+
     else:
         st.info(INFO_NO_UNIQUE_VALUES.format(column_name=column_name))

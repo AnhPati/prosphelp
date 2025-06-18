@@ -33,6 +33,7 @@ INFO_NO_MARKET_DATA_AVAILABLE = "ℹ️ Aucune donnée de type 'Marché' à affi
 INFO_NO_COORDINATES_DATA = "ℹ️ Aucune donnée de localisation valide avec des coordonnées géographiques disponible pour ce marché sélectionné."
 INFO_NO_NUMERIC_DATA = "ℹ️ Aucune donnée numérique valide disponible pour '{column_name}'."
 INFO_NO_UNIQUE_VALUES = "ℹ️ Aucune valeur unique disponible pour l'exploration de '{column_name}'."
+INFO_ONLY_ONE_NUMERIC_VALUE = "ℹ️ Une seule valeur disponible : {value}{unit}"
 
 # --- Géocodage et carte ---
 INFO_GEOCODING_IN_PROGRESS = "ℹ️ Géocodage de {count} localisation{s} non encore mises en cache ou manquantes. Cela peut prendre un certain temps..."
