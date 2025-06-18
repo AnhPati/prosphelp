@@ -6,7 +6,8 @@ from services.offer_service import load_offers, save_offer_data, get_existing_ma
 from components.forms.forms import show_offer_form
 from constants.alerts import SUCCESS_OFFER_SAVED, INFO_NO_OFFERS_DATA
 from constants.labels import HEADER_OFFER_DISSECTION, LABEL_DATA_SOURCE, SECTION_OFFERS, LABEL_MARKET_FILTER, ALL_MARKETS_OPTION, DATA_SOURCE_OPTIONS
-from constants.schema.schema import OFFER_DISPLAY_COLUMNS, COL_TYPE, COL_MARKET
+from constants.schema.views import OFFER_DISPLAY_COLUMNS
+from constants.schema.columns import COL_TYPE, COL_MARKET
 
 def show_offer_dissection():
     st.header(HEADER_OFFER_DISSECTION)

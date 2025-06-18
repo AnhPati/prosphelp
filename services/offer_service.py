@@ -2,7 +2,8 @@ import pandas as pd
 from config.settings import MARKET_OFFERS_FILE
 from utils.helpers import fallback_read_csv
 from constants.alerts import ERROR_LOADING_OFFERS, ERROR_SAVING_OFFERS, ERROR_LOADING_MARKETS_FROM_OFFERS
-from constants.schema.schema import EXPECTED_COLUMNS, COLUMNS_SEP, COL_TYPE, COL_MARKET
+from constants.schema.constants import EXPECTED_COLUMNS, COLUMNS_SEP
+from constants.schema.columns import COL_TYPE, COL_MARKET
 
 def load_offers():
     if not MARKET_OFFERS_FILE.exists():
