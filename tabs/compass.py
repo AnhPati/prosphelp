@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from services.offer_service import load_offers
 from services.market_data import load_market_analysis
-from services.mapping.geocoding_service import geocode_dataframe_locations_in_memory
+from components.maps.geocoding_feeback import geocode_with_feedback 
 from components.charts.trend_chart import trend_chart
 from components.charts.bar_chart import bar_chart
 from components.charts.pie_chart import pie_chart
@@ -25,7 +25,7 @@ def show_compass():
     # Chargement des données
     df_market_analysis = load_market_analysis()
     df_offers_original = load_offers()
-    df_offers = geocode_dataframe_locations_in_memory(df_offers_original, COL_LOCATION)
+    df_offers = geocode_with_feedback(df_offers_original, COL_LOCATION, st.session_state.geocoded_locations_cache)
 
     # Vérification des colonnes nécessaires
     for col in COMPASS_DISPLAY_COLUMNS:
