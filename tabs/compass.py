@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from services.offer_service import load_offers
 from services.market_data import load_market_analysis
+from services.cache.geocoding_cache import save_cache
 from components.maps.geocoding_feeback import geocode_with_feedback 
 from components.charts.trend_chart import trend_chart
 from components.charts.bar_chart import bar_chart
@@ -16,16 +17,23 @@ from constants.schema.columns import COL_DATE,COL_MARKET, COL_SKILLS_MAIN, COL_S
 def show_compass():
     CONTEXT_ID = "compass"
 
+    # Initialiser le cache s'il n'existe pas encore
     if 'geocoded_locations_cache' not in st.session_state:
         st.session_state.geocoded_locations_cache = {}
-        st.session_state.geocoded_locations_cache = {} # Cette ligne est redondante si la précédente a déjà été exécutée, mais l'erreur était spécifique à l'absence de l'attribut.
 
     st.header(HEADER_COMPASS)
 
     # Chargement des données
     df_market_analysis = load_market_analysis()
     df_offers_original = load_offers()
-    df_offers = geocode_with_feedback(df_offers_original, COL_LOCATION, st.session_state.geocoded_locations_cache)
+
+    # Géocodage avec feedback utilisateur
+    df_offers = geocode_with_feedback(
+        df_offers_original,
+        COL_LOCATION,
+        st.session_state.geocoded_locations_cache
+    )
+    save_cache(st.session_state.geocoded_locations_cache)
 
     # Vérification des colonnes nécessaires
     for col in COMPASS_DISPLAY_COLUMNS:
@@ -80,17 +88,15 @@ def show_compass():
     offers_map(skills_df, selected_market)
 
     st.subheader(SECTION_SKILLS)
-
     st.markdown(LABEL_MAIN_SKILLS)
     main_skills = skills_df[COL_SKILLS_MAIN].dropna().str.split(",").explode().str.strip()
     bar_chart(main_skills, title=LABEL_MAIN_SKILLS, context_id=CONTEXT_ID)
-    
+
     st.markdown(LABEL_SECONDARY_SKILLS)
     secondary_skills = skills_df[COL_SKILLS_SECONDARY].dropna().str.split(",").explode().str.strip()
     bar_chart(secondary_skills, title=LABEL_SECONDARY_SKILLS, context_id=CONTEXT_ID)
-    
-    st.subheader(SECTION_TECHS)
 
+    st.subheader(SECTION_TECHS)
     st.markdown(LABEL_MAIN_TECHS)
     main_techs = skills_df[COL_TECHS_MAIN].dropna().str.split(",").explode().str.strip()
     bar_chart(main_techs, title=LABEL_MAIN_TECHS, context_id=CONTEXT_ID)

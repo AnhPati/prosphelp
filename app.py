@@ -5,6 +5,10 @@ from tabs.offer_dissection import show_offer_dissection
 from tabs.compass import show_compass
 from components.csv_uploader import csv_uploader
 from config.settings import MARKET_OFFERS_FILE
+from services.cache.geocoding_cache import load_cache
+
+if 'geocoded_locations_cache' not in st.session_state:
+    st.session_state.geocoded_locations_cache = load_cache()
 
 st.set_page_config(page_title="JobCompass", layout="wide")
 st.title("JobCompass")

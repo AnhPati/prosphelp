@@ -1,5 +1,6 @@
 import streamlit as st
 from services.mapping.processor import enrich_with_coordinates
+from services.cache.geocoding_cache import save_cache
 from constants.alerts import (
     ERROR_MISSING_LOCATION_COLUMN, INFO_GEOCODING_IN_PROGRESS,
     INFO_ALL_LOCATIONS_CACHED, SUCCESS_GEOCODING_DONE, INFO_GEOCODING_PROGRESS
@@ -21,6 +22,7 @@ def geocode_with_feedback(df, location_col, cache):
         bar = progress.progress(0, text=INFO_GEOCODING_PROGRESS)
 
         enriched_df = enrich_with_coordinates(df, location_col, cache)
+        save_cache(cache)
 
         bar.progress(1.0, text=INFO_GEOCODING_PROGRESS)
         message.success(SUCCESS_GEOCODING_DONE)
