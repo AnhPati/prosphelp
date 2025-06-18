@@ -3,7 +3,7 @@ import pandas as pd
 from services.market_data import load_market_analysis, save_market_analysis
 from components.charts.trend_chart import trend_chart
 from utils.filters import filter_dataframe_by_market
-from components.forms import show_market_form
+from components.forms.forms import show_market_form
 from constants.alerts import WARNING_MISSING_MARKET, WARNING_MARKET_ALREADY_EXISTS, SUCCESS_DATA_SAVED, INFO_NO_MARKET_ANALYSIS_DATA
 from constants.labels import HEADER_MARKET_ANALYSIS, SECTION_MARKET_TRENDS, SECTION_MARKET_HISTORY, LABEL_SELECT_MARKET, ALL_MARKETS_OPTION, TITLE_MARKET_TREND, X_AXIS_DATE, Y_AXIS_ADS, LEGEND_MARKET
 from constants.schema import MARKET_DISPLAY_COLUMNS, COL_MARKET, COL_DATE, COL_TYPE, COL_NUMBER_OF_OFFERS, COL_NOTES
