@@ -2,7 +2,7 @@
 
 import streamlit as st
 from config.settings import MARKET_OFFERS_FILE
-from services.offer_service import load_offers, save_offer_data, get_existing_markets_from_offers
+from services.offers.offer_service import load_offers, save_offer_data, get_existing_markets_from_offers
 from components.forms.offer_form import offer_form
 from constants.alerts import SUCCESS_OFFER_SAVED, INFO_NO_OFFERS_DATA
 from constants.labels import HEADER_OFFER_DISSECTION, LABEL_DATA_SOURCE, SECTION_OFFERS, LABEL_MARKET_FILTER, ALL_MARKETS_OPTION, DATA_SOURCE_OPTIONS
