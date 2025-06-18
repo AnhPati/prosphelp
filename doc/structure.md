@@ -45,9 +45,9 @@
 |   |       ├── offer_inputs.py      # Configuration dynamique du formulaire d'offre
 |   |       └── market_inputs.py     # Configuration dynamique du formulaire de marché
 |   ├── maps/
+|   |   ├── map_from_dataframe.py
 │   |   └── offers_map.py
-│   └── selectors/
-│   |   └── numeric_range_selector.py               # @TODO : Renommer le composant.
+│   ├── numeric_range_selector.py               # @TODO : Renommer le composant.
 |   └── csv_uploader.py
 |
 ├── services/
