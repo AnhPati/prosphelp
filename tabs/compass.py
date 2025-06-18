@@ -1,10 +1,11 @@
 import streamlit as st
+import pandas as pd
 from services.offer_service import load_offers
 from services.market_data import load_market_analysis
 from services.geocoding_service import geocode_dataframe_locations_in_memory
 from components.charts.trend_chart import trend_chart
 from components.charts.plot_skills_tech_chart import plot_skills_tech_chart
-from components.charts.pie_chart import pie_rythms_chart
+from components.charts.pie_chart import pie_chart
 from components.interactive_numeric_display import display_numeric_range_selector
 from components.interactive_map import display_offers_map
 from utils.filters import filter_dataframe_by_market
@@ -69,26 +70,12 @@ def show_compass():
         display_numeric_range_selector(skills_df, COL_SENIORITY, LABEL_SENIORITY, unit="ans")
     with third_col:
         st.subheader(LABEL_RHYTHM)
-
-        if COL_RHYTHM in skills_df.columns:
-            sectors = skills_df[COL_RHYTHM].dropna().str.strip()
-            if not sectors.empty:
-                pie_rythms_chart(sectors, title="⏳ Répartition des rythmes de travail", context_id=CONTEXT_ID)
-            else:
-                st.info(INFO_NO_RYTHM_DATA)
-        else:
-            st.warning(WARNING_MISSING_COLUMN.format(col=COL_RHYTHM))
+        rythm = skills_df.get(COL_RHYTHM, pd.Series()).dropna().str.strip()
+        pie_chart(rythm, title=LABEL_RHYTHM, context_id=CONTEXT_ID)
     with fourth_col:
         st.subheader(LABEL_SECTOR)
-
-        if COL_SECTOR in skills_df.columns:
-            sectors = skills_df[COL_SECTOR].dropna().str.strip()
-            if not sectors.empty:
-                pie_rythms_chart(sectors, title="💼 Secteurs du marché", context_id=CONTEXT_ID)
-            else:
-                st.info(INFO_NO_SECTOR_DATA)
-        else:
-            st.warning(WARNING_MISSING_COLUMN.format(col=COL_SECTOR))
+        sectors = skills_df.get(COL_SECTOR, pd.Series()).dropna().str.strip()
+        pie_chart(sectors, title=LABEL_SECTOR, context_id=CONTEXT_ID)
 
     display_offers_map(skills_df, selected_market)
 
