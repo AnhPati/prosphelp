@@ -59,8 +59,8 @@
 │   |   ├── save_offers.py                                  # @TODO : Extraire les alertes et les textes. Revoir l'implémentation.
 │   |   └── get_existing_markets_from_offers.py             # @TODO : Déplacer dans components/alerts/. Renommer le fichier.
 │   └── mapping/
-│       ├── _geocode_single_location.py                          # @TODO : Extraire les alertes et les textes. Renommer le fichier. Revoir l'implémentation.
-│       └── geocode_dataframe_locations_in_memory.py             # @TODO : Extraire les alertes et les textes. Renommer le fichier. Revoir l'implémentation.
+|       ├── client.py               # Appels à l'API Nominatim
+|       └── processor.py            # Enrichit un DataFrame avec des coordonnées
 │
 └── utils/
     ├── filters/
