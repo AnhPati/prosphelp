@@ -41,10 +41,6 @@
 │   |   └── offers_map.py
 │   └── selectors/
 │       └── numeric_range_selector.py               # @TODO : Renommer le composant.
-|
-├── wrappers/                       # Wrappers Python vers les composants React custom
-│   └── boussole/
-│       └── __init__.py             # Déclaration du composant <Boussole /> en React
 │
 ├── services/
 |   ├── markets_analysis/
