@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from services.offer_service import load_offers
 from services.market_data import load_market_analysis
-from services.geocoding_service import geocode_dataframe_locations_in_memory
+from services.mapping.geocoding_service import geocode_dataframe_locations_in_memory
 from components.charts.trend_chart import trend_chart
 from components.charts.bar_chart import bar_chart
 from components.charts.pie_chart import pie_chart
