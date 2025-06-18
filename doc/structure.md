@@ -27,7 +27,7 @@
 │
 ├── tabs/
 │   ├── __init__.py
-│   ├── compass.py                   # Logique + UI de l’onglet “Boussole” # @TODO : Rendre la tab avec le moins 
+│   ├── compass.py                   # Logique + UI de l’onglet “Boussole”
 │   ├── home.py                      # Logique + UI de l’onglet “Accueil”
 │   ├── market_analysis.py           # Logique + UI de l’onglet “Analyse des marchés”
 │   └── offer_dissection.py          # Logique + UI de l’onglet “Dissection des offres”
@@ -38,8 +38,12 @@
 │   |   ├── trend_chart.py
 │   |   └── bar_chart.py
 |   ├── forms/
-│   |   ├── offer_form.py              # @TODO : Rendre le composant complètement réutilisable.
-│   |   └── market_form.py             # @TODO : Rendre le composant complètement réutilisable.
+|   |   ├── __init__.py
+|   |   ├── offer_form.py            # Formulaire d'ajout d'offre (offre/contact)
+|   |   ├── market_form.py           # Formulaire d'ajout de tendance de marché
+|   |   └── config/
+|   |       ├── offer_inputs.py      # Configuration dynamique du formulaire d'offre
+|   |       └── market_inputs.py     # Configuration dynamique du formulaire de marché
 |   ├── maps/
 │   |   └── offers_map.py
 │   └── selectors/
