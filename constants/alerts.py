@@ -67,3 +67,4 @@ ERROR_SAVING_MARKET_DATA = "❌ Erreur lors de la sauvegarde des données de mar
 ERROR_LOADING_OFFERS = "❌ Erreur inattendue lors du chargement des offres : {error}"
 ERROR_SAVING_OFFERS = "❌ Erreur lors de la sauvegarde des offres : {error}"
 ERROR_LOADING_MARKETS_FROM_OFFERS = "❌ Erreur lors de la récupération des marchés : {error}"
+ERROR_INVALID_COLUMN_COUNT = "❌ Mauvais format : {detected} colonnes détectées (attendu : {expected}). Vérifiez le fichier."
