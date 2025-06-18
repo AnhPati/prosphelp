@@ -1,11 +1,11 @@
 import pandas as pd
 from config.settings import MARKET_OFFERS_FILE
 from utils.helpers import fallback_read_csv
-from constants.alerts import ERROR_LOADING_MARKET_DATA,ERROR_SAVING_MARKET_DATA
+from constants.alerts import ERROR_LOADING_MARKET_DATA
 from constants.schema.constants import EXPECTED_COLUMNS, COLUMNS_SEP
-from constants.schema.columns import COL_MARKET, COL_TYPE
+from constants.schema.columns import COL_TYPE, COL_MARKET
 
-def load_market_analysis():
+def load_markets_analysis():
     if not MARKET_OFFERS_FILE.exists():
         return pd.DataFrame(columns=EXPECTED_COLUMNS)
 
@@ -20,7 +20,6 @@ def load_market_analysis():
         )
     except pd.errors.ParserError:
         df = fallback_read_csv(MARKET_OFFERS_FILE, EXPECTED_COLUMNS)
-
     except Exception as e:
         print(ERROR_LOADING_MARKET_DATA.format(error=str(e)))
         return pd.DataFrame(columns=EXPECTED_COLUMNS)
@@ -30,27 +29,3 @@ def load_market_analysis():
             df[col] = None
 
     return df[df[COL_TYPE] == COL_MARKET].copy()
-
-
-def save_market_analysis(market_data):
-    df = pd.DataFrame([market_data])
-    for col in EXPECTED_COLUMNS:
-        if col not in df.columns:
-            df[col] = None
-
-    df = df[EXPECTED_COLUMNS]
-
-    try:
-        df.to_csv(
-            MARKET_OFFERS_FILE,
-            sep="|",
-            mode='a' if MARKET_OFFERS_FILE.exists() else 'w',
-            header=not MARKET_OFFERS_FILE.exists(),
-            index=False,
-            encoding='utf-8',
-            quoting=0
-        )
-        return True
-    except Exception as e:
-        print(ERROR_SAVING_MARKET_DATA.format(error=str(e)))
-        return False

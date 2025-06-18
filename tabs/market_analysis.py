@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
-from services.market_analysis.market_data import load_market_analysis, save_market_analysis
+from services.market_analysis.load_markets_analysis import load_markets_analysis
+from services.market_analysis.save_markets_analysis import save_markets_analysis
+
 from components.charts.trend_chart import trend_chart
 from utils.filters import filter_dataframe_by_market
 from components.forms.market_form import market_form
@@ -17,7 +19,7 @@ def show_market_analysis():
 
     st.header(HEADER_MARKET_ANALYSIS)
 
-    df_market_analysis = load_market_analysis()
+    df_market_analysis = load_markets_analysis()
     existing_markets = sorted(df_market_analysis[COL_MARKET].dropna().unique()) if not df_market_analysis.empty else []
 
     if "clear_form_market" in st.session_state and st.session_state.clear_form_market:
@@ -44,7 +46,7 @@ def show_market_analysis():
                 COL_NUMBER_OF_OFFERS: number,
                 COL_NOTES: notes
             }
-            save_market_analysis(market_data)
+            save_markets_analysis(market_data)
             st.success(SUCCESS_DATA_SAVED)
             st.session_state.clear_form_market = True
             st.rerun()

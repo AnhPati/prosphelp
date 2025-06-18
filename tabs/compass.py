@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from services.offers.offer_service import load_offers
-from services.market_analysis.market_data import load_market_analysis
+from services.market_analysis.load_markets_analysis import load_markets_analysis
 from services.cache.geocoding_cache import save_cache
 from components.maps.geocoding_feeback import geocode_with_feedback 
 from components.charts.trend_chart import trend_chart
@@ -24,7 +24,7 @@ def show_compass():
     st.header(HEADER_COMPASS)
 
     # Chargement des données
-    df_market_analysis = load_market_analysis()
+    df_market_analysis = load_markets_analysis()
     df_offers_original = load_offers()
 
     # Géocodage avec feedback utilisateur
