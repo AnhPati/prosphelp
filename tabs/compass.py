@@ -2,7 +2,7 @@ import streamlit as st
 from services.offer_service import load_offers
 from services.market_data import load_market_analysis
 from services.geocoding_service import geocode_dataframe_locations_in_memory
-from components.charts import show_market_trend_chart, plot_skills_tech_chart, pie_rythms_chart
+from components.charts.charts import show_market_trend_chart, plot_skills_tech_chart, pie_rythms_chart
 from components.interactive_numeric_display import display_numeric_range_selector
 from components.interactive_map import display_offers_map
 from utils.filters import filter_dataframe_by_market
