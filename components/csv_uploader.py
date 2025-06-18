@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from constants.alerts import ERROR_MISSING_TYPE_COLUMN, SUCCESS_FILE_IMPORTED, ERROR_FILE_PROCESSING, ERROR_INVALID_COLUMN_COUNT
 from constants.labels import LABEL_UPLOAD_SECTION, BTN_UPLOAD_CSV, BTN_DOWNLOAD_CSV
-from constants.schema import COLUMNS_SEP, COL_TYPE, EXPECTED_COLUMNS
+from constants.schema.schema import COLUMNS_SEP, COL_TYPE, EXPECTED_COLUMNS
 
 
 def csv_uploader(filepath, label, uploader_key, expected_column=COL_TYPE):
