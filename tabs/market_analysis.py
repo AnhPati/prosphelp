@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from services.market_data import load_market_analysis, save_market_analysis
-from components.charts.charts import show_market_trend_chart
+from components.charts.market_trend_chart import show_market_trend_chart
 from utils.filters import filter_dataframe_by_market
 from components.forms import show_market_form
 from constants.alerts import WARNING_MISSING_MARKET, WARNING_MARKET_ALREADY_EXISTS, SUCCESS_DATA_SAVED, INFO_NO_MARKET_ANALYSIS_DATA
