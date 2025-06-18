@@ -6,7 +6,7 @@ from services.geocoding_service import geocode_dataframe_locations_in_memory
 from components.charts.trend_chart import trend_chart
 from components.charts.bar_chart import bar_chart
 from components.charts.pie_chart import pie_chart
-from components.interactive_numeric_display import display_numeric_range_selector
+from components.numeric_range_slider import numeric_range_slider
 from components.maps.offers_map import offers_map
 from utils.filters import filter_dataframe_by_market
 from constants.alerts import WARNING_MISSING_COLUMN, WARNING_NO_MARKET_ANALYSIS, INFO_NO_RYTHM_DATA, INFO_NO_SECTOR_DATA, WARNING_NO_MAIN_SKILLS, WARNING_NO_SECONDARY_SKILLS, WARNING_NO_MAIN_TECH, WARNING_NO_SECONDARY_TECH
@@ -65,9 +65,9 @@ def show_compass():
     first_col, second_col, third_col, fourth_col = st.columns(4)
 
     with first_col:
-        display_numeric_range_selector(skills_df, COL_TJM, LABEL_TJM, unit="€")
+        numeric_range_slider(skills_df, COL_TJM, LABEL_TJM, unit="€")
     with second_col:
-        display_numeric_range_selector(skills_df, COL_SENIORITY, LABEL_SENIORITY, unit="ans")
+        numeric_range_slider(skills_df, COL_SENIORITY, LABEL_SENIORITY, unit="ans")
     with third_col:
         st.subheader(LABEL_RHYTHM)
         rythm = skills_df.get(COL_RHYTHM, pd.Series()).dropna().str.strip()

@@ -1,10 +1,9 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 from constants.alerts import INFO_NO_NUMERIC_DATA, INFO_NO_UNIQUE_VALUES
 from constants.labels import SLIDER_EXPLORE_LABEL, LABEL_AVERAGE, LABEL_RANGE, LABEL_COUNT_FOR_SELECTED
 
-def display_numeric_range_selector(df: pd.DataFrame, column_name: str, title: str, unit: str = ""):
+def numeric_range_slider(df: pd.DataFrame, column_name: str, title: str, unit: str = "") -> None:
     st.subheader(title)
 
     numeric_values = pd.to_numeric(df[column_name], errors='coerce').dropna()
@@ -23,8 +22,7 @@ def display_numeric_range_selector(df: pd.DataFrame, column_name: str, title: st
     unique_vals = sorted(numeric_values.unique())
 
     if unique_vals:
-        closest_avg_val_idx = (np.abs(np.array(unique_vals) - avg_val)).argmin()
-        default_val = unique_vals[closest_avg_val_idx]
+        default_val = min(unique_vals, key=lambda x: abs(x - avg_val))
 
         selected_val = st.select_slider(
             SLIDER_EXPLORE_LABEL,
@@ -33,11 +31,11 @@ def display_numeric_range_selector(df: pd.DataFrame, column_name: str, title: st
             format_func=lambda x: f"{x:,.0f}{unit}"
         )
 
-        count_for_selected_val = numeric_values[numeric_values == selected_val].count()
+        count = (numeric_values == selected_val).sum()
         st.markdown(LABEL_COUNT_FOR_SELECTED.format(
             value=f"{selected_val:,.0f}",
             unit=unit,
-            count=count_for_selected_val
+            count=count
         ))
     else:
         st.info(INFO_NO_UNIQUE_VALUES.format(column_name=column_name))
