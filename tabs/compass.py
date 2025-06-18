@@ -2,15 +2,15 @@ import streamlit as st
 from services.offer_service import load_offers
 from services.market_data import load_market_analysis
 from services.geocoding_service import geocode_dataframe_locations_in_memory
-from components.charts.market_trend_chart import show_market_trend_chart
+from components.charts.trend_chart import trend_chart
 from components.charts.plot_skills_tech_chart import plot_skills_tech_chart
 from components.charts.pie_chart import pie_rythms_chart
 from components.interactive_numeric_display import display_numeric_range_selector
 from components.interactive_map import display_offers_map
 from utils.filters import filter_dataframe_by_market
-from constants.alerts import WARNING_MISSING_COLUMN, WARNING_NO_MARKET_ANALYSIS, INFO_NO_TREND_DATA, INFO_NO_RYTHM_DATA, INFO_NO_SECTOR_DATA, WARNING_NO_MAIN_SKILLS, WARNING_NO_SECONDARY_SKILLS, WARNING_NO_MAIN_TECH, WARNING_NO_SECONDARY_TECH
-from constants.labels import HEADER_COMPASS, SECTION_MARKET_TRENDS, LABEL_TJM, LABEL_SENIORITY, LABEL_RHYTHM, LABEL_SECTOR, SECTION_SKILLS, SECTION_TECHS, LABEL_MAIN_SKILLS, LABEL_SECONDARY_SKILLS, LABEL_MAIN_TECHS, LABEL_SECONDARY_TECHS, LABEL_SELECT_MARKET
-from constants.schema import COL_MARKET, COMPASS_DISPLAY_COLUMNS, COL_SKILLS_MAIN, COL_SKILLS_SECONDARY, COL_TECHS_MAIN, COL_TECHS_SECONDARY, COL_TJM, COL_SENIORITY, COL_RHYTHM, COL_SECTOR
+from constants.alerts import WARNING_MISSING_COLUMN, WARNING_NO_MARKET_ANALYSIS, INFO_NO_RYTHM_DATA, INFO_NO_SECTOR_DATA, WARNING_NO_MAIN_SKILLS, WARNING_NO_SECONDARY_SKILLS, WARNING_NO_MAIN_TECH, WARNING_NO_SECONDARY_TECH
+from constants.labels import HEADER_COMPASS, SECTION_MARKET_TRENDS, LABEL_TJM, LABEL_SENIORITY, LABEL_RHYTHM, LABEL_SECTOR, SECTION_SKILLS, SECTION_TECHS, LABEL_MAIN_SKILLS, LABEL_SECONDARY_SKILLS, LABEL_MAIN_TECHS, LABEL_SECONDARY_TECHS, LABEL_SELECT_MARKET, TITLE_MARKET_TREND, X_AXIS_DATE, Y_AXIS_ADS, LEGEND_MARKET
+from constants.schema import COL_DATE,COL_MARKET, COMPASS_DISPLAY_COLUMNS, COL_SKILLS_MAIN, COL_SKILLS_SECONDARY, COL_TECHS_MAIN, COL_TECHS_SECONDARY, COL_TJM, COL_SENIORITY, COL_RHYTHM, COL_SECTOR
 
 def show_compass():
     CONTEXT_ID = "compass"
@@ -46,10 +46,18 @@ def show_compass():
 
     # Affichage de la tendance des marchés
     st.subheader(SECTION_MARKET_TRENDS)
-    if selected_market in df_market_analysis[COL_MARKET].values:
-        show_market_trend_chart(df_market_analysis, highlight_market=selected_market, context_id=CONTEXT_ID)
-    else:
-        st.info(INFO_NO_TREND_DATA)
+    trend_chart(
+        df=df_market_analysis,
+        index_col=COL_DATE,
+        category_col=COL_MARKET,
+        value_col="Nombre d'annonces",
+        highlight=selected_market,
+        title=TITLE_MARKET_TREND,
+        x_axis_label=X_AXIS_DATE,
+        y_axis_label=Y_AXIS_ADS,
+        legend_title=LEGEND_MARKET,
+        context_id=CONTEXT_ID
+    )
 
     # Filtrer les offres selon le marché sélectionné
     skills_df = df_offers[df_offers[COL_MARKET] == selected_market]
