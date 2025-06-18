@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from constants.alerts import WARNING_TITLE_LINK_REQUIRED, WARNING_CONTACT_NAME_REQUIRED
 from constants.labels import SUBHEADER_NEW_ENTRY, FIELD_MARKET, FIELD_TITLE, FIELD_JOB_TITLE, FIELD_TJM, FIELD_SENIORITY, FIELD_TECH_MAIN, FIELD_TECH_SECONDARY, FIELD_SKILLS_MAIN, FIELD_SKILLS_SECONDARY, FIELD_SECTOR, FIELD_LOCATION, FIELD_RHYTHM, FIELD_COMPANY, FIELD_CONTACT, FIELD_LINK, FIELD_SOPHISTICATION, FIELD_RELIABILITY, BTN_SAVE_OFFER, FIELD_MARKET_EXISTING, FIELD_MARKET_NEW, FIELD_DATE, FIELD_NUMBER_OF_OFFERS, FIELD_NOTES, BTN_SAVE_MARKET, CHECKBOX_USE_EXISTING_MARKET, RHYTHM_OPTIONS
-
+from constants.schema import COL_TYPE, COL_TITLE, COL_JOB_TITLE, COL_TJM, COL_SENIORITY, COL_MARKET, COL_DATE, COL_TECHS_MAIN, COL_TECHS_SECONDARY, COL_SKILLS_MAIN, COL_SKILLS_SECONDARY, COL_SECTOR, COL_LOCATION, COL_RHYTHM, COL_COMPANY, COL_CONTACT, COL_LINK, COL_SOPHISTICATION, COL_RELIABILITY
 def show_offer_form(markets: list[str], source: str = "offre"):
     st.subheader(SUBHEADER_NEW_ENTRY)
 
@@ -89,25 +89,25 @@ def show_offer_form(markets: list[str], source: str = "offre"):
                 return None
 
             return {
-                "Date": pd.to_datetime("today").strftime('%Y-%m-%d'),
-                "Type": "Contact" if source == "contact" else "Offre",
-                "Marché": market,
-                "Titre": title,
-                "Intitulé": job_title,
-                "TJM": tjm,
-                "Séniorité": seniority,
-                "Technos principales": main_techs,
-                "Technos secondaires": secondary_techs,
-                "Compétences principales": main_skills,
-                "Compétences secondaires": secondary_skills,
-                "Secteur": sector,
-                "Localisation": location,
-                "Rythme": work_mode,
-                "Entreprise": company,
-                "Contact": contact_name,
-                "Lien": offer_link,
-                "Sophistication": sophistication,
-                "Fiabilité": reliability
+                COL_DATE: pd.to_datetime("today").strftime('%Y-%m-%d'),
+                COL_TYPE: "Contact" if source == "contact" else "Offre",
+                COL_MARKET: market,
+                COL_TITLE: title,
+                COL_JOB_TITLE: job_title,
+                COL_TJM: tjm,
+                COL_SENIORITY: seniority,
+                COL_TECHS_MAIN: main_techs,
+                COL_TECHS_SECONDARY: secondary_techs,
+                COL_SKILLS_MAIN: main_skills,
+                COL_SKILLS_SECONDARY: secondary_skills,
+                COL_SECTOR: sector,
+                COL_LOCATION: location,
+                COL_RHYTHM: work_mode,
+                COL_COMPANY: company,
+                COL_CONTACT: contact_name,
+                COL_LINK: offer_link,
+                COL_SOPHISTICATION: sophistication,
+                COL_RELIABILITY: reliability
             }
 
     return None

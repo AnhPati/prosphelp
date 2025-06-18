@@ -3,23 +3,23 @@ import pandas as pd
 import plotly.graph_objects as go
 from collections import Counter
 import plotly.express as px
-
 from constants.alerts import INFO_NO_DATA_TO_DISPLAY, INFO_NO_MARKET_DATA_AVAILABLE
 from constants.labels import TITLE_MARKET_TREND, X_AXIS_DATE, Y_AXIS_ADS, LEGEND_MARKET, X_AXIS_SKILLS_TECH, Y_AXIS_FREQUENCY
+from constants.schema import COL_MARKET, COL_DATE, COL_TYPE
 
 def show_market_trend_chart(df, highlight_market=None, context_id="default"):
     if df.empty:
         st.info(INFO_NO_DATA_TO_DISPLAY)
         return
 
-    df["Date"] = pd.to_datetime(df["Date"])
-    df_market = df[df["Type"] == "Marché"]
+    df[COL_DATE] = pd.to_datetime(df[COL_DATE])
+    df_market = df[df[COL_TYPE] == COL_MARKET]
 
     if df_market.empty:
         st.warning(INFO_NO_MARKET_DATA_AVAILABLE)
         return
 
-    pivot = df_market.pivot(index="Date", columns="Marché", values="Nombre d'annonces").fillna(0)
+    pivot = df_market.pivot(index=COL_DATE, columns=COL_MARKET, values="Nombre d'annonces").fillna(0)
 
     fig = go.Figure()
 

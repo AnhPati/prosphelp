@@ -2,11 +2,9 @@ import streamlit as st
 import pandas as pd
 from constants.alerts import ERROR_MISSING_TYPE_COLUMN, SUCCESS_FILE_IMPORTED, ERROR_FILE_PROCESSING
 from constants.labels import LABEL_UPLOAD_SECTION, BTN_UPLOAD_CSV, BTN_DOWNLOAD_CSV
-
+from constants.schema import COLUMNS_SEP, COL_TYPE
 def files_controls(filepath, label, uploader_key):
     st.sidebar.markdown(f"### {LABEL_UPLOAD_SECTION.format(label=label)}")
-
-    columns_sep = r'\|'
 
     # Bouton d'upload
     uploaded_file = st.sidebar.file_uploader(
@@ -17,10 +15,10 @@ def files_controls(filepath, label, uploader_key):
 
     if uploaded_file is not None:
         try:
-            df = pd.read_csv(uploaded_file, sep=columns_sep, engine="python")
+            df = pd.read_csv(uploaded_file, sep=COLUMNS_SEP, engine="python")
             df.columns = df.columns.str.strip()
 
-            if "Type" not in df.columns:
+            if COL_TYPE not in df.columns:
                 st.sidebar.error(ERROR_MISSING_TYPE_COLUMN)
                 return
 
