@@ -6,6 +6,7 @@ from services.offer_service import load_offers, save_offer_data, get_existing_ma
 from components.forms import show_offer_form
 from constants.alerts import SUCCESS_OFFER_SAVED, INFO_NO_OFFERS_DATA
 from constants.labels import HEADER_OFFER_DISSECTION, LABEL_DATA_SOURCE, SECTION_OFFERS, LABEL_MARKET_FILTER, ALL_MARKETS_OPTION, DATA_SOURCE_OPTIONS
+from constants.schema import OFFER_DISPLAY_COLUMNS, COL_TYPE, COL_MARKET
 
 def show_offer_dissection():
     st.header(HEADER_OFFER_DISSECTION)
@@ -21,20 +22,14 @@ def show_offer_dissection():
     st.subheader(SECTION_OFFERS)
     if MARKET_OFFERS_FILE.exists():
         offers_df = load_offers()
-        display_columns = [
-            "Date", "Marché", "Intitulé", "TJM", "Séniorité",
-            "Technos principales", "Technos secondaires",
-            "Compétences principales", "Compétences secondaires",
-            "Secteur", "Localisation", "Rythme",
-            "Entreprise", "Contact", "Lien"
-        ]
+        display_columns = OFFER_DISPLAY_COLUMNS
 
-        if "Type" in offers_df.columns:
-            offers_df = offers_df[offers_df["Type"] == "Offre"]
+        if COL_TYPE in offers_df.columns:
+            offers_df = offers_df[offers_df[COL_TYPE] == "Offre"]
 
         selected_market = st.selectbox(LABEL_MARKET_FILTER, [ALL_MARKETS_OPTION] + markets)
         if selected_market != ALL_MARKETS_OPTION:
-            offers_df = offers_df[offers_df["Marché"] == selected_market]
+            offers_df = offers_df[offers_df[COL_MARKET] == selected_market]
 
         st.dataframe(offers_df[display_columns])
     else:
