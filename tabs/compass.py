@@ -7,7 +7,7 @@ from components.charts.trend_chart import trend_chart
 from components.charts.bar_chart import bar_chart
 from components.charts.pie_chart import pie_chart
 from components.interactive_numeric_display import display_numeric_range_selector
-from components.maps.interactive_map import display_offers_map
+from components.maps.offers_map import offers_map
 from utils.filters import filter_dataframe_by_market
 from constants.alerts import WARNING_MISSING_COLUMN, WARNING_NO_MARKET_ANALYSIS, INFO_NO_RYTHM_DATA, INFO_NO_SECTOR_DATA, WARNING_NO_MAIN_SKILLS, WARNING_NO_SECONDARY_SKILLS, WARNING_NO_MAIN_TECH, WARNING_NO_SECONDARY_TECH
 from constants.labels import HEADER_COMPASS, SECTION_MARKET_TRENDS, LABEL_TJM, LABEL_SENIORITY, LABEL_RHYTHM, LABEL_SECTOR, SECTION_SKILLS, SECTION_TECHS, LABEL_MAIN_SKILLS, LABEL_SECONDARY_SKILLS, LABEL_MAIN_TECHS, LABEL_SECONDARY_TECHS, LABEL_SELECT_MARKET, TITLE_MARKET_TREND, X_AXIS_DATE, Y_AXIS_ADS, LEGEND_MARKET
@@ -77,7 +77,7 @@ def show_compass():
         sectors = skills_df.get(COL_SECTOR, pd.Series()).dropna().str.strip()
         pie_chart(sectors, title=LABEL_SECTOR, context_id=CONTEXT_ID)
 
-    display_offers_map(skills_df, selected_market)
+    offers_map(skills_df, selected_market)
 
     st.subheader(SECTION_SKILLS)
 
