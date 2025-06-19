@@ -1,23 +1,159 @@
+/* @import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;600&display=swap');
+
 :root {
+    /* === Couleurs principales === */
     --color-primary: #2f80ed;
-    --color-surface: #f3f4f6;
-    --color-text: #1E1E1E;
+    --color-primary-hover: #2073de;
+
+    /* === Couleurs d'alerte === */
+    --color-danger: #e53935;
+    --color-warning: #FBE1CE;
+    --color-info: #E0E9F5;
+
+    /* === Couleurs de texte === */
+    --color-text: #3A1300;
+    --color-text-secondary: #8B4100;
+
+    /* === Fonds === */
+    --color-background: #F3F4F6;
+    --color-surface: #ffffff;
+    --color-surface-alt: #FDECE0;
+
+    /* === Bordures === */
+    --color-border: #F8C196;
+    --color-border-strong: #6D9FE5;
+
+    /* === Tableaux === */
+    --table-header-bg: #B65A00;
+    --table-header-text: #ffffff;
+    --table-row-even: #ECF0F6;
+    --table-row-odd: #FDECE0;
+
+    /* === Police === */
+    --font-family: 'Lato', sans-serif;
+
+    /* === Divers === */
     --radius: 6px;
-    --input-bg: #ffffff;
+    --transition: 0.2s ease-in-out;
 }
 
-input,
-textarea,
-select {
-    border: 1px solid #ccc;
-    border-radius: var(--radius);
-    padding: 8px;
-    background-color: var(--input-bg);
+body,
+.stApp {
+    background-color: var(--color-background);
     color: var(--color-text);
+    font-family: var(--font-family);
 }
 
-button[kind="primary"] {
-    background-color: var(--color-primary);
+/* === Champs de texte === */
+.stDateInput input,
+.stNumberInput>div,
+.stTextInput input,
+.stTextArea textarea,
+.stSelectbox div[data-baseweb="select"]>div {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius);
+    padding: 0.5rem;
+}
+
+.stDateInput input:focus,
+.stNumberInput input:focus,
+.stTextInput input:focus,
+.stTextArea textarea:focus {
+    border-color: transparent;
+    outline: none;
+}
+
+.stSelectbox div[data-baseweb="select"]>div:focus-within {
+    border-color: var(--color-primary);
+    outline: none;
+}
+
+/* === Boutons === */
+.stButton button {
+    background-color: var(--color-primary);
     color: white;
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    transition: background-color var(--transition);
+}
+
+.stButton button:hover {
+    background-color: var(--color-primary-hover);
+}
+
+/* === Tableaux === */
+.stDataFrame th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
+    padding: 0.5rem;
+    border-bottom: 2px solid var(--color-border-strong);
+}
+
+.stDataFrame td {
+    color: var(--color-text);
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* DataFrame container fix */
+.stForm {
+    background-color: var(--color-surface);
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+}
+
+/* === Titres === */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--color-text);
+    font-family: var(--font-family);
+}
+
+/* === Sections secondaires === */
+.text-secondary {
+    color: var(--color-text-secondary);
+}
+
+.alert-warning {
+    background-color: var(--color-warning);
+    color: var(--color-text);
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+}
+
+.alert-info {
+    background-color: var(--color-info);
+    color: var(--color-text);
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+}
+
+/* === Charts ===*/
+[class*="st-key-trend_chart"] {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 0.5rem;
+}
+
+[class*="st-key-trend_chart"] .main-svg:first-child {
+    background-color: var(--color-surface) !important;
+}
+
+[class*="st-key-trend_chart"] .legend>.bg {
+    background-color: var(--color-surface) !important;
+    border: solid red 1px;
 }

@@ -6,14 +6,14 @@ from tabs.compass import render_compass
 from components.csv_uploader import csv_uploader
 from config.settings import MARKET_OFFERS_FILE
 from services.cache.geocoding_cache import load_cache
+from design.inject_theme import inject_theme
 
 if 'geocoded_locations_cache' not in st.session_state:
     st.session_state.geocoded_locations_cache = load_cache()
 
 st.set_page_config(page_title="JobCompass", layout="wide")
 
-with open("design/theme.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+inject_theme()
 
 st.title("JobCompass")
 
