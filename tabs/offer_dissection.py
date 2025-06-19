@@ -27,7 +27,7 @@ def render_offer_dissection():
         offers_df = load_offers()
 
         if offers_df.empty:
-            st.info("Aucune offre disponible.")
+            st.info(INFO_NO_OFFERS_DATA)
             return
 
         selected_market = select_market_filter(markets, LABEL_MARKET_FILTER)
