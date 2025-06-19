@@ -1,12 +1,11 @@
-import streamlit as st
 import pandas as pd
+import streamlit as st
 from constants.labels import ALL_MARKETS_OPTION
 
-def filter_dataframe_by_market(df: pd.DataFrame, markets: list[str], label: str = "Filtrer par marché") -> pd.DataFrame:
-    if markets is None or len(markets) == 0:
-        st.warning("⚠️ Aucun marché disponible pour le filtrage.")
-        return ALL_MARKETS_OPTION
+def select_market_filter(markets: list[str], label: str = "Filtrer par marché") -> str:
+    return st.selectbox(label, [ALL_MARKETS_OPTION] + sorted(markets)) if markets else ALL_MARKETS_OPTION
 
-    selected_market = st.selectbox(f"{label}", markets, index=0)
-
-    return selected_market
+def filter_by_market_selection(df: pd.DataFrame, selected_market: str, all_option: str = ALL_MARKETS_OPTION) -> pd.DataFrame:
+    if selected_market and selected_market != all_option:
+        return df[df["Marché"] == selected_market]
+    return df
