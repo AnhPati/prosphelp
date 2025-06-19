@@ -143,17 +143,7 @@ h6 {
 /* === Charts ===*/
 [class*="st-key-trend_chart"] {
     background-color: var(--color-surface);
-    color: var(--color-text);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
-    padding: 0.5rem;
-}
-
-[class*="st-key-trend_chart"] .main-svg:first-child {
-    background-color: var(--color-surface) !important;
-}
-
-[class*="st-key-trend_chart"] .legend>.bg {
-    background-color: var(--color-surface) !important;
-    border: solid red 1px;
+    padding: 0.5rem 2rem;
 }

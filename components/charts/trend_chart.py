@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-
 from constants.alerts import INFO_NO_DATA_TO_DISPLAY, INFO_NO_MARKET_DATA_AVAILABLE
+from design.theme_colors import THEME
 
 def trend_chart(
     df: pd.DataFrame,
@@ -57,7 +57,14 @@ def trend_chart(
         yaxis_title=y_axis_label,
         legend_title=legend_title,
         template="plotly_white",
-        hovermode="x unified"
+        hovermode="x unified",
+        paper_bgcolor=THEME["surface"],
+        plot_bgcolor=THEME["surface"],
+        legend=dict(
+            bgcolor=THEME["surface"],
+            font=dict(color=THEME["text_secondary"]
+                      )
+        )
     )
 
     st.plotly_chart(fig, use_container_width=True, key=f"trend_chart_{context_id}_{highlight or 'default'}")
