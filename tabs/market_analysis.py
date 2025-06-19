@@ -3,7 +3,7 @@ import pandas as pd
 from services.market_analysis.load_markets_analysis import load_markets_analysis
 from services.market_analysis.save_markets_analysis import save_markets_analysis
 from components.charts.trend_chart import trend_chart
-from utils.filters import filter_dataframe_by_market
+from utils.filters import select_market_filter, filter_by_market_selection
 from utils.state.form_reset import reset_form_state
 from utils.validation import is_entry_unique
 from components.forms.market_form import market_form
@@ -16,8 +16,8 @@ def render_market_analysis():
     CONTEXT_ID = "market_analysis"
     st.header(HEADER_MARKET_ANALYSIS)
 
-    df_market_analysis = load_markets_analysis()
-    existing_markets = sorted(df_market_analysis[COL_MARKET].dropna().unique()) if not df_market_analysis.empty else []
+    market_df = load_markets_analysis()
+    existing_markets = sorted(market_df[COL_MARKET].dropna().unique()) if not market_df.empty else []
 
     reset_form_state("market")
 
@@ -26,27 +26,28 @@ def render_market_analysis():
     if submitted:
         if not final_market:
             st.warning(WARNING_MISSING_MARKET)
-        elif not is_entry_unique(df_market_analysis, COL_MARKET, final_market, COL_DATE, date):
+        elif not is_entry_unique(market_df, COL_MARKET, final_market, COL_DATE, date):
             st.warning(WARNING_MARKET_ALREADY_EXISTS)
         else:
-            market_data = {
+            new_data = {
                 COL_DATE: str(date),
                 COL_TYPE: COL_MARKET,
                 COL_MARKET: final_market,
                 COL_NUMBER_OF_OFFERS: number,
-                COL_NOTES: notes
+                COL_NOTES: notes,
             }
-            save_markets_analysis(market_data)
+            save_markets_analysis(new_data)
             st.success(SUCCESS_DATA_SAVED)
             st.session_state.clear_form_market = True
             st.rerun()
 
     st.subheader(SECTION_MARKET_TRENDS)
-    markets_trends = [ALL_MARKETS_OPTION] + sorted(df_market_analysis[COL_MARKET].dropna().unique())
-    selected_market = filter_dataframe_by_market(df_market_analysis, markets_trends, label=LABEL_SELECT_MARKET)
+    available_markets = [ALL_MARKETS_OPTION] + sorted(market_df[COL_MARKET].dropna().unique())
+    selected_market = select_market_filter(market_df, available_markets, label=LABEL_SELECT_MARKET)
+    filtered_market_df = filter_by_market_selection(market_df, selected_market)
 
     trend_chart(
-        df=df_market_analysis,
+        df=market_df,
         index_col=COL_DATE,
         category_col=COL_MARKET,
         value_col=COL_NUMBER_OF_OFFERS,
@@ -55,14 +56,12 @@ def render_market_analysis():
         x_axis_label=X_AXIS_DATE,
         y_axis_label=Y_AXIS_ADS,
         legend_title=LEGEND_MARKET,
-        context_id=CONTEXT_ID
+        context_id=CONTEXT_ID,
     )
 
     st.subheader(SECTION_MARKET_HISTORY)
-    if not df_market_analysis.empty:
-        if selected_market and selected_market != ALL_MARKETS_OPTION:
-            df_market_analysis = df_market_analysis[df_market_analysis[COL_MARKET] == selected_market]
-        df_market_analysis[COL_DATE] = pd.to_datetime(df_market_analysis[COL_DATE]).dt.strftime("%d/%m/%Y")
-        st.dataframe(df_market_analysis[MARKET_DISPLAY_COLUMNS])
+    if not filtered_market_df.empty:
+        filtered_market_df[COL_DATE] = pd.to_datetime(filtered_market_df[COL_DATE]).dt.strftime("%d/%m/%Y")
+        st.dataframe(filtered_market_df[MARKET_DISPLAY_COLUMNS])
     else:
         st.info(INFO_NO_MARKET_ANALYSIS_DATA)
