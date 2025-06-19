@@ -1,20 +1,30 @@
 import pandas as pd
+from pathlib import Path
+from typing import List
 
-def fallback_read_csv(MARKET_OFFERS_FILE, EXPECTED_COLUMNS):
+def fallback_read_csv(file_path: Path, expected_columns: List[str]) -> pd.DataFrame:
     try:
-        with open(MARKET_OFFERS_FILE, 'r', encoding='utf-8') as f:
+        with open(file_path, 'r', encoding='utf-8') as f:
             lines = [line.strip().split('|') for line in f.readlines()]
 
         cleaned_lines = []
         for line in lines:
-            if len(line) == len(EXPECTED_COLUMNS):
+            if len(line) == len(expected_columns):
                 cleaned_lines.append(line)
-            elif len(line) > 0:
-                adjusted = line[:len(EXPECTED_COLUMNS)] + [''] * (len(EXPECTED_COLUMNS) - len(line))
+            elif line:
+                # Truncate or pad to expected length
+                adjusted = line[:len(expected_columns)] + [''] * (len(expected_columns) - len(line))
                 cleaned_lines.append(adjusted)
 
-        return pd.DataFrame(cleaned_lines[1:], columns=cleaned_lines[0] if cleaned_lines else EXPECTED_COLUMNS)
+        if not cleaned_lines:
+            return pd.DataFrame(columns=expected_columns)
+
+        header = cleaned_lines[0]
+        if len(header) != len(expected_columns):
+            header = expected_columns
+
+        return pd.DataFrame(cleaned_lines[1:], columns=header)
 
     except Exception as e:
         print(f"Erreur dans le fallback de lecture : {str(e)}")
-        return pd.DataFrame(columns=EXPECTED_COLUMNS)
+        return pd.DataFrame(columns=expected_columns)
