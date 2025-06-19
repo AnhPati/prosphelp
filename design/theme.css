@@ -49,8 +49,7 @@ body,
 .stDateInput input,
 .stNumberInput>div,
 .stTextInput input,
-.stTextArea textarea,
-.stSelectbox div[data-baseweb="select"]>div {
+.stTextArea textarea {
     background-color: var(--color-surface);
     color: var(--color-text);
     border: 1px solid var(--color-border);
@@ -66,9 +65,23 @@ body,
     outline: none;
 }
 
-.stSelectbox div[data-baseweb="select"]>div:focus-within {
-    border-color: var(--color-primary);
+.stSelectbox [data-baseweb="select"] {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+}
+
+.stSelectbox [data-baseweb="select"]:focus-within {
+    border-color: transparent;
     outline: none;
+}
+
+.stSelectbox input {
+    color: var(--color-text);
+}
+
+.stSelectbox span {
+    color: var(--color-text);
 }
 
 /* === Boutons === */
@@ -143,7 +156,8 @@ h6 {
 /* === Charts ===*/
 [class*="st-key-trend_chart"] {
     background-color: var(--color-surface);
+    color: var(--color-text);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
-    padding: 0.5rem 2rem;
+    padding: 0.5rem;
 }
