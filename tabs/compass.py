@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from services.offers.offer_service import load_offers
+from services.offers.load_offers import load_offers
 from services.market_analysis.load_markets_analysis import load_markets_analysis
 from services.cache.geocoding_cache import save_cache
 from components.maps.geocoding_feeback import geocode_with_feedback 
