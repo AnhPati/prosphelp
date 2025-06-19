@@ -1,46 +1,37 @@
 import pandas as pd
-import os
+from pathlib import Path
 
-MARKET_ANALYSIS_FILE = "data/market_analysis.csv"
-OFFERS_FILE = "data/offers.csv"
-UNIFIED_FILE = "data/markets.csv"
+MARKET_ANALYSIS_FILE = Path("data/market_analysis.csv")
+OFFERS_FILE = Path("data/offers.csv")
+UNIFIED_FILE = Path("data/markets.csv")
 
-def migrate():
+
+def migrate() -> None:
     unified_rows = []
 
-    # Charger les données de l'analyse des marchés
-    if os.path.exists(MARKET_ANALYSIS_FILE):
+    if MARKET_ANALYSIS_FILE.exists():
         market_df = pd.read_csv(MARKET_ANALYSIS_FILE)
         for _, row in market_df.iterrows():
             unified_rows.append({
-                "Date": row["Date"],
-                "Marché": row["Marché"],
-                "Nombre d'annonces": row["Nombre d'annonces"],
+                "Date": row.get("Date", ""),
+                "Marché": row.get("Marché", ""),
+                "Nombre d'annonces": row.get("Nombre d'annonces", ""),
                 "Notes": row.get("Notes", ""),
-                # Offres
-                "Titre": "",
-                "Intitulé": "",
-                "TJM": "",
-                "Séniorité": "",
-                "Technos principales": "",
-                "Technos secondaires": "",
-                "Compétences principales": "",
-                "Compétences secondaires": "",
-                "Secteur": "",
-                "Localisation": "",
-                "Rythme": "",
-                "Entreprise": "",
-                "Contact": "",
-                "Lien": ""
+                **{field: "" for field in [
+                    "Titre", "Intitulé", "TJM", "Séniorité",
+                    "Technos principales", "Technos secondaires",
+                    "Compétences principales", "Compétences secondaires",
+                    "Secteur", "Localisation", "Rythme",
+                    "Entreprise", "Contact", "Lien"
+                ]}
             })
 
-    # Charger les données des offres
-    if os.path.exists(OFFERS_FILE):
+    if OFFERS_FILE.exists():
         offers_df = pd.read_csv(OFFERS_FILE)
         for _, row in offers_df.iterrows():
             unified_rows.append({
-                "Date": "",  # Inconnu pour une offre
-                "Marché": row["Marché"],
+                "Date": "",
+                "Marché": row.get("Marché", ""),
                 "Nombre d'annonces": "",
                 "Notes": "",
                 "Titre": row.get("Titre", ""),
@@ -59,10 +50,9 @@ def migrate():
                 "Lien": row.get("Lien", "")
             })
 
-    # Sauvegarder dans le fichier unifié
-    unified_df = pd.DataFrame(unified_rows)
-    unified_df.to_csv(UNIFIED_FILE, index=False)
-    print(f"✅ Migration terminée : {len(unified_df)} lignes écrites dans {UNIFIED_FILE}")
+    pd.DataFrame(unified_rows).to_csv(UNIFIED_FILE, index=False)
+    print(f"✅ Migration terminée : {len(unified_rows)} lignes écrites dans {UNIFIED_FILE}")
+
 
 if __name__ == "__main__":
     migrate()
