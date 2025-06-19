@@ -1,7 +1,7 @@
 import streamlit as st
 from tabs.home import render_home
 from tabs.market_analysis import render_market_analysis
-from tabs.offer_dissection import show_offer_dissection
+from tabs.offer_dissection import render_offer_dissection
 from tabs.compass import show_compass
 from components.csv_uploader import csv_uploader
 from config.settings import MARKET_OFFERS_FILE
@@ -31,6 +31,6 @@ with tab0:
 with tab1:
     render_market_analysis()
 with tab2:
-    show_offer_dissection()
+    render_offer_dissection()
 with tab3:
     show_compass()

@@ -1,17 +1,16 @@
-# tabs/offer_dissection.py
-
 import streamlit as st
 from config.settings import MARKET_OFFERS_FILE
 from services.offers.get_existing_markets_from_offers import get_existing_markets_from_offers
 from services.offers.save_offers import save_offer_data
 from services.offers.load_offers import load_offers
 from components.forms.offer_form import offer_form
+from utils.filters import select_market_filter, filter_by_market_selection
 from constants.alerts import SUCCESS_OFFER_SAVED, INFO_NO_OFFERS_DATA
-from constants.labels import HEADER_OFFER_DISSECTION, LABEL_DATA_SOURCE, SECTION_OFFERS, LABEL_MARKET_FILTER, ALL_MARKETS_OPTION, DATA_SOURCE_OPTIONS
+from constants.labels import HEADER_OFFER_DISSECTION, LABEL_DATA_SOURCE, SECTION_OFFERS, LABEL_MARKET_FILTER, DATA_SOURCE_OPTIONS
 from constants.schema.views import OFFER_DISPLAY_COLUMNS
-from constants.schema.columns import COL_TYPE, COL_MARKET
+from constants.schema.columns import COL_TYPE
 
-def show_offer_dissection():
+def render_offer_dissection():
     st.header(HEADER_OFFER_DISSECTION)
 
     markets = get_existing_markets_from_offers()
@@ -23,17 +22,17 @@ def show_offer_dissection():
         st.success(SUCCESS_OFFER_SAVED)
 
     st.subheader(SECTION_OFFERS)
+
     if MARKET_OFFERS_FILE.exists():
         offers_df = load_offers()
-        display_columns = OFFER_DISPLAY_COLUMNS
 
-        if COL_TYPE in offers_df.columns:
-            offers_df = offers_df[offers_df[COL_TYPE] == "Offre"]
+        if offers_df.empty:
+            st.info("Aucune offre disponible.")
+            return
 
-        selected_market = st.selectbox(LABEL_MARKET_FILTER, [ALL_MARKETS_OPTION] + markets)
-        if selected_market != ALL_MARKETS_OPTION:
-            offers_df = offers_df[offers_df[COL_MARKET] == selected_market]
+        selected_market = select_market_filter(markets, LABEL_MARKET_FILTER)
+        filtered_df = filter_by_market_selection(offers_df, selected_market)
+        st.dataframe(filtered_df[OFFER_DISPLAY_COLUMNS])
 
-        st.dataframe(offers_df[display_columns])
     else:
         st.info(INFO_NO_OFFERS_DATA)
