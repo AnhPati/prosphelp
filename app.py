@@ -1,5 +1,5 @@
 import streamlit as st
-from tabs.home import show_home
+from tabs.home import render_home
 from tabs.market_analysis import show_market_analysis
 from tabs.offer_dissection import show_offer_dissection
 from tabs.compass import show_compass
@@ -27,7 +27,7 @@ tab0, tab1, tab2, tab3 = st.tabs([
 ])
 
 with tab0:
-    show_home()
+    render_home()
 with tab1:
     show_market_analysis()
 with tab2:

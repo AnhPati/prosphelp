@@ -1,7 +1,7 @@
 import streamlit as st
 from constants.texts import APP_INTRO, APP_HOWTO, APP_HELP
 
-def show_home():
+def render_home():
 
     st.title("Bienvenue sur JobCompass")
     st.markdown("---")
