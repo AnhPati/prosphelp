@@ -52,9 +52,15 @@ body,
 .stTextArea textarea {
     background-color: var(--color-surface);
     color: var(--color-text);
-    border: 1px solid var(--color-border);
     border-radius: var(--radius);
     padding: 0.5rem;
+}
+
+.stDateInput [data-baseweb="input"],
+.stNumberInput>div,
+.stTextInput input,
+.stTextArea textarea {
+    border: 1px solid var(--color-border);
 }
 
 .stDateInput input:focus,
@@ -63,6 +69,10 @@ body,
 .stTextArea textarea:focus {
     border-color: transparent;
     outline: none;
+}
+
+.stDateInput [data-baseweb="input"]:focus-within {
+    border-color: var(--color-primary);
 }
 
 .stSelectbox [data-baseweb="select"] {
@@ -100,25 +110,50 @@ body,
 }
 
 /* === Tableaux === */
-.stDataFrame th {
-    background-color: var(--table-header-bg);
-    color: var(--table-header-text);
-    padding: 0.5rem;
-    border-bottom: 2px solid var(--color-border-strong);
+.stDataFrame {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    font-family: var(--font-family);
 }
 
+/* 🧾 Header du tableau */
+.stDataFrame thead tr {
+    background-color: var(--table-header-bg);
+}
+
+.stDataFrame th {
+    color: var(--table-header-text);
+    font-weight: 600;
+    padding: 0.5rem;
+    border-bottom: 2px solid var(--color-border-strong);
+    text-align: left;
+}
+
+/* 📄 Cellules */
 .stDataFrame td {
     color: var(--color-text);
     padding: 0.5rem;
     border-bottom: 1px solid var(--color-border);
+    font-size: 0.95rem;
 }
 
-/* DataFrame container fix */
-.stForm {
+/* 🦓 Alternance des lignes */
+.stDataFrame tbody tr:nth-child(even) {
+    background-color: var(--table-row-even);
+}
+
+.stDataFrame tbody tr:nth-child(odd) {
+    background-color: var(--table-row-odd);
+}
+
+/* ✅ Ajuste le fond global du tableau */
+.stDataFrame table {
     background-color: var(--color-surface);
-    padding: 1rem;
-    border-radius: var(--radius);
-    border: 1px solid var(--color-border);
+    width: 100%;
+    border-collapse: collapse;
+}
+
 }
 
 /* === Titres === */
