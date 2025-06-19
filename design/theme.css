@@ -1,0 +1,23 @@
+:root {
+    --color-primary: #2f80ed;
+    --color-surface: #f3f4f6;
+    --color-text: #1E1E1E;
+    --radius: 6px;
+    --input-bg: #ffffff;
+}
+
+input,
+textarea,
+select {
+    border: 1px solid #ccc;
+    border-radius: var(--radius);
+    padding: 8px;
+    background-color: var(--input-bg);
+    color: var(--color-text);
+}
+
+button[kind="primary"] {
+    background-color: var(--color-primary);
+    border-radius: var(--radius);
+    color: white;
+}

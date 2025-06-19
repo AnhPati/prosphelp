@@ -11,6 +11,10 @@ if 'geocoded_locations_cache' not in st.session_state:
     st.session_state.geocoded_locations_cache = load_cache()
 
 st.set_page_config(page_title="JobCompass", layout="wide")
+
+with open("design/theme.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 st.title("JobCompass")
 
 csv_uploader(
