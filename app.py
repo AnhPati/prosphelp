@@ -19,18 +19,18 @@ csv_uploader(
     uploader_key="global_data_controls"
 )
 
-tab0, tab1, tab2, tab3 = st.tabs([
+tabs = st.tabs([
     "🏠 Accueil",
     "📈 Analyse des marchés",
     "📝 Dissection des offres",
     "🧭 Boussole"
 ])
 
-with tab0:
+with tabs[0]:
     render_home()
-with tab1:
+with tabs[1]:
     render_market_analysis()
-with tab2:
+with tabs[2]:
     render_offer_dissection()
-with tab3:
+with tabs[3]:
     render_compass()
