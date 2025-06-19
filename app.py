@@ -2,7 +2,7 @@ import streamlit as st
 from tabs.home import render_home
 from tabs.market_analysis import render_market_analysis
 from tabs.offer_dissection import render_offer_dissection
-from tabs.compass import show_compass
+from tabs.compass import render_compass
 from components.csv_uploader import csv_uploader
 from config.settings import MARKET_OFFERS_FILE
 from services.cache.geocoding_cache import load_cache
@@ -33,4 +33,4 @@ with tab1:
 with tab2:
     render_offer_dissection()
 with tab3:
-    show_compass()
+    render_compass()
