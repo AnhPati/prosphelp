@@ -26,7 +26,10 @@ def render_market_analysis():
     if submitted:
         if not final_market:
             st.warning(WARNING_MISSING_MARKET)
-        elif not is_entry_unique(market_df, COL_MARKET, final_market, COL_DATE, date):
+        elif not is_entry_unique(market_df, {
+            COL_MARKET: final_market,
+            COL_DATE: str(date),
+        }):
             st.warning(WARNING_MARKET_ALREADY_EXISTS)
         else:
             new_data = {
