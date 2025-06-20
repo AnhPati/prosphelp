@@ -154,8 +154,6 @@ body,
     border-collapse: collapse;
 }
 
-}
-
 /* === Titres === */
 h1,
 h2,
@@ -192,6 +190,13 @@ h6 {
 [class*="st-key-trend_chart"] {
     background-color: var(--color-surface);
     color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 0 2rem;
+}
+
+div:has(> div > div > div > .numeric-slider-block) {
+    background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
     padding: 0.5rem;

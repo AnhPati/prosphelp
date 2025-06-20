@@ -1,50 +1,40 @@
 import streamlit as st
 import pandas as pd
-from constants.alerts import INFO_NO_NUMERIC_DATA, INFO_NO_UNIQUE_VALUES, INFO_ONLY_ONE_NUMERIC_VALUE
-from constants.labels import SLIDER_EXPLORE_LABEL, LABEL_AVERAGE, LABEL_RANGE, LABEL_COUNT_FOR_SELECTED
+from utils.styling import style_anchor
 
 def numeric_range_slider(df: pd.DataFrame, column_name: str, title: str, unit: str = "") -> None:
+    style_anchor(
+        class_name="numeric-slider-block"
+    )
+
     st.subheader(title)
 
     numeric_values = pd.to_numeric(df[column_name], errors='coerce').dropna()
 
     if numeric_values.empty:
-        st.info(INFO_NO_NUMERIC_DATA.format(column_name=column_name))
+        st.info("Aucune donnée numérique.")
+        st.markdown("</div>", unsafe_allow_html=True)
         return
 
     min_val = int(numeric_values.min())
     max_val = int(numeric_values.max())
     avg_val = numeric_values.mean()
 
-    st.markdown(LABEL_AVERAGE.format(avg=f"{avg_val:,.0f}", unit=unit))
-    st.markdown(LABEL_RANGE.format(min=f"{min_val:,.0f}", max=f"{max_val:,.0f}", unit=unit))
+    st.markdown(f"**Moyenne :** {avg_val:,.0f}{unit}")
+    st.markdown(f"**Fourchette :** {min_val} - {max_val}{unit}")
 
     unique_vals = sorted(numeric_values.unique())
-
     if len(unique_vals) > 1:
         default_val = min(unique_vals, key=lambda x: abs(x - avg_val))
         selected_val = st.select_slider(
-            SLIDER_EXPLORE_LABEL,
+            "Explorez les données par valeur :",
             options=unique_vals,
             value=default_val,
             format_func=lambda x: f"{x:,.0f}{unit}"
         )
         count = (numeric_values == selected_val).sum()
-        st.markdown(LABEL_COUNT_FOR_SELECTED.format(
-            value=f"{selected_val:,.0f}",
-            unit=unit,
-            count=count
-        ))
-
+        st.markdown(f"**Nombre d'entrées à {selected_val:,.0f}{unit} :** {count}")
     elif len(unique_vals) == 1:
         val = unique_vals[0]
-        st.info(INFO_ONLY_ONE_NUMERIC_VALUE.format(value=f"{val:,.0f}", unit=unit))
         count = numeric_values.count()
-        st.markdown(LABEL_COUNT_FOR_SELECTED.format(
-            value=f"{val:,.0f}",
-            unit=unit,
-            count=count
-        ))
-
-    else:
-        st.info(INFO_NO_UNIQUE_VALUES.format(column_name=column_name))
+        st.markdown(f"**Valeur unique :** {val}{unit} ({count} occurrences)")
