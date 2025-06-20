@@ -1,17 +1,33 @@
-# Dossier de l'environnement virtuel
+# 🐍 Environnement virtuel
 venv/
 
-# Données locales (à éviter de versionner sauf si nécessaire)
+# 🗂️ Données locales
 data/*
 !data/markets.csv
 
-# Fichiers Python compilés
+# 🐍 Python caches & bytecode
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
 
-# Fichiers système (optionnels mais recommandés)
+# 📦 Dépendances compilées ou temporaires
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# 🔐 Clés et secrets
+firebase-key.json
+config/firebase_credentials.json
+.env
+.env.*
+
+# 📊 Streamlit cache & config
+.streamlit/
+**/.streamlit/
+**/.streamlit/config.toml
+**/.streamlit/credentials.toml
+
+# 🖥️ Fichiers système
 .DS_Store
 Thumbs.db
-
-# Clef Firebase
-firebase-key.json
