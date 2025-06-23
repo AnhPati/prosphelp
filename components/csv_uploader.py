@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from services.storage.firebase_storage_service import upload_csv_to_storage
 from constants.alerts import ERROR_MISSING_TYPE_COLUMN, SUCCESS_FILE_IMPORTED, ERROR_FILE_PROCESSING, ERROR_INVALID_COLUMN_COUNT
 from constants.labels import LABEL_UPLOAD_SECTION, BTN_UPLOAD_CSV, BTN_DOWNLOAD_CSV
 from constants.schema.columns import COL_TYPE
@@ -25,7 +26,7 @@ def csv_uploader(filepath, label, uploader_key, expected_column=COL_TYPE):
                 quotechar='"',
                 encoding="utf-8",
                 header=0,
-                on_bad_lines="skip"  # tolérant, mais...
+                on_bad_lines="skip"
             )
 
             expected_cols = len(EXPECTED_COLUMNS)
@@ -33,12 +34,19 @@ def csv_uploader(filepath, label, uploader_key, expected_column=COL_TYPE):
                 st.sidebar.error(ERROR_INVALID_COLUMN_COUNT.format(dectected=df.shape[1], expected=expected_cols))
                 return
 
-            if COL_TYPE not in df.columns:
+            if expected_column not in df.columns:
                 st.sidebar.error(ERROR_MISSING_TYPE_COLUMN)
                 return
 
             df.columns = df.columns.str.strip()
             df.to_csv(filepath, sep="|", index=False)
+
+            # ✅ Synchronisation vers Firebase
+            upload_csv_to_storage(
+                local_path=filepath,
+                remote_path="markets.csv"
+            )
+
             st.sidebar.success(SUCCESS_FILE_IMPORTED)
 
         except Exception as e:
