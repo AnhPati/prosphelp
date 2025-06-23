@@ -7,20 +7,9 @@ from tabs.compass import render_compass
 from components.csv_uploader import csv_uploader
 from config.settings import MARKET_OFFERS_FILE
 from services.cache.geocoding_cache import load_cache
-from services.storage.firebase_storage_service import download_csv_from_storage  # ✅ Import Firebase Storage
+from services.storage.firebase_storage_service import download_csv_from_storage
 from design.inject_theme import inject_theme
-from components.auth.login_form import simple_login_form, logout  # ✅ Login & logout
-
-# 🔹 Charger le cache de géocodage
-if 'geocoded_locations_cache' not in st.session_state:
-    st.session_state.geocoded_locations_cache = load_cache()
-
-# 🔹 Télécharger le CSV s'il est manquant localement
-if not os.path.exists(MARKET_OFFERS_FILE):
-    download_csv_from_storage(
-        remote_path="markets.csv",
-        local_path=str(MARKET_OFFERS_FILE)
-    )
+from components.auth.login_form import simple_login_form, logout
 
 # 🔹 Config Streamlit
 st.set_page_config(page_title="JobCompass", layout="wide")
@@ -31,19 +20,36 @@ if "user" not in st.session_state:
     simple_login_form()
     st.stop()
 
-logout()  # ✅ Affiche le bouton dans la sidebar
+# 🔹 Déduire le chemin utilisateur à partir de son ID
+user_id = st.session_state.user["id"]
+remote_csv_path = f"users/user_{user_id}_markets.csv"
 
-# 🔹 Header principal
+# 🔹 Télécharger le CSV personnalisé s'il n'existe pas encore localement
+if not os.path.exists(MARKET_OFFERS_FILE):
+    download_csv_from_storage(
+        remote_path=remote_csv_path,
+        local_path=str(MARKET_OFFERS_FILE)
+    )
+
+# 🔹 Charger le cache de géocodage
+if 'geocoded_locations_cache' not in st.session_state:
+    st.session_state.geocoded_locations_cache = load_cache()
+
+# 🔹 Afficher le bouton de déconnexion
+logout()
+
+# 🔹 Titre de l'application
 st.title("JobCompass")
 
-# 🔹 Upload du fichier CSV local
+# 🔹 Upload CSV personnalisé
 csv_uploader(
     filepath=MARKET_OFFERS_FILE,
     label="Données Offres & Marché",
-    uploader_key="global_data_controls"
+    uploader_key="global_data_controls",
+    firebase_path=remote_csv_path  # ✅ important : upload vers chemin utilisateur
 )
 
-# 🔹 Onglets de navigation
+# 🔹 Navigation par onglets
 tabs = st.tabs([
     "🏠 Accueil",
     "📈 Analyse des marchés",
