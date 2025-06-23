@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from services.storage.firebase_storage_service import upload_csv_to_storage
+from services.storage.save_manager import save_changes_if_any
 from constants.alerts import (
     ERROR_MISSING_TYPE_COLUMN,
     SUCCESS_FILE_IMPORTED,
@@ -52,9 +52,9 @@ def csv_uploader(filepath, label, uploader_key, expected_column=COL_TYPE, fireba
 
             # 🔄 Synchronisation vers Firebase Storage si un chemin est fourni
             if firebase_path:
-                upload_csv_to_storage(
+                save_changes_if_any(
                     local_path=filepath,
-                    remote_path=firebase_path
+                    remote_path=firebase_path or "markets.csv"
                 )
 
             st.sidebar.success(SUCCESS_FILE_IMPORTED)
