@@ -13,5 +13,8 @@ def simple_login_form():
             }
 
 def logout():
-    if "user" in st.session_state:
-        del st.session_state["user"]
+    with st.sidebar:
+        if "user" in st.session_state:
+            if st.button("🚪 Déconnexion"):
+                del st.session_state["user"]
+                st.rerun()
