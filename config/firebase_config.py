@@ -1,14 +1,11 @@
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
+import streamlit as st
 
 firebase_config = {
-    "apiKey": os.getenv("FIREBASE_API_KEY"),
-    "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
-    "projectId": os.getenv("FIREBASE_PROJECT_ID"),
-    "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET"),
+    "apiKey": st.secrets["firebase"]["firebase_api_key"],
+    "authDomain": st.secrets["firebase"]["firebase_auth_domain"],
+    "projectId": st.secrets["firebase"]["firebase_project_id"],
+    "storageBucket": st.secrets["firebase"]["firebase_storage_bucket"],
     "messagingSenderId": "579820563933",
-    "appId": os.getenv("FIREBASE_APP_ID"),
-    "databaseURL": os.getenv("FIREBASE_DATABASE_URL", "")
+    "appId": st.secrets["firebase"]["firebase_app_id"],
+    "databaseURL": st.secrets["firebase"]["firebase_database_url"]
 }
