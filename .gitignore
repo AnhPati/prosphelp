@@ -21,6 +21,7 @@ firebase-key.json
 config/firebase_credentials.json
 .env
 .env.*
+secrets.toml
 
 # 📊 Streamlit cache & config
 .streamlit/
