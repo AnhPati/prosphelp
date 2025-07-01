@@ -50,17 +50,29 @@ if "geocoded_locations_cache" not in st.session_state:
     st.session_state.geocoded_locations_cache = load_cache()
 
 # 🔹 Déconnexion
-col1, col2 = st.columns([8, 1])
+col1, col2 = st.columns([6, 1])
+with col1:
+    csv_uploader(
+        filepath=MARKET_OFFERS_FILE,
+        uploader_key="header_csv_controls",
+        firebase_path=remote_csv_path,
+        inline=True
+    )
 with col2:
+    st.markdown("<div style='text-align: right; margin-top: 0.5rem;'>", unsafe_allow_html=True)
     if st.button("🔓 Déconnexion", key="logout_btn"):
         logout()
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # 🔹 Interface principale
 st.title("JobCompass")
-csv_uploader(filepath=MARKET_OFFERS_FILE,
-             label="Données Offres & Marché",
-             uploader_key="global_data_controls",
-             firebase_path=remote_csv_path)
+with st.sidebar:
+    csv_uploader(
+        filepath=MARKET_OFFERS_FILE,
+        title="Données Offres & Marché",
+        uploader_key="sidebar_data_controls",
+        firebase_path=remote_csv_path
+    )
 
 tabs = st.tabs(["🏠 Accueil", "📈 Analyse des marchés",
                 "📝 Dissection des offres", "🧭 Boussole"])
