@@ -50,7 +50,10 @@ if "geocoded_locations_cache" not in st.session_state:
     st.session_state.geocoded_locations_cache = load_cache()
 
 # 🔹 Déconnexion
-logout()
+col1, col2 = st.columns([8, 1])
+with col2:
+    if st.button("🔓 Déconnexion", key="logout_btn"):
+        logout()
 
 # 🔹 Interface principale
 st.title("JobCompass")
