@@ -11,6 +11,10 @@ def simple_login_form():
             password = st.text_input("Fake Password", type="password")
             submitted = st.form_submit_button("Se connecter")
             if submitted:
+                st.session_state["user_email"] = email
+                st.session_state["user_id"] = "dev-user"
+                st.session_state["user_token"] = "fake-token"
+
                 st.session_state.user = {
                     "email": email, "id": "dev-user", "token": "fake-token"
                 }

@@ -16,6 +16,10 @@ def google_login():
         token = st.session_state.get("user_token")
 
         if email and user_id and token:
+            st.session_state["user_email"] = email
+            st.session_state["user_id"] = user_id
+            st.session_state["user_token"] = token
+            
             st.session_state.user = {
                 "email": email,
                 "id": user_id,
