@@ -1,6 +1,5 @@
 import streamlit as st
 import st_cookie
-from urllib.parse import urlencode
 import requests
 
 def google_login():
@@ -10,7 +9,7 @@ def google_login():
     token_url = "https://oauth2.googleapis.com/token"
     userinfo_url = "https://www.googleapis.com/oauth2/v3/userinfo"
 
-    # ✅ Restaurer la session depuis les cookies (via session_state)
+    # ✅ Restaurer session via cookies
     if "user" not in st.session_state:
         email = st.session_state.get("user_email")
         user_id = st.session_state.get("user_id")
@@ -22,13 +21,12 @@ def google_login():
                 "id": user_id,
                 "token": token
             }
-            return  # Session restaurée
+            return
 
-    # ✅ Si déjà connecté, on ne fait rien
     if "user" in st.session_state:
         return
 
-    # ✅ Traitement du code OAuth
+    # ✅ Gestion du code OAuth
     qp = st.query_params
     if "code" in qp:
         code = qp.get("code")
@@ -51,7 +49,6 @@ def google_login():
             st.error(f"❌ Échec récupération du token Google : {token_data.get('error_description', token_data)}")
             return
 
-        # ✅ Récupération des infos utilisateur
         ui = requests.get(userinfo_url, headers={"Authorization": f"Bearer {access_token}"}).json()
         st.session_state.user = {
             "email": ui.get("email"),
@@ -59,7 +56,6 @@ def google_login():
             "token": access_token
         }
 
-        # ✅ Stockage dans session_state → persistance via st_cookie
         st.session_state["user_email"] = ui.get("email")
         st.session_state["user_id"] = ui.get("sub")
         st.session_state["user_token"] = access_token
@@ -71,11 +67,23 @@ def google_login():
         st.rerun()
         return
 
-    # 🟡 Afficher le bouton si pas encore connecté
-    st.link_button("🔐 Connexion avec Google", f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode({
-        'client_id': client_id,
-        'response_type': 'code',
-        'scope': 'openid email profile',
-        'redirect_uri': redirect_uri,
-        'prompt': 'select_account'
-    })}")
+    # ✅ Formulaire HTML avec champs cachés
+    st.markdown(f"""
+        <form action="https://accounts.google.com/o/oauth2/v2/auth" method="get">
+            <input type="hidden" name="client_id" value="{client_id}">
+            <input type="hidden" name="response_type" value="code">
+            <input type="hidden" name="scope" value="openid email profile">
+            <input type="hidden" name="redirect_uri" value="{redirect_uri}">
+            <input type="hidden" name="prompt" value="select_account">
+            <button type="submit" style="
+                background-color: #4285F4;
+                color: white;
+                padding: 0.5em 1.2em;
+                border: none;
+                border-radius: 5px;
+                font-size: 1em;
+                cursor: pointer;">
+                🔐 Connexion avec Google
+            </button>
+        </form>
+    """, unsafe_allow_html=True)
