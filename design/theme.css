@@ -94,6 +94,16 @@ body,
     color: var(--color-text);
 }
 
+label[data-testid="stWidgetLabel"]>div {
+    width: 100%;
+}
+
+label[data-testid="stWidgetLabel"] p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* === Boutons === */
 .stButton button {
     background-color: var(--color-primary);

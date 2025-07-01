@@ -15,23 +15,29 @@ def offer_form(markets: list[str], source: str = "Offre"):
 
     form_data = {}
     with st.form("offer_form", clear_on_submit=True):
+        # On crée 3 colonnes
+        cols = st.columns(3)
+
+        # Ajout du champ marché (par défaut dans la 1ère colonne)
         market_field = next(field for field in BASE_FORM_INPUTS if field["key"] == COL_MARKET)
-        form_data[COL_MARKET] = st.selectbox(market_field["label"], markets)
-        
-        for input in inputs:
+        form_data[COL_MARKET] = cols[0].selectbox(market_field["label"], markets)
+
+        # Répartition dynamique des champs restants dans les 3 colonnes
+        for i, input in enumerate(inputs):
             key = input["key"]
             if key == COL_MARKET:
                 continue
 
             label = input["label"]
             ftype = input.get("type", "text")
+            col = cols[i % 3]  # Répartition 3 par 3
 
             if ftype == "text":
-                form_data[key] = st.text_input(label)
+                form_data[key] = col.text_input(label)
             elif ftype == "select":
-                form_data[key] = st.selectbox(label, input.get("options", []))
+                form_data[key] = col.selectbox(label, input.get("options", []))
             elif ftype == "slider":
-                form_data[key] = st.slider(label, input.get("min", 1), input.get("max", 5), input.get("default", 3))
+                form_data[key] = col.slider(label, input.get("min", 1), input.get("max", 5), input.get("default", 3))
 
         submitted = st.form_submit_button(BTN_SAVE_OFFER)
 
