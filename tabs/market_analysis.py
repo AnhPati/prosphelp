@@ -42,7 +42,9 @@ def render_market_analysis():
             st.rerun()
 
     st.subheader(SECTION_MARKET_TRENDS)
-    available_markets = [ALL_MARKETS_OPTION] + sorted(market_df[COL_MARKET].dropna().unique())
+    available_markets = sorted(
+        market for market in market_df[COL_MARKET].dropna().unique() if market != ALL_MARKETS_OPTION
+    )
     selected_market = select_market_filter(available_markets, label=LABEL_SELECT_MARKET)
     filtered_market_df = filter_by_market_selection(market_df, selected_market)
 
