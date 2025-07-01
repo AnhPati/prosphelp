@@ -14,7 +14,7 @@ def offer_form(markets: list[str], source: str = "Offre"):
         inputs = BASE_FORM_INPUTS + CONTACT_EXTRA_INPUTS
 
     form_data = {}
-    with st.form("offer_form"):
+    with st.form("offer_form", clear_on_submit=True):
         market_field = next(field for field in BASE_FORM_INPUTS if field["key"] == COL_MARKET)
         form_data[COL_MARKET] = st.selectbox(market_field["label"], markets)
         

@@ -4,7 +4,6 @@ from services.market_analysis.load_markets_analysis import load_markets_analysis
 from services.market_analysis.save_markets_analysis import save_markets_analysis
 from components.charts.trend_chart import trend_chart
 from utils.filters import select_market_filter, filter_by_market_selection
-from utils.state.form_reset import reset_form_state
 from utils.validation import is_entry_unique
 from components.forms.market_form import market_form
 from constants.alerts import WARNING_MISSING_MARKET, WARNING_MARKET_ALREADY_EXISTS, SUCCESS_DATA_SAVED, INFO_NO_MARKET_ANALYSIS_DATA
@@ -18,8 +17,6 @@ def render_market_analysis():
 
     market_df = load_markets_analysis()
     existing_markets = sorted(market_df[COL_MARKET].dropna().unique()) if not market_df.empty else []
-
-    reset_form_state("market")
 
     submitted, final_market, date, number, notes = market_form(existing_markets)
 

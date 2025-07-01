@@ -6,7 +6,7 @@ from constants.schema.columns import COL_DATE, COL_NUMBER_OF_OFFERS, COL_NOTES
 def market_form(existing_markets: list[str]):
     use_existing = st.checkbox(CHECKBOX_USE_EXISTING_MARKET, value=True)
 
-    with st.form("market_form"):
+    with st.form("market_form", clear_on_submit=True):
         if use_existing:
             market = st.selectbox(FIELD_MARKET_EXISTING, options=[""] + existing_markets, key="selected_market")
             new_market = None
