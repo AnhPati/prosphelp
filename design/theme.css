@@ -219,3 +219,19 @@ div:has(> div > div > div > .numeric-slider-block) {
     border-radius: var(--radius);
     padding: 0.5rem;
 }
+
+/* Masque la sidebar par défaut */
+[data-testid="stSidebar"] {
+    display: none;
+}
+
+/* Réaffiche la sidebar uniquement en mode mobile */
+@media (max-width: 768px) {
+    [data-testid="stSidebar"] {
+        display: block;
+    }
+
+    div:has(> div > div > div > div > div > div > div > .st-key-header_csv_controls_upload) {
+        display: none;
+    }
+}
