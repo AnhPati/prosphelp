@@ -1,16 +1,16 @@
+import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, storage
-from pathlib import Path
+import json
+
 from config.firebase_config import firebase_config
 
-FIREBASE_KEY_PATH = Path("config/firebase_credentials.json")
-BUCKET_NAME = firebase_config["storageBucket"]
-
-# Initialiser Firebase une seule fois
+# 👉 Récupère les credentials depuis secrets.toml
 if not firebase_admin._apps:
-    cred = credentials.Certificate(FIREBASE_KEY_PATH)
+    firebase_creds = json.loads(json.dumps(dict(st.secrets["firebase_credentials"])))
+    cred = credentials.Certificate(firebase_creds)
     firebase_admin.initialize_app(cred, {
-        'storageBucket': BUCKET_NAME
+        "storageBucket": firebase_config["storageBucket"]
     })
 
 bucket = storage.bucket()
