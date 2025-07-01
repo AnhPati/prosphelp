@@ -111,5 +111,4 @@
 
 - ✅ L’application supporte deux modes d’authentification : fake (dev) et Google OAuth (prod), définis dans `.streamlit/secrets.toml`.
 - ✅ Les secrets sensibles (client_id, redirect_uri…) sont actuellement gérés dans `secrets.toml` (l'authentification) et dans `.env` (la persistance des données).
-- 🚧 La persistance de session au refresh reste à stabiliser (cookie ou Auth Provider ?).
 - 📂 Le dossier `services/` respecte une séparation stricte des responsabilités (auth / cache / storage / processing).
