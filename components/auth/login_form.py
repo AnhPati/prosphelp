@@ -27,15 +27,13 @@ def simple_login_form():
         google_login()
 
 def logout():
-    with st.sidebar:
-        if "user" in st.session_state and st.button("🚪 Déconnexion"):
-            user_id = st.session_state.user["id"]
-            remote_path = f"users/user_{user_id}_markets.csv"
-            download_csv_from_storage(remote_path, str(MARKET_OFFERS_FILE))
-            # 💥 Effacer cookies
-            st_cookie.remove("user_email")
-            st_cookie.remove("user_id")
-            st_cookie.remove("user_token")
+    user_id = st.session_state.user["id"]
+    remote_path = f"users/user_{user_id}_markets.csv"
+    download_csv_from_storage(remote_path, str(MARKET_OFFERS_FILE))
+    # 💥 Effacer cookies
+    st_cookie.remove("user_email")
+    st_cookie.remove("user_id")
+    st_cookie.remove("user_token")
 
-            st.session_state.clear()
-            st.rerun()
+    st.session_state.clear()
+    st.rerun()

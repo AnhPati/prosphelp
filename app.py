@@ -67,6 +67,9 @@ with col2:
 # 🔹 Interface principale
 st.title("JobCompass")
 with st.sidebar:
+    if st.button("🔓 Déconnexion", key="logout_btn_sidebar"):
+        logout()
+
     csv_uploader(
         filepath=MARKET_OFFERS_FILE,
         title="Données Offres & Marché",
