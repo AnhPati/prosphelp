@@ -221,7 +221,8 @@ div:has(> div > div > div > .numeric-slider-block) {
 }
 
 /* Masque la sidebar par défaut */
-[data-testid="stSidebar"] {
+[data-testid="stSidebar"],
+[data-testid="stSidebarCollapsedControl"] {
     display: none;
 }
 
@@ -229,6 +230,10 @@ div:has(> div > div > div > .numeric-slider-block) {
 @media (max-width: 768px) {
     [data-testid="stSidebar"] {
         display: block;
+    }
+
+    [data-testid="stSidebarCollapsedControl"] {
+        display: flex;
     }
 
     div:has(> div > div > div > div > div > div > div > .st-key-header_csv_controls_upload) {
