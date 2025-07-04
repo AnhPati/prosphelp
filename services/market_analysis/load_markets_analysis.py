@@ -1,17 +1,19 @@
 import pandas as pd
-from config.settings import MARKET_OFFERS_FILE
+from config.settings import get_market_offers_file
 from utils.helpers import fallback_read_csv
 from constants.alerts import ERROR_LOADING_MARKET_DATA
 from constants.schema.constants import EXPECTED_COLUMNS, COLUMNS_SEP
 from constants.schema.columns import COL_TYPE, COL_MARKET
 
-def load_markets_analysis():
-    if not MARKET_OFFERS_FILE.exists():
+def load_markets_analysis(user_id: str) -> pd.DataFrame:
+    csv_path = get_market_offers_file(user_id)
+
+    if not csv_path.exists():
         return pd.DataFrame(columns=EXPECTED_COLUMNS)
 
     try:
         df = pd.read_csv(
-            MARKET_OFFERS_FILE,
+            csv_path,
             sep=COLUMNS_SEP,
             quotechar=None,
             encoding='utf-8',
@@ -19,7 +21,7 @@ def load_markets_analysis():
             engine='python'
         )
     except pd.errors.ParserError:
-        df = fallback_read_csv(MARKET_OFFERS_FILE, EXPECTED_COLUMNS)
+        df = fallback_read_csv(csv_path, EXPECTED_COLUMNS)
     except Exception as e:
         print(ERROR_LOADING_MARKET_DATA.format(error=str(e)))
         return pd.DataFrame(columns=EXPECTED_COLUMNS)

@@ -7,7 +7,7 @@ from tabs.market_analysis import render_market_analysis
 from tabs.offer_dissection import render_offer_dissection
 from tabs.compass import render_compass
 from components.csv_uploader import csv_uploader
-from config.settings import MARKET_OFFERS_FILE
+from config.settings import get_market_offers_file
 from services.cache.geocoding_cache import load_cache
 from services.storage.firebase_storage_service import download_csv_from_storage
 from design.inject_theme import inject_theme
@@ -31,27 +31,26 @@ if email and user_id and token and "user" not in st.session_state:
         "id": user_id,
         "token": token
     }
-    
+
 # 🔹 Authentification
 if "user" not in st.session_state:
     simple_login_form()
     st.stop()
 
-# 🔹 Chemin CSV utilisateur
+# 🔹 Déduire chemins CSV
 user_id = st.session_state.user["id"]
 remote_csv_path = f"users/user_{user_id}_markets.csv"
-local_csv_path = Path(MARKET_OFFERS_FILE).parent / f"markets_{user_id}.csv"
+local_csv_path = get_market_offers_file(user_id)
 
-# 🔹 Téléchargement CSV
+# 🔹 Téléchargement CSV si absent
 if not local_csv_path.exists():
-    download_csv_from_storage(remote_path=remote_csv_path,
-                              local_path=str(local_csv_path))
+    download_csv_from_storage(remote_path=remote_csv_path, local_path=str(local_csv_path))
 
-# 🔹 Charge cache géocodage
+# 🔹 Cache géocodage
 if "geocoded_locations_cache" not in st.session_state:
     st.session_state.geocoded_locations_cache = load_cache()
 
-# 🔹 Déconnexion
+# 🔹 Déconnexion + uploader dans header
 col1, col2 = st.columns([6, 1])
 with col1:
     csv_uploader(
@@ -79,8 +78,7 @@ with st.sidebar:
         firebase_path=remote_csv_path
     )
 
-tabs = st.tabs(["🏠 Accueil", "📈 Analyse des marchés",
-                "📝 Dissection des offres", "🧭 Boussole"])
+tabs = st.tabs(["🏠 Accueil", "📈 Analyse des marchés", "📝 Dissection des offres", "🧭 Boussole"])
 with tabs[0]: render_home()
 with tabs[1]: render_market_analysis()
 with tabs[2]: render_offer_dissection()

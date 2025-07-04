@@ -1,4 +1,6 @@
 from pathlib import Path
 
 DATA_DIR = Path(__file__).parent.parent / "data"
-MARKET_OFFERS_FILE = DATA_DIR / "markets.csv"
+
+def get_market_offers_file(user_id: str) -> Path:
+    return DATA_DIR / f"markets_{user_id}.csv"

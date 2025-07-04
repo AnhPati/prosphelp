@@ -10,17 +10,34 @@ from components.charts.pie_chart import pie_chart
 from components.numeric_range_slider import numeric_range_slider
 from components.maps.offers_map import offers_map
 from utils.filters import select_market_filter
-from constants.alerts import WARNING_MISSING_COLUMN, WARNING_NO_MARKET_ANALYSIS, INFO_NO_RYTHM_DATA, INFO_NO_SECTOR_DATA, WARNING_NO_MAIN_SKILLS, WARNING_NO_SECONDARY_SKILLS, WARNING_NO_MAIN_TECH, WARNING_NO_SECONDARY_TECH
-from constants.labels import HEADER_COMPASS, SECTION_MARKET_TRENDS, LABEL_TJM, LABEL_SENIORITY, LABEL_RHYTHM, LABEL_SECTOR, SECTION_SKILLS, SECTION_TECHS, LABEL_MAIN_SKILLS, LABEL_SECONDARY_SKILLS, LABEL_MAIN_TECHS, LABEL_SECONDARY_TECHS, LABEL_SELECT_MARKET, TITLE_MARKET_TREND, X_AXIS_DATE, Y_AXIS_ADS, LEGEND_MARKET
+from constants.alerts import (
+    WARNING_MISSING_COLUMN, WARNING_NO_MARKET_ANALYSIS, INFO_NO_RYTHM_DATA,
+    INFO_NO_SECTOR_DATA, WARNING_NO_MAIN_SKILLS, WARNING_NO_SECONDARY_SKILLS,
+    WARNING_NO_MAIN_TECH, WARNING_NO_SECONDARY_TECH
+)
+from constants.labels import (
+    HEADER_COMPASS, SECTION_MARKET_TRENDS, LABEL_TJM, LABEL_SENIORITY,
+    LABEL_RHYTHM, LABEL_SECTOR, SECTION_SKILLS, SECTION_TECHS,
+    LABEL_MAIN_SKILLS, LABEL_SECONDARY_SKILLS, LABEL_MAIN_TECHS,
+    LABEL_SECONDARY_TECHS, LABEL_SELECT_MARKET, TITLE_MARKET_TREND,
+    X_AXIS_DATE, Y_AXIS_ADS, LEGEND_MARKET
+)
 from constants.schema.views import COMPASS_DISPLAY_COLUMNS
-from constants.schema.columns import COL_DATE,COL_MARKET, COL_SKILLS_MAIN, COL_SKILLS_SECONDARY, COL_TECHS_MAIN, COL_TECHS_SECONDARY, COL_TJM, COL_SENIORITY, COL_RHYTHM, COL_SECTOR, COL_NUMBER_OF_OFFERS, COL_LOCATION
+from constants.schema.columns import (
+    COL_DATE, COL_MARKET, COL_SKILLS_MAIN, COL_SKILLS_SECONDARY,
+    COL_TECHS_MAIN, COL_TECHS_SECONDARY, COL_TJM, COL_SENIORITY,
+    COL_RHYTHM, COL_SECTOR, COL_NUMBER_OF_OFFERS, COL_LOCATION
+)
+
 def render_compass():
     CONTEXT_ID = "compass"
     st.header(HEADER_COMPASS)
 
+    user_id = st.session_state.user["id"]
+
     # Chargement et géocodage
-    df_market_analysis = load_markets_analysis()
-    df_offers_original = load_offers()
+    df_market_analysis = load_markets_analysis(user_id)
+    df_offers_original = load_offers(user_id)  # ✅ ici
     df_offers = geocode_with_feedback(df_offers_original, COL_LOCATION, st.session_state.geocoded_locations_cache)
     save_cache(st.session_state.geocoded_locations_cache)
 
