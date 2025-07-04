@@ -61,15 +61,21 @@ with col1:
     )
 with col2:
     st.markdown("<div style='text-align: right; margin-top: 0.5rem;'>", unsafe_allow_html=True)
-    if st.button("🔓 Déconnexion", key="logout_btn"):
-        logout()
+    if st.button("🔓 Déconnexion", key="global_logout_btn"):
+        if st.secrets["fake"]["use_fake_auth"]:
+            st.switch_page("pages/logout_confirm.py")
+        else:
+            logout()
     st.markdown("</div>", unsafe_allow_html=True)
 
 # 🔹 Interface principale
 st.title("JobCompass")
 with st.sidebar:
-    if st.button("🔓 Déconnexion", key="logout_btn_sidebar"):
-        logout()
+    if st.button("🔓 Déconnexion", key="sidebar_logout_btn"):
+        if st.secrets["fake"]["use_fake_auth"]:
+            st.switch_page("pages/logout_confirm.py")
+        else:
+            logout()
 
     csv_uploader(
         filepath=local_csv_path,
