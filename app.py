@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import st_cookie
+from pathlib import Path
 from tabs.home import render_home
 from tabs.market_analysis import render_market_analysis
 from tabs.offer_dissection import render_offer_dissection
@@ -39,11 +40,12 @@ if "user" not in st.session_state:
 # 🔹 Chemin CSV utilisateur
 user_id = st.session_state.user["id"]
 remote_csv_path = f"users/user_{user_id}_markets.csv"
+local_csv_path = Path(MARKET_OFFERS_FILE).parent / f"markets_{user_id}.csv"
 
 # 🔹 Téléchargement CSV
-if not os.path.exists(MARKET_OFFERS_FILE):
+if not local_csv_path.exists():
     download_csv_from_storage(remote_path=remote_csv_path,
-                              local_path=str(MARKET_OFFERS_FILE))
+                              local_path=str(local_csv_path))
 
 # 🔹 Charge cache géocodage
 if "geocoded_locations_cache" not in st.session_state:
@@ -53,7 +55,7 @@ if "geocoded_locations_cache" not in st.session_state:
 col1, col2 = st.columns([6, 1])
 with col1:
     csv_uploader(
-        filepath=MARKET_OFFERS_FILE,
+        filepath=local_csv_path,
         uploader_key="header_csv_controls",
         firebase_path=remote_csv_path,
         inline=True
@@ -71,7 +73,7 @@ with st.sidebar:
         logout()
 
     csv_uploader(
-        filepath=MARKET_OFFERS_FILE,
+        filepath=local_csv_path,
         title="Données Offres & Marché",
         uploader_key="sidebar_data_controls",
         firebase_path=remote_csv_path
