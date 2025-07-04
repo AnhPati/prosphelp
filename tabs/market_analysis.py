@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from services.market_analysis.load_markets_analysis import load_markets_analysis
 from services.market_analysis.save_markets_analysis import save_markets_analysis
+from config.settings import get_market_offers_file
 from components.charts.trend_chart import trend_chart
 from utils.filters import select_market_filter, filter_by_market_selection
 from utils.validation import is_entry_unique
@@ -51,7 +52,8 @@ def render_market_analysis():
                 COL_NOTES: notes,
             }
             # ✅ Sauvegarde spécifique à l’utilisateur
-            save_markets_analysis(user_id, new_data)
+            filepath = get_market_offers_file(user_id)
+            save_markets_analysis(new_data, filepath)
             st.success(SUCCESS_DATA_SAVED)
             st.session_state.clear_form_market = True
             st.rerun()
