@@ -2,9 +2,14 @@ import streamlit as st
 import pandas as pd
 from collections import Counter
 import plotly.express as px
+from utils.styling import style_anchor
 from constants.alerts import INFO_NO_DATA_TO_DISPLAY
 
 def pie_chart(data, title="", context_id="default"):
+    style_anchor(
+        class_name="pie-chart-block"
+    )
+
     if data is None or not isinstance(data, pd.Series) or data.empty:
         st.info(INFO_NO_DATA_TO_DISPLAY)
         return
