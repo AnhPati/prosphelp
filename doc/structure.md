@@ -78,7 +78,7 @@
 │   │   └── save_markets_analysis.py            # Sauvegarde des données de marché
 |   |
 │   ├── offers/
-│   │   ├── get_existing_markets_from_offers.py # Récupération des marchés existants
+│   │   ├── get_all_existing_markets.py # Récupération des marchés existants
 │   │   ├── load_offers.py                      # Chargement des offres
 │   │   └── save_offers.py                      # Sauvegarde d’une offre ou d’un contact
 |   |

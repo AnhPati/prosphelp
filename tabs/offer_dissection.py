@@ -1,5 +1,5 @@
 import streamlit as st
-from services.offers.get_existing_markets_from_offers import get_existing_markets_from_offers
+from services.offers.get_all_existing_markets import get_all_existing_markets
 from services.offers.save_offers import save_offer_data
 from services.offers.load_offers import load_offers
 from components.forms.offer_form import offer_form
@@ -15,7 +15,7 @@ def render_offer_dissection():
 
     user_id = st.session_state.user["id"]
 
-    markets = get_existing_markets_from_offers(user_id)
+    markets = get_all_existing_markets(user_id)
 
     source = st.radio(LABEL_DATA_SOURCE, DATA_SOURCE_OPTIONS, horizontal=True)
     offer_data = offer_form(markets, source=source)
