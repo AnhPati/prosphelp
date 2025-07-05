@@ -50,7 +50,7 @@ def render_compass():
 
     # Fusion des marchés
     markets = sorted(set(df_offers[COL_MARKET].dropna()) | set(df_market_analysis[COL_MARKET].dropna()))
-    selected_market = select_market_filter(markets, label=LABEL_SELECT_MARKET)
+    selected_market = select_market_filter(markets, label=LABEL_SELECT_MARKET, key="compass_market_select")
 
     # Tendance
     st.subheader(SECTION_MARKET_TRENDS)

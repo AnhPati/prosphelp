@@ -34,7 +34,7 @@ def render_offer_dissection():
             st.info(INFO_NO_OFFERS_DATA)
             return
 
-        selected_market = select_market_filter(markets, LABEL_MARKET_FILTER)
+        selected_market = select_market_filter(markets, LABEL_MARKET_FILTER, key="offer_dissection_market_select")
         filtered_df = filter_by_market_selection(offers_df, selected_market)
         st.dataframe(filtered_df[OFFER_DISPLAY_COLUMNS])
     else:

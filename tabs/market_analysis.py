@@ -63,7 +63,7 @@ def render_market_analysis():
     available_markets = sorted(
         market for market in market_df[COL_MARKET].dropna().unique() if market != ALL_MARKETS_OPTION
     )
-    selected_market = select_market_filter(available_markets, label=LABEL_SELECT_MARKET)
+    selected_market = select_market_filter(available_markets, label=LABEL_SELECT_MARKET, key="market_analysis_market_select")
     filtered_market_df = filter_by_market_selection(market_df, selected_market)
 
     trend_chart(
