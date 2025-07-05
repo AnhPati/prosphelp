@@ -37,7 +37,7 @@ def render_compass():
 
     # Chargement et géocodage
     df_market_analysis = load_markets_analysis(user_id)
-    df_offers_original = load_offers(user_id)  # ✅ ici
+    df_offers_original = load_offers(user_id)
     df_offers = geocode_with_feedback(df_offers_original, COL_LOCATION, st.session_state.geocoded_locations_cache)
     save_cache(st.session_state.geocoded_locations_cache)
 
@@ -76,10 +76,10 @@ def render_compass():
         numeric_range_slider(skills_df, COL_SENIORITY, LABEL_SENIORITY, unit="ans")
     with col3:
         st.subheader(LABEL_RHYTHM)
-        pie_chart(skills_df[COL_RHYTHM].dropna().str.strip(), title=LABEL_RHYTHM, context_id=CONTEXT_ID)
+        pie_chart(skills_df[COL_RHYTHM].dropna().astype(str).str.strip(), title=LABEL_RHYTHM, context_id=CONTEXT_ID)
     with col4:
         st.subheader(LABEL_SECTOR)
-        pie_chart(skills_df[COL_SECTOR].dropna().str.strip(), title=LABEL_SECTOR, context_id=CONTEXT_ID)
+        pie_chart(skills_df[COL_SECTOR].dropna().astype(str).str.strip(), title=LABEL_SECTOR, context_id=CONTEXT_ID)
 
     # Carte
     offers_map(skills_df, selected_market)
@@ -87,14 +87,30 @@ def render_compass():
     # Compétences et technos
     st.subheader(SECTION_SKILLS)
     st.markdown(LABEL_MAIN_SKILLS)
-    bar_chart(skills_df[COL_SKILLS_MAIN].dropna().str.split(",").explode().str.strip(), title=LABEL_MAIN_SKILLS, context_id=CONTEXT_ID)
+    bar_chart(
+        skills_df[COL_SKILLS_MAIN].dropna().astype(str).str.split(",").explode().str.strip(),
+        title=LABEL_MAIN_SKILLS,
+        context_id=CONTEXT_ID
+    )
 
     st.markdown(LABEL_SECONDARY_SKILLS)
-    bar_chart(skills_df[COL_SKILLS_SECONDARY].dropna().str.split(",").explode().str.strip(), title=LABEL_SECONDARY_SKILLS, context_id=CONTEXT_ID)
+    bar_chart(
+        skills_df[COL_SKILLS_SECONDARY].dropna().astype(str).str.split(",").explode().str.strip(),
+        title=LABEL_SECONDARY_SKILLS,
+        context_id=CONTEXT_ID
+    )
 
     st.subheader(SECTION_TECHS)
     st.markdown(LABEL_MAIN_TECHS)
-    bar_chart(skills_df[COL_TECHS_MAIN].dropna().str.split(",").explode().str.strip(), title=LABEL_MAIN_TECHS, context_id=CONTEXT_ID)
+    bar_chart(
+        skills_df[COL_TECHS_MAIN].dropna().astype(str).str.split(",").explode().str.strip(),
+        title=LABEL_MAIN_TECHS,
+        context_id=CONTEXT_ID
+    )
 
     st.markdown(LABEL_SECONDARY_TECHS)
-    bar_chart(skills_df[COL_TECHS_SECONDARY].dropna().str.split(",").explode().str.strip(), title=LABEL_SECONDARY_TECHS, context_id=CONTEXT_ID)
+    bar_chart(
+        skills_df[COL_TECHS_SECONDARY].dropna().astype(str).str.split(",").explode().str.strip(),
+        title=LABEL_SECONDARY_TECHS,
+        context_id=CONTEXT_ID
+    )

@@ -71,7 +71,7 @@ def csv_uploader(filepath, uploader_key, title=None, expected_column=COL_TYPE,
                 container.error(ERROR_MISSING_TYPE_COLUMN)
                 return
 
-            df.columns = df.columns.str.strip()
+            df.columns = df.columns.map(str).str.strip()
             df.to_csv(filepath, sep="|", index=False)
 
             if firebase_path:
