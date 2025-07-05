@@ -1,5 +1,6 @@
 import streamlit as st
 from services.offers.get_all_existing_markets import get_all_existing_markets
+from services.offers.get_existing_markets_from_offers import get_existing_markets_from_offers
 from services.offers.save_offers import save_offer_data
 from services.offers.load_offers import load_offers
 from components.forms.offer_form import offer_form
@@ -34,7 +35,8 @@ def render_offer_dissection():
             st.info(INFO_NO_OFFERS_DATA)
             return
 
-        selected_market = select_market_filter(markets, LABEL_MARKET_FILTER, key="offer_dissection_market_select")
+        markets_from_offers =   get_existing_markets_from_offers(user_id)
+        selected_market = select_market_filter(markets_from_offers, LABEL_MARKET_FILTER, key="offer_dissection_market_select")
         filtered_df = filter_by_market_selection(offers_df, selected_market)
         st.dataframe(filtered_df[OFFER_DISPLAY_COLUMNS])
     else:
