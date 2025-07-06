@@ -1,43 +1,41 @@
-/* @import Google Font */
+/* ========================================
+💅 Fonts & Variables
+======================================== */
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;600&display=swap');
 
 :root {
-    /* === Couleurs principales === */
+    /* 🎨 Palette */
     --color-primary: #2f80ed;
     --color-primary-hover: #2073de;
 
-    /* === Couleurs d'alerte === */
     --color-danger: #e53935;
     --color-warning: #FBE1CE;
     --color-info: #E0E9F5;
 
-    /* === Couleurs de texte === */
     --color-text: #3A1300;
     --color-text-secondary: #8B4100;
 
-    /* === Fonds === */
     --color-background: #F3F4F6;
     --color-surface: #ffffff;
     --color-surface-alt: #FDECE0;
 
-    /* === Bordures === */
     --color-border: #F8C196;
     --color-border-strong: #6D9FE5;
 
-    /* === Tableaux === */
     --table-header-bg: #B65A00;
     --table-header-text: #ffffff;
     --table-row-even: #ECF0F6;
     --table-row-odd: #FDECE0;
 
-    /* === Police === */
     --font-family: 'Lato', sans-serif;
 
-    /* === Divers === */
     --radius: 6px;
     --transition: 0.2s ease-in-out;
 }
 
+/* ========================================
+🌐 Base
+======================================== */
 body,
 .stApp {
     background-color: var(--color-background);
@@ -45,30 +43,57 @@ body,
     font-family: var(--font-family);
 }
 
-/* === Champs de texte === */
-.stDateInput input,
-.stNumberInput>div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--color-text);
+    font-family: var(--font-family);
+}
+
+/* ========================================
+📦 Layout
+======================================== */
+[data-testid="stSidebar"],
+[data-testid="stSidebarCollapsedControl"] {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    [data-testid="stSidebar"] {
+        display: block;
+    }
+
+    [data-testid="stSidebarCollapsedControl"] {
+        display: flex;
+    }
+
+    div:has(> div > div > div > div > div > div > div > .st-key-header_csv_controls_upload) {
+        display: none;
+    }
+}
+
+/* ========================================
+🔘 Inputs & Widgets
+======================================== */
 .stTextInput input,
-.stTextArea textarea {
+.stTextArea textarea,
+.stDateInput input,
+.stNumberInput>div {
     background-color: var(--color-surface);
     color: var(--color-text);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius);
     padding: 0.5rem;
 }
 
-.stDateInput [data-baseweb="input"],
-.stNumberInput>div,
-.stTextInput input,
-.stTextArea textarea {
-    border: 1px solid var(--color-border);
-}
-
-.stDateInput input:focus,
-.stNumberInput input:focus,
 .stTextInput input:focus,
-.stTextArea textarea:focus {
-    border-color: transparent;
+.stTextArea textarea:focus,
+.stNumberInput input:focus {
     outline: none;
+    border-color: transparent;
 }
 
 .stDateInput [data-baseweb="input"]:focus-within {
@@ -82,14 +107,11 @@ body,
 }
 
 .stSelectbox [data-baseweb="select"]:focus-within {
-    border-color: transparent;
     outline: none;
+    border-color: transparent;
 }
 
-.stSelectbox input {
-    color: var(--color-text);
-}
-
+.stSelectbox input,
 .stSelectbox span {
     color: var(--color-text);
 }
@@ -104,7 +126,9 @@ label[data-testid="stWidgetLabel"] p {
     text-overflow: ellipsis;
 }
 
-/* === Boutons === */
+/* ========================================
+🧩 Buttons
+======================================== */
 .stButton button {
     background-color: var(--color-primary);
     color: white;
@@ -119,7 +143,9 @@ label[data-testid="stWidgetLabel"] p {
     background-color: var(--color-primary-hover);
 }
 
-/* === Tableaux === */
+/* ========================================
+📊 Dataframes
+======================================== */
 .stDataFrame {
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
@@ -127,7 +153,6 @@ label[data-testid="stWidgetLabel"] p {
     font-family: var(--font-family);
 }
 
-/* 🧾 Header du tableau */
 .stDataFrame thead tr {
     background-color: var(--table-header-bg);
 }
@@ -140,7 +165,6 @@ label[data-testid="stWidgetLabel"] p {
     text-align: left;
 }
 
-/* 📄 Cellules */
 .stDataFrame td {
     color: var(--color-text);
     padding: 0.5rem;
@@ -148,7 +172,6 @@ label[data-testid="stWidgetLabel"] p {
     font-size: 0.95rem;
 }
 
-/* 🦓 Alternance des lignes */
 .stDataFrame tbody tr:nth-child(even) {
     background-color: var(--table-row-even);
 }
@@ -157,54 +180,35 @@ label[data-testid="stWidgetLabel"] p {
     background-color: var(--table-row-odd);
 }
 
-/* ✅ Ajuste le fond global du tableau */
 .stDataFrame table {
     background-color: var(--color-surface);
     width: 100%;
     border-collapse: collapse;
 }
 
-/* === Titres === */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+/* ========================================
+ℹ️ Alerts
+======================================== */
+.alert-warning,
+.alert-info {
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
     color: var(--color-text);
-    font-family: var(--font-family);
-}
-
-/* === Sections secondaires === */
-.text-secondary {
-    color: var(--color-text-secondary);
 }
 
 .alert-warning {
     background-color: var(--color-warning);
-    color: var(--color-text);
-    padding: 1rem;
-    border-radius: var(--radius);
-    margin-bottom: 1rem;
 }
 
 .alert-info {
     background-color: var(--color-info);
-    color: var(--color-text);
-    padding: 1rem;
-    border-radius: var(--radius);
-    margin-bottom: 1rem;
 }
 
-/* === Charts ===*/
-[class*="st-key-trend_chart"] {
-    background-color: var(--color-surface);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 0 2rem;
-}
-
+/* ========================================
+📈 Charts
+======================================== */
+[class*="st-key-trend_chart"],
 [class*="st-key-bar_chart"] {
     background-color: var(--color-surface);
     color: var(--color-text);
@@ -221,7 +225,9 @@ div:has(> div > div > div > .pie-chart-block) {
     padding: 0.5rem;
 }
 
-/* Style pour tous les expanders */
+/* ========================================
+📂 Expanders
+======================================== */
 .stExpander summary p,
 .stExpander summary [data-testid="stExpanderIcon"] {
     font-weight: 500;
@@ -234,23 +240,9 @@ div:has(> div > div > div > .pie-chart-block) {
     color: var(--color-primary-hover);
 }
 
-/* Masque la sidebar par défaut */
-[data-testid="stSidebar"],
-[data-testid="stSidebarCollapsedControl"] {
-    display: none;
-}
-
-/* Réaffiche la sidebar uniquement en mode mobile */
-@media (max-width: 768px) {
-    [data-testid="stSidebar"] {
-        display: block;
-    }
-
-    [data-testid="stSidebarCollapsedControl"] {
-        display: flex;
-    }
-
-    div:has(> div > div > div > div > div > div > div > .st-key-header_csv_controls_upload) {
-        display: none;
-    }
+/* ========================================
+🔤 Utils
+======================================== */
+.text-secondary {
+    color: var(--color-text-secondary);
 }
