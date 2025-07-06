@@ -43,8 +43,12 @@ remote_csv_path = f"users/user_{user_id}_markets.csv"
 local_csv_path = get_market_offers_file(user_id)
 
 # 🔹 Téléchargement CSV si absent
-if not local_csv_path.exists():
-    download_csv_from_storage(remote_path=remote_csv_path, local_path=str(local_csv_path))
+if not st.secrets["fake"]["use_fake_auth"]:
+    if not local_csv_path.exists():
+        download_csv_from_storage(remote_path=remote_csv_path, local_path=str(local_csv_path))
+else:
+    if not local_csv_path.exists():
+        print(f"⚠️ Fichier {local_csv_path} manquant (mode fake), mais non téléchargé.")
 
 # 🔹 Cache géocodage
 if "geocoded_locations_cache" not in st.session_state:
