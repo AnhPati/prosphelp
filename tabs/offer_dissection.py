@@ -5,7 +5,7 @@ from services.offers.save_offers import save_offer_data
 from services.offers.load_offers import load_offers
 from components.forms.offer_form import offer_form
 from utils.filters import select_market_filter, filter_by_market_selection
-from constants.alerts import SUCCESS_OFFER_SAVED, INFO_NO_OFFERS_DATA
+from constants.alerts import SUCCESS_OFFER_SAVED, INFO_NO_OFFERS_DATA, INFO_NO_MARKET_FOR_OFFER_FORM
 from constants.labels import HEADER_OFFER_DISSECTION, LABEL_DATA_SOURCE, SECTION_OFFERS_FORM, SECTION_OFFERS, LABEL_MARKET_FILTER, DATA_SOURCE_OPTIONS
 from constants.schema.views import OFFER_DISPLAY_COLUMNS
 from config.settings import get_market_offers_file  # ✅ nouvelle méthode
@@ -19,7 +19,7 @@ def render_offer_dissection():
     # ➕ Bloc collapsible pour l’ajout d’une offre/contact
     with st.expander(SECTION_OFFERS_FORM, expanded=True, icon=":material/forms_add_on:"):
         if not markets:
-            st.info("Aucun marché n’a encore été suivi. Veuillez en ajouter un dans l’onglet 📈 Analyse des marchés.")
+            st.info(INFO_NO_MARKET_FOR_OFFER_FORM)
         else:
             source = st.radio(LABEL_DATA_SOURCE, DATA_SOURCE_OPTIONS, horizontal=True)
             offer_data = offer_form(markets, source=source)

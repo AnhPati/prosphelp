@@ -28,6 +28,7 @@ INFO_NO_RYTHM_DATA = "ℹ️ Aucune donnée sur le rythme de travail pour ce mar
 INFO_NO_SECTOR_DATA = "ℹ️ Aucune donnée sur le secteur de travail pour ce marché."
 INFO_NO_MARKET_ANALYSIS_DATA = "ℹ️ Aucune donnée d'analyse de marché disponible."
 INFO_NO_OFFERS_DATA = "ℹ️ Aucune offre enregistrée pour le moment."
+INFO_NO_MARKET_FOR_OFFER_FORM = "ℹ️ Aucun marché n’a encore été suivi. Veuillez en ajouter un dans l’onglet 📈 Analyse des marchés."
 INFO_NO_DATA_TO_DISPLAY = "ℹ️ Aucune donnée à afficher."
 INFO_NO_MARKET_DATA_AVAILABLE = "ℹ️ Aucune donnée de type 'Marché' à afficher."
 INFO_NO_COORDINATES_DATA = "ℹ️ Aucune donnée de localisation valide avec des coordonnées géographiques disponible pour ce marché sélectionné."
