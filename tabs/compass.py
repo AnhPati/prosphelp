@@ -17,7 +17,7 @@ from constants.alerts import (
 )
 from constants.labels import (
     HEADER_COMPASS, SECTION_MARKET_TRENDS, LABEL_TJM, LABEL_SENIORITY,
-    LABEL_RHYTHM, LABEL_SECTOR, SECTION_SKILLS, SECTION_TECHS,
+    LABEL_RHYTHM, LABEL_SECTOR, SECTION_POSITIONING, SECTION_MAP_OFFERS, SECTION_SKILLS, SECTION_TECHS,
     LABEL_MAIN_SKILLS, LABEL_SECONDARY_SKILLS, LABEL_MAIN_TECHS,
     LABEL_SECONDARY_TECHS, LABEL_SELECT_MARKET, TITLE_MARKET_TREND,
     X_AXIS_DATE, Y_AXIS_ADS, LEGEND_MARKET
@@ -35,7 +35,6 @@ def render_compass():
 
     user_id = st.session_state.user["id"]
 
-    # Chargement et géocodage
     df_market_analysis = load_markets_analysis(user_id)
     df_offers_original = load_offers(user_id)
     df_offers = geocode_with_feedback(df_offers_original, COL_LOCATION, st.session_state.geocoded_locations_cache)
@@ -48,69 +47,70 @@ def render_compass():
         st.warning(WARNING_NO_MARKET_ANALYSIS)
         return
 
-    # Fusion des marchés
     markets = sorted(set(df_offers[COL_MARKET].dropna()) | set(df_market_analysis[COL_MARKET].dropna()))
     selected_market = select_market_filter(markets, label=LABEL_SELECT_MARKET, key="compass_market_select")
 
-    # Tendance
-    st.subheader(SECTION_MARKET_TRENDS)
-    trend_chart(
-        df=df_market_analysis,
-        index_col=COL_DATE,
-        category_col=COL_MARKET,
-        value_col=COL_NUMBER_OF_OFFERS,
-        highlight=selected_market,
-        title=TITLE_MARKET_TREND,
-        x_axis_label=X_AXIS_DATE,
-        y_axis_label=Y_AXIS_ADS,
-        legend_title=LEGEND_MARKET,
-        context_id=CONTEXT_ID
-    )
+    # 🔹 Tendance des marchés
+    with st.expander(SECTION_MARKET_TRENDS, expanded=True, icon=":material/insights:"):
+        trend_chart(
+            df=df_market_analysis,
+            index_col=COL_DATE,
+            category_col=COL_MARKET,
+            value_col=COL_NUMBER_OF_OFFERS,
+            highlight=selected_market,
+            title=TITLE_MARKET_TREND,
+            x_axis_label=X_AXIS_DATE,
+            y_axis_label=Y_AXIS_ADS,
+            legend_title=LEGEND_MARKET,
+            context_id=CONTEXT_ID
+        )
 
-    # Filtres des offres
     skills_df = df_offers[df_offers[COL_MARKET] == selected_market]
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        numeric_range_slider(skills_df, COL_TJM, LABEL_TJM, unit="€")
-    with col2:
-        numeric_range_slider(skills_df, COL_SENIORITY, LABEL_SENIORITY, unit="ans")
-    with col3:
-        st.subheader(LABEL_RHYTHM)
-        pie_chart(skills_df[COL_RHYTHM].dropna().astype(str).str.strip(), title=LABEL_RHYTHM, context_id=CONTEXT_ID)
-    with col4:
-        st.subheader(LABEL_SECTOR)
-        pie_chart(skills_df[COL_SECTOR].dropna().astype(str).str.strip(), title=LABEL_SECTOR, context_id=CONTEXT_ID)
 
-    # Carte
-    offers_map(skills_df, selected_market)
+    # 🔹 Positionnement
+    with st.expander(SECTION_POSITIONING, expanded=True, icon=":material/my_location:"):
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            numeric_range_slider(skills_df, COL_TJM, LABEL_TJM, unit="€")
+        with col2:
+            numeric_range_slider(skills_df, COL_SENIORITY, LABEL_SENIORITY, unit="ans")
+        with col3:
+            st.subheader(LABEL_RHYTHM)
+            pie_chart(skills_df[COL_RHYTHM].dropna().astype(str).str.strip(), title=LABEL_RHYTHM, context_id=CONTEXT_ID)
+        with col4:
+            st.subheader(LABEL_SECTOR)
+            pie_chart(skills_df[COL_SECTOR].dropna().astype(str).str.strip(), title=LABEL_SECTOR, context_id=CONTEXT_ID)
 
-    # Compétences et technos
-    st.subheader(SECTION_SKILLS)
-    st.markdown(LABEL_MAIN_SKILLS)
-    bar_chart(
-        skills_df[COL_SKILLS_MAIN].dropna().astype(str).str.split(",").explode().str.strip(),
-        title=LABEL_MAIN_SKILLS,
-        context_id=CONTEXT_ID
-    )
+    # 🔹 Localisation
+    with st.expander(SECTION_MAP_OFFERS, expanded=True, icon=":material/map:"):
+        offers_map(skills_df, selected_market)
 
-    st.markdown(LABEL_SECONDARY_SKILLS)
-    bar_chart(
-        skills_df[COL_SKILLS_SECONDARY].dropna().astype(str).str.split(",").explode().str.strip(),
-        title=LABEL_SECONDARY_SKILLS,
-        context_id=CONTEXT_ID
-    )
+    # 🔹 Compétences
+    with st.expander(SECTION_SKILLS, expanded=True, icon=":material/psychology:"):
+        st.markdown(LABEL_MAIN_SKILLS)
+        bar_chart(
+            skills_df[COL_SKILLS_MAIN].dropna().astype(str).str.split(",").explode().str.strip(),
+            title=LABEL_MAIN_SKILLS,
+            context_id=CONTEXT_ID
+        )
+        st.markdown(LABEL_SECONDARY_SKILLS)
+        bar_chart(
+            skills_df[COL_SKILLS_SECONDARY].dropna().astype(str).str.split(",").explode().str.strip(),
+            title=LABEL_SECONDARY_SKILLS,
+            context_id=CONTEXT_ID
+        )
 
-    st.subheader(SECTION_TECHS)
-    st.markdown(LABEL_MAIN_TECHS)
-    bar_chart(
-        skills_df[COL_TECHS_MAIN].dropna().astype(str).str.split(",").explode().str.strip(),
-        title=LABEL_MAIN_TECHS,
-        context_id=CONTEXT_ID
-    )
-
-    st.markdown(LABEL_SECONDARY_TECHS)
-    bar_chart(
-        skills_df[COL_TECHS_SECONDARY].dropna().astype(str).str.split(",").explode().str.strip(),
-        title=LABEL_SECONDARY_TECHS,
-        context_id=CONTEXT_ID
-    )
+    # 🔹 Technologies
+    with st.expander(SECTION_TECHS, expanded=True, icon=":material/settings_input_component:"):
+        st.markdown(LABEL_MAIN_TECHS)
+        bar_chart(
+            skills_df[COL_TECHS_MAIN].dropna().astype(str).str.split(",").explode().str.strip(),
+            title=LABEL_MAIN_TECHS,
+            context_id=CONTEXT_ID
+        )
+        st.markdown(LABEL_SECONDARY_TECHS)
+        bar_chart(
+            skills_df[COL_TECHS_SECONDARY].dropna().astype(str).str.split(",").explode().str.strip(),
+            title=LABEL_SECONDARY_TECHS,
+            context_id=CONTEXT_ID
+        )
