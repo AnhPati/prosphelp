@@ -4,7 +4,12 @@ from components.forms.config.market_inputs import MARKET_FORM_INPUTS
 from constants.schema.columns import COL_DATE, COL_NUMBER_OF_OFFERS, COL_NOTES
 
 def market_form(existing_markets: list[str]):
-    use_existing = st.checkbox(CHECKBOX_USE_EXISTING_MARKET, value=True)
+    # ✅ Si des marchés existent, on propose de choisir entre existant et nouveau
+    show_checkbox = len(existing_markets) > 0
+    use_existing = True if show_checkbox else False  # ✅ Par défaut coché seulement si utile
+
+    if show_checkbox:
+        use_existing = st.checkbox(CHECKBOX_USE_EXISTING_MARKET, value=True)
 
     with st.form("market_form", clear_on_submit=True):
         if use_existing:
