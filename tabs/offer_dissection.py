@@ -18,11 +18,14 @@ def render_offer_dissection():
 
     # ➕ Bloc collapsible pour l’ajout d’une offre/contact
     with st.expander(SECTION_OFFERS_FORM, expanded=True, icon=":material/forms_add_on:"):
-        source = st.radio(LABEL_DATA_SOURCE, DATA_SOURCE_OPTIONS, horizontal=True)
-        offer_data = offer_form(markets, source=source)
-        if offer_data:
-            save_offer_data(offer_data, user_id)
-            st.success(SUCCESS_OFFER_SAVED)
+        if not markets:
+            st.info("Aucun marché n’a encore été suivi. Veuillez en ajouter un dans l’onglet 📈 Analyse des marchés.")
+        else:
+            source = st.radio(LABEL_DATA_SOURCE, DATA_SOURCE_OPTIONS, horizontal=True)
+            offer_data = offer_form(markets, source=source)
+            if offer_data:
+                save_offer_data(offer_data, user_id)
+                st.success(SUCCESS_OFFER_SAVED)
 
     # 📄 Bloc collapsible pour l’affichage des offres enregistrées
     with st.expander(SECTION_OFFERS, expanded=True, icon=":material/business_center:"):
