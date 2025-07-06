@@ -221,6 +221,20 @@ div:has(> div > div > div > .pie-chart-block) {
     padding: 0.5rem;
 }
 
+/* Style pour tous les expanders */
+.stExpander summary p,
+.stExpander summary [data-testid="stExpanderIcon"] {
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: var(--color-primary);
+    padding: 0.25rem 0;
+}
+
+.stExpander summary:hover p,
+.stExpander summary:hover [data-testid="stExpanderIcon"] {
+    color: var(--color-primary-hover);
+}
+
 /* Masque la sidebar par défaut */
 [data-testid="stSidebar"],
 [data-testid="stSidebarCollapsedControl"] {
