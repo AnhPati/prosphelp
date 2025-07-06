@@ -12,7 +12,7 @@ from constants.alerts import (
     INFO_NO_MARKET_ANALYSIS_DATA
 )
 from constants.labels import (
-    HEADER_MARKET_ANALYSIS, SECTION_MARKET_TRENDS, SECTION_MARKET_HISTORY,
+    HEADER_MARKET_ANALYSIS, SECTION_MARKET_FORM, SECTION_MARKET_TRENDS, SECTION_MARKET_HISTORY,
     LABEL_SELECT_MARKET, ALL_MARKETS_OPTION, TITLE_MARKET_TREND,
     X_AXIS_DATE, Y_AXIS_ADS, LEGEND_MARKET
 )
@@ -33,7 +33,7 @@ def render_market_analysis():
     existing_markets = sorted(market_df[COL_MARKET].dropna().unique()) if not market_df.empty else []
 
     # ✅ Bloc formulaire repliable
-    with st.expander("Ajouter une analyse de marché", expanded=True, icon=":material/add_ad:"):
+    with st.expander(SECTION_MARKET_FORM, expanded=True, icon=":material/add_ad:"):
         submitted, final_market, date, number, notes = market_form(existing_markets)
 
         if submitted:
@@ -59,7 +59,7 @@ def render_market_analysis():
                 st.rerun()
 
     # ✅ Bloc graphique et historique repliable
-    with st.expander("Consulter l'historique de la tendance des marchés", expanded=True, icon=":material/show_chart:"):
+    with st.expander(SECTION_MARKET_TRENDS, expanded=True, icon=":material/show_chart:"):
         available_markets = sorted(
             market for market in market_df[COL_MARKET].dropna().unique() if market != ALL_MARKETS_OPTION
         )
