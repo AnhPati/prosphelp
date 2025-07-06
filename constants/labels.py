@@ -4,8 +4,10 @@ HEADER_MARKET_ANALYSIS = "🔎 Analyse des marchés"
 HEADER_OFFER_DISSECTION = "🔬 Dissection des offres"
 
 # ─── 📂 Titres de section ───────────────────────────────────────────────
-SECTION_MARKET_TRENDS = "Tendance des Marchés"
+SECTION_MARKET_FORM = "Ajouter une analyse de marché"
+SECTION_MARKET_TRENDS = "Tendance des marchés"
 SECTION_MARKET_HISTORY = "Historique des marchés"
+SECTION_OFFERS_FORM = "Ajouter une offre ou un contact"
 SECTION_OFFERS = "Offres enregistrées"
 SECTION_TECHS = "Technologies"
 SECTION_SKILLS = "Compétences"
