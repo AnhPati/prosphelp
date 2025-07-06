@@ -11,9 +11,7 @@ from components.numeric_range_slider import numeric_range_slider
 from components.maps.offers_map import offers_map
 from utils.filters import select_market_filter
 from constants.alerts import (
-    WARNING_MISSING_COLUMN, WARNING_NO_MARKET_ANALYSIS, INFO_NO_RYTHM_DATA,
-    INFO_NO_SECTOR_DATA, WARNING_NO_MAIN_SKILLS, WARNING_NO_SECONDARY_SKILLS,
-    WARNING_NO_MAIN_TECH, WARNING_NO_SECONDARY_TECH
+    WARNING_MISSING_COLUMN, WARNING_NO_MARKET_ANALYSIS
 )
 from constants.labels import (
     HEADER_COMPASS, SECTION_MARKET_TRENDS, LABEL_TJM, LABEL_SENIORITY,
