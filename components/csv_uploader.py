@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import io
 from services.storage.save_manager import save_changes_if_any
 from constants.alerts import (
     ERROR_MISSING_TYPE_COLUMN,
@@ -38,7 +39,7 @@ def csv_uploader(filepath, uploader_key, title=None, expected_column=COL_TYPE,
         "key": f"{uploader_key}_upload"
     }
     if inline:
-        file_uploader_kwargs["label"] = ""
+        file_uploader_kwargs["label"] = "Upload CSV"
         file_uploader_kwargs["label_visibility"] = "collapsed"
     else:
         file_uploader_kwargs["label"] = BTN_UPLOAD_CSV
@@ -51,6 +52,8 @@ def csv_uploader(filepath, uploader_key, title=None, expected_column=COL_TYPE,
         uploaded_file = col1.file_uploader(**file_uploader_kwargs)
 
     if uploaded_file is not None:
+        container.info(f"✅ File uploaded: {uploaded_file.name}, size: {uploaded_file.size} bytes")
+
         try:
             df = pd.read_csv(
                 uploaded_file,
@@ -61,37 +64,44 @@ def csv_uploader(filepath, uploader_key, title=None, expected_column=COL_TYPE,
                 header=0,
                 on_bad_lines="skip"
             )
-
-            if df.shape[1] != len(EXPECTED_COLUMNS):
-                container.error(ERROR_INVALID_COLUMN_COUNT.format(
-                    dectected=df.shape[1], expected=len(EXPECTED_COLUMNS)))
-                return
-
-            if expected_column not in df.columns:
-                container.error(ERROR_MISSING_TYPE_COLUMN)
-                return
-
-            df.columns = df.columns.map(str).str.strip()
-            df.to_csv(filepath, sep="|", index=False)
-
-            if firebase_path:
-                save_changes_if_any(local_path=filepath, remote_path=firebase_path)
-
-            container.success(SUCCESS_FILE_IMPORTED)
-
         except Exception as e:
-            container.error(ERROR_FILE_PROCESSING.format(error=e))
+            container.error("❌ Error while reading CSV.")
+            container.exception(e)
+            return
 
-    # 📥 Download CSV
+        if df.shape[1] != len(EXPECTED_COLUMNS):
+            container.error(ERROR_INVALID_COLUMN_COUNT.format(
+                dectected=df.shape[1], expected=len(EXPECTED_COLUMNS)))
+            return
+
+        if expected_column not in df.columns:
+            container.error(ERROR_MISSING_TYPE_COLUMN)
+            return
+
+        df.columns = df.columns.map(str).str.strip()
+        df.to_csv(filepath, sep="|", index=False)
+
+        if firebase_path:
+            save_changes_if_any(local_path=filepath, remote_path=firebase_path)
+
+        container.success(SUCCESS_FILE_IMPORTED)
+
+    # 📥 Download CSV (Cloud-safe, évite CORS)
     if filepath.exists():
-        with open(filepath, "rb") as f:
+        try:
+            df_download = pd.read_csv(filepath, sep="|")
+            buffer = io.StringIO()
+            df_download.to_csv(buffer, index=False, sep="|")
+            buffer.seek(0)
+
             download_kwargs = {
                 "label": f"📥 {BTN_DOWNLOAD_CSV}",
-                "data": f,
+                "data": buffer.getvalue(),
                 "file_name": filepath.name,
                 "mime": "text/csv",
                 "key": f"{uploader_key}_download"
             }
+
             if use_with:
                 with col2:
                     st.markdown("<div style='margin-top: 0.85rem;'>", unsafe_allow_html=True)
@@ -99,3 +109,7 @@ def csv_uploader(filepath, uploader_key, title=None, expected_column=COL_TYPE,
                     st.markdown("</div>", unsafe_allow_html=True)
             else:
                 col2.download_button(**download_kwargs)
+
+        except Exception as e:
+            container.error("Error during file preparation for download.")
+            container.exception(e)
