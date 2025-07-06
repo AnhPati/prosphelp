@@ -4,12 +4,13 @@ HEADER_MARKET_ANALYSIS = "🔎 Analyse des marchés"
 HEADER_OFFER_DISSECTION = "🔬 Dissection des offres"
 
 # ─── 📂 Titres de section ───────────────────────────────────────────────
-SECTION_MARKET_TRENDS = "📈 Tendance des Marchés"
-SECTION_MARKET_HISTORY = "📊 Historique des marchés"
-SECTION_OFFERS = "📄 Offres enregistrées"
-SECTION_TECHS = "💻 Technologies"
-SECTION_SKILLS = "🛠️ Compétences"
-SECTION_MAP_OFFERS = "📍 Localisation des Offres"
+SECTION_MARKET_TRENDS = "Tendance des Marchés"
+SECTION_MARKET_HISTORY = "Historique des marchés"
+SECTION_OFFERS = "Offres enregistrées"
+SECTION_TECHS = "Technologies"
+SECTION_SKILLS = "Compétences"
+SECTION_POSITIONING = "Positionnement"
+SECTION_MAP_OFFERS = "Localisation des Offres"
 
 # ─── 🏷️ Labels UI généraux ──────────────────────────────────────────────
 LABEL_SELECT_MARKET = "🎯 Sélectionner un marché"
